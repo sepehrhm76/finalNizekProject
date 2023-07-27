@@ -43,16 +43,13 @@ public class SQLiteWrapper {
 
     // Create a table if it doesn't exist
     public void createTableIfNotExists(String tableName, String schema) {
-        if (!tableExists(tableName)) {
-            try {
-                Statement statement = connection.createStatement();
-                statement.executeUpdate(String.format("CREATE TABLE %S (%S);", tableName, schema));
-                Logger.getInstance().logDebug("Table '" + tableName + "' created.");
-            } catch (SQLException e) {
-                Logger.getInstance().logError("Error creating table: " + e.getMessage());
-            }
-        } else {
-            Logger.getInstance().logDebug("Table '" + tableName + "' already exists.");
+        try {
+            Statement statement = connection.createStatement();
+            boolean isAlreadyCreated = tableExists(tableName);
+            statement.executeUpdate(String.format("CREATE TABLE IF NOT EXISTS %S (%S);", tableName, schema));
+            if (!isAlreadyCreated) Logger.getInstance().logDebug("Table '" + tableName + "' created.");
+        } catch (SQLException e) {
+            Logger.getInstance().logError("Error creating table: " + e.getMessage());
         }
     }
 

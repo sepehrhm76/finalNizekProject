@@ -5,10 +5,8 @@ import java.util.logging.Level;
 public class Logger {
 
     private static Logger instance;
-    private final java.util.logging.Logger logger;
 
     private Logger() {
-        logger = java.util.logging.Logger.getLogger("MyLogger");
     }
 
     public static Logger getInstance() {
@@ -19,11 +17,11 @@ public class Logger {
     }
 
     public void logDebug(String message) {
-        logger.log(Level.INFO, "[DEBUG] " + message);
+        System.out.println("[DEBUG] " + message);
     }
 
     public void logError(String message) {
-        logger.log(Level.SEVERE, "[ERROR] " + message);
+        System.err.println("[ERROR] " + message);
     }
 
 
