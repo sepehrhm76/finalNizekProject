@@ -6,10 +6,12 @@ import java.sql.*;
 
 public class SQLiteWrapper {
 
+    private static SQLiteWrapper instance = null;
+
     private Connection connection;
 
     // Constructor to initialize the database connection
-    public SQLiteWrapper() {
+    private SQLiteWrapper() {
         try {
             // Load the SQLite JDBC driver
             Class.forName("org.sqlite.JDBC");
@@ -19,6 +21,12 @@ public class SQLiteWrapper {
         } catch (ClassNotFoundException | SQLException e) {
             Logger.getInstance().logError("Error connecting to the database: " + e.getMessage());
         }
+    }
+
+    public static SQLiteWrapper getInstance() {
+        if (instance == null)
+            instance = new SQLiteWrapper();
+        return instance;
     }
 
     // Check if a table exists in the database
