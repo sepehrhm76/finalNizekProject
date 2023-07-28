@@ -18,8 +18,6 @@ public class SQLiteWrapper {
             connection = DriverManager.getConnection("jdbc:sqlite:" + DatabaseConstant.DATABASE_FILE_NAME);
             Logger.getInstance().logDebug("Connected to the SQLite database.");
 
-            createTables();
-
         } catch (ClassNotFoundException | SQLException e) {
             Logger.getInstance().logError("Error connecting to the database: " + e.getMessage());
         }
@@ -29,32 +27,6 @@ public class SQLiteWrapper {
         if (instance == null)
             instance = new SQLiteWrapper();
         return instance;
-    }
-
-    private void createTables() {
-        createTableIfNotExists(DatabaseConstant.TABLE_USER, DatabaseConstant.TABLE_USER_SCHEMA);
-    }
-
-    private boolean tableExists(String tableName) {
-        try {
-            DatabaseMetaData metaData = connection.getMetaData();
-            ResultSet resultSet = metaData.getTables(null, null, tableName, null);
-            return resultSet.next();
-        } catch (SQLException e) {
-            Logger.getInstance().logError("Error checking table existence: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public void createTableIfNotExists(String tableName, String schema) {
-        try {
-            Statement statement = connection.createStatement();
-            boolean isAlreadyCreated = tableExists(tableName);
-            statement.executeUpdate(String.format("CREATE TABLE IF NOT EXISTS %S (%S);", tableName, schema));
-            if (!isAlreadyCreated) Logger.getInstance().logDebug("Table '" + tableName + "' created.");
-        } catch (SQLException e) {
-            Logger.getInstance().logError("Error creating table: " + e.getMessage());
-        }
     }
 
     // Execute an SQL query that returns a ResultSet
@@ -92,4 +64,5 @@ public class SQLiteWrapper {
             Logger.getInstance().logError("Error closing the connection: " + e.getMessage());
         }
     }
+
 }
