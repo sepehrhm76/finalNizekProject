@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class LoginPanel extends JPanel {
     UserManager userManager = UserManager.getInstance();
+    MainPanel mainPanel = new MainPanel();
     private final Timer messageTimer;
     private static final int MESSAGE_DURATION = 2000;
 
@@ -17,6 +18,7 @@ public class LoginPanel extends JPanel {
         //main panel options
         setLayout(null);
         setBackground(new Color(33, 51, 99));
+        setVisible(true);
 
         //header label
         JLabel headerLabel = new JLabel("Sepiaj PMT");
@@ -118,6 +120,7 @@ public class LoginPanel extends JPanel {
                 if (userManager.validateUserLogin(email, password)) {
                     System.out.println("Login successful!");
                     setVisible(false);
+                    UiFrame.getInstance().add(mainPanel);
 
                 } else {
                     errorLabel.setText("Invalid email or password!");

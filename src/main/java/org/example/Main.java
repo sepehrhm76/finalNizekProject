@@ -14,7 +14,7 @@ public class Main {
         UserRepository userRepository = new UserRepository();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new UiFrame();
+                UiFrame.getInstance();
             }
         });
 
