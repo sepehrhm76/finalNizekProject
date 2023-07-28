@@ -1,10 +1,11 @@
 package org.example.Database;
 
-class DatabaseConstant {
+public class DatabaseConstant {
 
     static final String DATABASE_FILE_NAME = "database.db";
 
-    static final String TABLE_USER = "USER";
+    public static final String TABLE_USER = "USER";
+
     static final String TABLE_USER_SCHEMA = "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             "FIRST_NAME TEXT," +
             "LAST_NAME TEXT," +
@@ -12,6 +13,4 @@ class DatabaseConstant {
             "PASSWORD TEXT," +
             "ROLE TEXT," +
             "UNIQUE (ID, EMAIL)";
-
-
 }

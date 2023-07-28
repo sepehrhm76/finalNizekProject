@@ -10,7 +10,6 @@ public class SQLiteWrapper {
 
     private Connection connection;
 
-    // Constructor to initialize the database connection
     private SQLiteWrapper() {
         try {
             // Load the SQLite JDBC driver
@@ -18,6 +17,9 @@ public class SQLiteWrapper {
             // Connect to the SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:" + DatabaseConstant.DATABASE_FILE_NAME);
             Logger.getInstance().logDebug("Connected to the SQLite database.");
+
+            createTables();
+
         } catch (ClassNotFoundException | SQLException e) {
             Logger.getInstance().logError("Error connecting to the database: " + e.getMessage());
         }
@@ -29,7 +31,10 @@ public class SQLiteWrapper {
         return instance;
     }
 
-    // Check if a table exists in the database
+    private void createTables() {
+        createTableIfNotExists(DatabaseConstant.TABLE_USER, DatabaseConstant.TABLE_USER_SCHEMA);
+    }
+
     private boolean tableExists(String tableName) {
         try {
             DatabaseMetaData metaData = connection.getMetaData();
@@ -41,7 +46,6 @@ public class SQLiteWrapper {
         }
     }
 
-    // Create a table if it doesn't exist
     public void createTableIfNotExists(String tableName, String schema) {
         try {
             Statement statement = connection.createStatement();
@@ -77,7 +81,6 @@ public class SQLiteWrapper {
         return rowsAffected;
     }
 
-    // Close the database connection
     public void closeConnection() {
         try {
             if (connection != null) {
