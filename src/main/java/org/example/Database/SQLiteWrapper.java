@@ -30,29 +30,39 @@ public class SQLiteWrapper {
     }
 
     // Execute an SQL query that returns a ResultSet
-    public ResultSet executeQuery(String query) {
+    public ResultSet executeQuery(String query, Object... params) {
         ResultSet resultSet = null;
         try {
-            Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            // Set parameters for the prepared statement
+            for (int i = 0; i < params.length; i++) {
+                preparedStatement.setObject(i + 1, params[i]);
+            }
+
+            resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {
             Logger.getInstance().logError("Error executing query: " + e.getMessage());
         }
         return resultSet;
     }
 
-    // Execute an SQL update (e.g., INSERT, UPDATE, DELETE)
-    public int executeUpdate(String query) {
+    public int executeUpdate(String query, Object... params) {
         int rowsAffected = 0;
         try {
-            Statement statement = connection.createStatement();
-            rowsAffected = statement.executeUpdate(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            // Set parameters for the prepared statement
+            for (int i = 0; i < params.length; i++) {
+                preparedStatement.setObject(i + 1, params[i]);
+            }
+
+            rowsAffected = preparedStatement.executeUpdate(query);
         } catch (SQLException e) {
             Logger.getInstance().logError("Error executing update: " + e.getMessage());
         }
         return rowsAffected;
     }
-
     public void closeConnection() {
         try {
             if (connection != null) {

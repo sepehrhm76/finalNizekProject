@@ -10,36 +10,56 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class UserRepository {
+
+    private static final String TABLE_NAME = "user";
 
     private SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
 
     public boolean create(User user) {
-        String query = String.format("INSERT INTO USER " +
-                        "(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, ROLE) " +
-                        "VALUES ('%s', '%s', '%s', '%s', '%s')",
+        String query = String.format("INSERT INTO %s " +
+                        "(%s, %s, %s, %s, %s) " +
+                        "VALUES (?, ?, ?, ?, ?)",
+                TABLE_NAME,
+                Columns.firstname.toString(),
+                Columns.lastname.toString(),
+                Columns.email.toString(),
+                Columns.password.toString(),
+                Columns.role.toString()
+        );
+
+        int rowsAffected = sqlite.executeUpdate(query,
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRole()
-        );
-        int rowsAffected = sqlite.executeUpdate(query);
+                user.getRole());
         return rowsAffected > 0;
     }
 
     public boolean update(User user) {
-        String query = String.format("UPDATE USER SET " +
-                        "FIRST_NAME = '%s', LAST_NAME = '%s', EMAIL = '%s', PASSWORD = '%s', ROLE = '%s' " +
-                        "WHERE ID = %d;",
+        String query = String.format("UPDATE %s SET " +
+                        "%s = ?, %s = ?, %s = ?, %s = ?, %s = ? " +
+                        "WHERE %s = ?;",
+                TABLE_NAME,
+                Columns.firstname.toString(),
+                Columns.lastname.toString(),
+                Columns.email.toString(),
+                Columns.password.toString(),
+                Columns.role.toString(),
+                Columns.id.toString()
+
+        );
+
+        int rowsAffected = sqlite.executeUpdate(query,
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getRole(),
-                user.getId()
-        );
-        int rowsAffected = sqlite.executeUpdate(query);
+                user.getId());
         return rowsAffected > 0;
     }
 
@@ -49,25 +69,18 @@ public class UserRepository {
 
     public void delete(int userId) {
         sqlite.executeUpdate(
-                String.format("SELECT FROM USER WHERE ID = %d;", userId)
+                String.format("SELECT FROM %s WHERE %s = ?;", TABLE_NAME, Columns.id.toString()), userId
         );
     }
 
     public User get(int userId) {
 
-        String query = "SELECT * FROM USER WHERE ID = " + userId;
-        ResultSet result = sqlite.executeQuery(query);
+        ResultSet result = sqlite.executeQuery(String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, Columns.id.toString()), userId);
         try {
             if (result.next()) {
-                int id = result.getInt("ID");
-                String firstName = result.getString("FIRST_NAME");
-                String lastName = result.getString("LAST_NAME");
-                String email = result.getString("EMAIL");
-                String password = result.getString("PASSWORD");
-                UserRole role = UserRole.fromString(result.getString("ROLE"));
-                return new User(id, firstName, lastName, email, password, role);
+                return this.createUserFromResultSet(result);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Logger.getInstance().logError("Error reading ResultSet: " + e.getMessage());
         }
         return null;
@@ -76,27 +89,31 @@ public class UserRepository {
     public List<User> getAll() {
         ArrayList<User> list = new ArrayList<>();
 
-        String query = "SELECT * FROM USER";
+        String query =String.format("SELECT * FROM %s", TABLE_NAME) ;
         ResultSet result = sqlite.executeQuery(query);
         try {
             while (result.next()) {
-                int id = result.getInt("ID");
-                String firstName = result.getString("FIRST_NAME");
-                String lastName = result.getString("LAST_NAME");
-                String email = result.getString("EMAIL");
-                String password = result.getString("PASSWORD");
-                UserRole role = UserRole.fromString(result.getString("ROLE"));
-                list.add(new User(id, firstName, lastName, email, password, role));
+                list.add(this.createUserFromResultSet(result));
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Logger.getInstance().logError("Error reading ResultSet: " + e.getMessage());
         }
         return list;
     }
 
     public boolean hasAnyUser() {
-        int count = sqlite.executeUpdate("SELECT COUNT(1) FROM USER");
+        int count = sqlite.executeUpdate(String.format("SELECT COUNT(*) FROM %s",TABLE_NAME));
         return count > 0;
     }
 
+
+    private User createUserFromResultSet(ResultSet result) throws Exception {
+        int id = result.getInt(Columns.id.toString());
+        String firstName = result.getString(Columns.firstname.toString());
+        String lastName = result.getString(Columns.lastname.toString());
+        String email = result.getString(Columns.email.toString());
+        String password = result.getString(Columns.password.toString());
+        UserRole role = UserRole.fromString(result.getString(Columns.role.toString()));
+        return new User(id, firstName, lastName, email, password, role);
+    }
 }

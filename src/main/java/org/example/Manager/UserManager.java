@@ -1,21 +1,37 @@
 package org.example.Manager;
 
 import org.example.Database.user.UserRepository;
+import org.example.Model.User;
 import org.example.Model.UserRole;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserManager {
 
+    private static UserManager instance = null;
     private UserRepository userRepository = new UserRepository();
+
+    private UserManager(){
+    }
+
+    public static UserManager getInstance() {
+        if (instance == null)
+            instance = new UserManager();
+        return instance;
+    }
 
     public boolean hasAnyUser() {
         return userRepository.hasAnyUser();
     }
 
-    public void addUser(String firstName, String lastName, String email, String password, UserRole userRole) {
-        // add all validation here
-        // throw exception if validations are not ok
-        // hash your password here
-        // add user object into the repository
+    public void addUser(String firstName, String lastName, String email, String password, UserRole role) {
+        if (isValidEmail(email) && isValidPassword(password)) {
+            User user = new User(firstName, lastName, email, password, role);
+            userRepository.create(user);
+        } else {
+            throw new IllegalArgumentException("Email or password is not valid");
+        }
     }
 
     public void loginUser(String email, String password) {
@@ -23,6 +39,39 @@ public class UserManager {
         // hash your password to check with your repository
         // add getByEmailAndPassword in userRepository
     }
+
+    public boolean isValidEmail(String email) {
+        // Regular expression to validate email format
+        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    public boolean isValidPassword(String password) {
+        // Regular expression to validate password format
+        /**
+         * The password must contain at least one uppercase letter.
+         * The password must contain at least one lowercase letter.
+         * The password must contain at least one digit.
+         * The password must be at least 8 characters long
+         * */
+        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$";
+        Pattern pattern = Pattern.compile(passwordRegex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+    public boolean validateUserLogin(String email, String password) {
+        for (User user : userRepository.getAll()) {
+            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 
 }

@@ -8,10 +8,10 @@ public enum UserRole {
 
     public static UserRole fromString(String input) {
         return switch (input) {
-            case "Super Admin" -> SUPER_ADMIN;
-            case "Product Owner" -> QA;
-            case "Tester" -> QA;
-            case "Developer" -> DEVELOPER;
+            case "sa" -> SUPER_ADMIN;
+            case "po" -> PO;
+            case "qa" -> QA;
+            case "dev" -> DEVELOPER;
             default -> throw new IllegalArgumentException(String.format("%s is not valid UserRole", input));
         };
     }
@@ -19,10 +19,10 @@ public enum UserRole {
     @Override
     public String toString() {
         return switch (this) {
-            case SUPER_ADMIN -> "Super Admin";
-            case PO -> "Product Owner";
-            case QA -> "Tester";
-            case DEVELOPER -> "Developer";
+            case SUPER_ADMIN -> "sa";
+            case PO -> "po";
+            case QA -> "qa";
+            case DEVELOPER -> "dev";
         };
     }
 }
