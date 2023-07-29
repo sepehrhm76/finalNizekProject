@@ -4,7 +4,9 @@ import org.example.Database.user.UserRepository;
 import org.example.Model.User;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.util.List;
 
 public class MainPanel extends JPanel {
 
@@ -12,6 +14,7 @@ public class MainPanel extends JPanel {
     private JButton addUser;
     private JTable userTable;
     private DefaultTableModel tableModel;
+
     private MainPanel() {
         setLayout(null);
         setVisible(true);
@@ -19,16 +22,19 @@ public class MainPanel extends JPanel {
         addUserBtn();
         createTable();
     }
+
     public void createTable() {
         String[] columnNames = {"First Name", "Last Name", "Email", "Role"};
         Object[][] data = getUserDataFromDatabase();
         tableModel = new DefaultTableModel(data, columnNames);
         userTable = new JTable(tableModel);
-
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        userTable.setRowSorter(sorter);
         JScrollPane scrollPane = new JScrollPane(userTable);
         scrollPane.setBounds(440, 50, 1000, 990);
-        add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
     }
+
     private Object[][] getUserDataFromDatabase() {
         UserRepository userRepository = new UserRepository();
         Object[][] data = new Object[userRepository.getAll().size()][4];
@@ -42,7 +48,21 @@ public class MainPanel extends JPanel {
         }
         return data;
     }
-    private void addUserBtn(){
+
+    public void updateTable(List<User> userList) {
+        tableModel.setRowCount(0);
+        for (User user : userList) {
+            tableModel.addRow(new Object[]{user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole()});
+        }
+    }
+
+    public void refreshTableData() {
+        UserRepository userRepository = new UserRepository();
+        List<User> userList = userRepository.getAll();
+        updateTable(userList);
+    }
+
+    private void addUserBtn() {
         addUser = new JButton("Add User");
         addUser.setBounds(0, 0, 120, 43);
         addUser.setBorder(null);
@@ -61,5 +81,9 @@ public class MainPanel extends JPanel {
             instance = new MainPanel();
         return instance;
     }
-
 }
+
+
+
+
+

@@ -13,7 +13,15 @@ public class UiFrame extends JFrame {
         setVisible(true);
         setResizable(false);
         setLocationRelativeTo(null);
-        add(LoginPanel.getInstance());
+
+        add(MainPanel.getInstance());
+    }
+
+    public void switchToMainPanel() {
+        getContentPane().removeAll();
+        getContentPane().add(MainPanel.getInstance());
+        validate();
+        repaint();
     }
     public static UiFrame getInstance() {
         if (instance == null)

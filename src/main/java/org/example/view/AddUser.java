@@ -58,6 +58,7 @@ public class AddUser {
                            UserRole.valueOf(role.getSelectedItem().toString())
                    );
                     userAdded();
+                    mainPanel.refreshTableData();
                     dialog.dispose();
 
                 } catch (Exception err){
@@ -128,7 +129,7 @@ public class AddUser {
         roleLbl.setFont(new Font("Arial Rounded", Font.BOLD, 17));
 
 
-        String[] options = {"","PO", "QA", "DEV"};
+        String[] options = {"","PO", "QA", "DEVELOPER"};
         role = new JComboBox<>(options);
         role.setBounds(210,360,240,40);
 

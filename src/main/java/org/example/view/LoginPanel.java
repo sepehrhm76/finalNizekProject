@@ -129,7 +129,7 @@ public class LoginPanel extends JPanel {
         messageTimer = new Timer(MESSAGE_DURATION, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                errorLabel.setText(""); // Clear the error message
+                errorLabel.setText("");
             }
         });
         loginButton.addActionListener(new ActionListener() {
@@ -139,7 +139,7 @@ public class LoginPanel extends JPanel {
                 String password = new String(passwordField.getPassword());
 
                 if (userManager.validateUserLogin(email, password)) {
-                    UiFrame.getInstance().setVisible(false);
+                    UiFrame.getInstance().switchToMainPanel();
 
 
                 } else {
