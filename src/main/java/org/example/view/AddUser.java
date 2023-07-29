@@ -13,7 +13,6 @@ import java.util.Arrays;
 
 public class AddUser {
     MainPanel mainPanel = MainPanel.getInstance();
-
     UserManager userManager = UserManager.getInstance();
     private  Timer messageTimer;
     private static final int MESSAGE_DURATION = 2000;
@@ -26,6 +25,7 @@ public class AddUser {
     private JPasswordField checkPass;
     private JComboBox<String> role;
     private JLabel errorLabel;
+
 
     public AddUser(JButton addUser) {
         dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addUser), "Add User", true);
@@ -57,9 +57,12 @@ public class AddUser {
                            new String(password.getPassword()),
                            UserRole.valueOf(role.getSelectedItem().toString())
                    );
+                    userAdded();
+                    dialog.dispose();
 
                 } catch (Exception err){
-                    Logger.getInstance().logError("what the fuck" + err.getMessage());
+                    showErrorPopup(err.getMessage());
+                    Logger.getInstance().logError("Error: " + err.getMessage());
                 }
 
             }
@@ -177,12 +180,25 @@ public class AddUser {
         char[] password1 = password.getPassword();
         char[] password2 = checkPass.getPassword();
         String pass1ToString = new String(password1);
-        if (!userManager.isValidPassword(pass1ToString)) throw new IllegalArgumentException();
-        if (!Arrays.equals(password1, password2)) throw new IllegalArgumentException();
-        if (firstname.getText().isBlank()) throw new IllegalArgumentException();
-        if (lastName.getText().isBlank()) throw new IllegalArgumentException();
-        if (!userManager.isValidEmail(email.getText())) throw new IllegalArgumentException();
-        if (role.getSelectedItem().equals("")) throw new IllegalArgumentException();
+        if (!userManager.isValidPassword(pass1ToString)) {throw new IllegalArgumentException("* The password must contain at least one uppercase letter.\n" +
+                "         * The password must contain at least one lowercase letter.\n" +
+                "         * The password must contain at least one digit.\n" +
+                "         * The password must be at least 8 characters long");
+
+        }
+        if (!Arrays.equals(password1, password2)) throw new IllegalArgumentException("Passwords do not match.");
+        if (firstname.getText().isBlank()) throw new IllegalArgumentException("Please enter first name.");
+        if (lastName.getText().isBlank()) throw new IllegalArgumentException("Please enter last name.");
+        if (!userManager.isValidEmail(email.getText())) throw new IllegalArgumentException("Invalid email format.");
+        if (role.getSelectedItem().equals("")) throw new IllegalArgumentException("Please select a role.");
     }
+    private void showErrorPopup(String errorMessage) {
+        JOptionPane.showMessageDialog(dialog, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void userAdded() {
+        JOptionPane.showMessageDialog(dialog, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 
 }
