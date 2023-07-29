@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class LoginPanel extends JPanel {
     UserManager userManager = UserManager.getInstance();
-    MainPanel mainPanel = new MainPanel();
     private final Timer messageTimer;
     private static final int MESSAGE_DURATION = 2000;
 
@@ -120,7 +119,7 @@ public class LoginPanel extends JPanel {
                 if (userManager.validateUserLogin(email, password)) {
                     System.out.println("Login successful!");
                     setVisible(false);
-                    UiFrame.getInstance().add(mainPanel);
+                    UiFrame.getInstance().add(MainPanel.getInstance());
 
                 } else {
                     errorLabel.setText("Invalid email or password!");

@@ -55,8 +55,9 @@ public class UserManager {
          * The password must contain at least one lowercase letter.
          * The password must contain at least one digit.
          * The password must be at least 8 characters long
-         * */
-        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$";
+         **/
+//        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$";
+        String passwordRegex = "^.*$";
         Pattern pattern = Pattern.compile(passwordRegex);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();

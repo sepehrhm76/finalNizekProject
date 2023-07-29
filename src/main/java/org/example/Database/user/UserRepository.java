@@ -35,7 +35,7 @@ public class UserRepository {
                 user.getLastName(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRole());
+                user.getRole().toString());
         return rowsAffected > 0;
     }
 

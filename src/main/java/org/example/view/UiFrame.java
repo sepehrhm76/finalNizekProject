@@ -26,7 +26,6 @@ public class UiFrame extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 //        add(loginPanel);
-        MainPanel mainPanel = new MainPanel();
-        add(mainPanel);
+        add(MainPanel.getInstance());
     }
 }

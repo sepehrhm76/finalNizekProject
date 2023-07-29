@@ -57,7 +57,7 @@ public class SQLiteWrapper {
                 preparedStatement.setObject(i + 1, params[i]);
             }
 
-            rowsAffected = preparedStatement.executeUpdate(query);
+            rowsAffected = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             Logger.getInstance().logError("Error executing update: " + e.getMessage());
         }
