@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.Log.Logger;
 import org.example.Manager.UserManager;
+import org.example.Model.User;
 import org.example.Model.UserRole;
 
 import javax.swing.*;
@@ -25,10 +26,19 @@ public class AddUser {
     private JPasswordField checkPass;
     private JComboBox<String> role;
     private JLabel errorLabel;
+    private User user;
+    public AddUser(JButton addUser, User user) {
 
+        this.user = user;
 
-    public AddUser(JButton addUser) {
-        dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addUser), "Add User", true);
+       if (user == null) {
+           dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addUser),  "Add User", true);
+
+       }
+        else {
+           dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addUser),  "Edit User", true);
+       }
+
         dialog.setLayout(null);
         dialog.setResizable(false);
         dialog.setSize(500, 500);
@@ -100,6 +110,10 @@ public class AddUser {
         checkPass.setBackground(new Color(219, 234, 255));
         checkPass.setBounds(210, 280, 240, 40);
         checkPass.setBorder(null);
+
+        if (user != null) {
+            firstname.setText(user.getFirstName());
+        }
 
         JLabel firstnameLbl = new JLabel("User First Name:");
         firstnameLbl.setForeground(Color.black);
