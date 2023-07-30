@@ -58,7 +58,10 @@ public class AddUser {
                            UserRole.valueOf(role.getSelectedItem().toString())
                    );
                     userAdded();
-                    mainPanel.refreshTableData();
+
+                    mainPanel.userTable.setVisible(false);
+                    mainPanel.userTable.setVisible(true);
+
                     dialog.dispose();
 
                 } catch (Exception err){
