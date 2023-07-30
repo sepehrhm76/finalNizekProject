@@ -39,7 +39,7 @@ public class LoginPanel extends JPanel {
 
         setLayout(null);
         setBackground(new Color(33, 51, 99));
-        setVisible(true);
+        setSize(1440,1040);
         headerLabel();
         middlePanel();
         emailLabel();

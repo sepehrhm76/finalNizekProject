@@ -5,6 +5,8 @@ import javax.swing.*;
 public class UiFrame extends JFrame {
 
     private static UiFrame instance = null;
+    MainPanel mainPanel=MainPanel.getInstance();
+    LoginPanel loginPanel=LoginPanel.getInstance();
     private UiFrame() {
 
         setTitle("Sepiaj PMT");
@@ -14,13 +16,17 @@ public class UiFrame extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        add(MainPanel.getInstance());
+        loginPanel.setBounds(0,0,getWidth(),getHeight());
+        mainPanel.setBounds(0,0,getWidth(),getHeight());
+
+        add(loginPanel);
+        mainPanel.setVisible(false);
+        add(mainPanel);
     }
 
     public void switchToMainPanel() {
-        getContentPane().removeAll();
-        getContentPane().add(MainPanel.getInstance());
-        validate();
+        loginPanel.setVisible(true);
+       mainPanel.setVisible(true);
         repaint();
     }
     public static UiFrame getInstance() {

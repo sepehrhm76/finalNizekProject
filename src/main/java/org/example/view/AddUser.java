@@ -53,7 +53,7 @@ public class AddUser {
                     userManager.addUser(
                            firstname.getText(),
                            lastName.getText(),
-                           email.getText(),
+                           email.getText().toLowerCase(),
                            new String(password.getPassword()),
                            UserRole.valueOf(role.getSelectedItem().toString())
                    );
