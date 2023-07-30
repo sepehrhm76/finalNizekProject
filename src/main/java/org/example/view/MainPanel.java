@@ -63,7 +63,7 @@ public class MainPanel extends JPanel implements TableModel{
     }
     @Override
     public int getColumnCount() {
-        return 6;
+        return 5;
     }
     @Override
     public String getColumnName(int columnIndex) {
