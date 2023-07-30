@@ -34,12 +34,6 @@ public class UserManager {
         }
     }
 
-    public void loginUser(String email, String password) {
-        // validation
-        // hash your password to check with your repository
-        // add getByEmailAndPassword in userRepository
-    }
-
     public boolean isValidEmail(String email) {
         // Regular expression to validate email format
         String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";

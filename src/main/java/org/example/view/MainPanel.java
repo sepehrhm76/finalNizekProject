@@ -117,7 +117,7 @@ public class MainPanel extends JPanel {
         updateTable(userList);
     }
 
-    private class ButtonCellRenderer extends JButton implements TableCellRenderer {
+    private static class ButtonCellRenderer extends JButton implements TableCellRenderer {
 
         public ButtonCellRenderer(String text) {
             super(text);
@@ -125,8 +125,7 @@ public class MainPanel extends JPanel {
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                                                       boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             return this;
         }
     }
@@ -176,8 +175,7 @@ public class MainPanel extends JPanel {
         }
 
         @Override
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                                                     boolean isSelected, int row, int column) {
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             return this.button;
         }
     }
