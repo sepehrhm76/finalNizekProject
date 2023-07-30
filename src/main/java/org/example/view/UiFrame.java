@@ -20,12 +20,12 @@ public class UiFrame extends JFrame {
         mainPanel.setBounds(0,0,getWidth(),getHeight());
 
         add(loginPanel);
-        mainPanel.setVisible(false);
+        mainPanel.setVisible(false); //false
         add(mainPanel);
     }
 
     public void switchToMainPanel() {
-        loginPanel.setVisible(true);
+        loginPanel.setVisible(false);
        mainPanel.setVisible(true);
         repaint();
     }
