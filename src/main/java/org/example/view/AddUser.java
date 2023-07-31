@@ -68,31 +68,31 @@ public class AddUser {
         });
         //firstName Field
         firstname = new JTextField();
-        firstname.setBackground(new Color(219, 234, 255));
+        firstname.setBackground(Color.WHITE);
         firstname.setBounds(210, 30, 240, 40);
         firstname.setBorder(null);
 
         //lastName field
         lastName = new JTextField();
-        lastName.setBackground(new Color(219, 234, 255));
+        lastName.setBackground(Color.WHITE);
         lastName.setBounds(210, 90, 240, 40);
         lastName.setBorder(null);
 
         //email field
         email = new JTextField();
-        email.setBackground(new Color(219, 234, 255));
+        email.setBackground(Color.WHITE);
         email.setBounds(210, 150, 240, 40);
         email.setBorder(null);
 
         //pass field
         password = new JPasswordField();
-        password.setBackground(new Color(219, 234, 255));
+        password.setBackground(Color.WHITE);
         password.setBounds(210, 220, 240, 40);
         password.setBorder(null);
 
         //correction pass
         checkPass = new JPasswordField();
-        checkPass.setBackground(new Color(219, 234, 255));
+        checkPass.setBackground(Color.WHITE);
         checkPass.setBounds(210, 280, 240, 40);
         checkPass.setBorder(null);
 

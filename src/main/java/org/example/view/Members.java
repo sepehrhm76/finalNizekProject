@@ -6,9 +6,7 @@ import org.example.Model.User;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,14 +20,17 @@ public class Members extends JPanel implements TableModel{
 
     private Members() {
         setLayout(null);
-        setVisible(true);
-        setBackground(Color.WHITE);
+        setVisible(false);
+        setBackground(Color.CYAN);
+        setBounds(300,0,1140,1040);
         addUserBtn();
         createTable();
     }
-    private void addUserBtn() {
+
+
+    public void addUserBtn() {
         addUser = new JButton("Add User");
-        addUser.setBounds(0, 0, 120, 43);
+        addUser.setBounds(1320, 30, 120, 40);
         addUser.setBorder(null);
         addUser.setForeground(Color.white);
         addUser.setBackground(new Color(33, 51, 99));
@@ -58,7 +59,11 @@ public class Members extends JPanel implements TableModel{
         userTable.getColumn("Delete").setCellEditor(new ButtonEditor("Delete", new JCheckBox(), new ButtonCallback() {
             @Override
             public void onClick(int rowIndex) {
-                int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this member?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to delete this member?",
+                        "Confirmation",
+                        JOptionPane.YES_NO_OPTION
+                );
                 if (option == JOptionPane.YES_OPTION) {
                     User userToDelete = userRepository.getAll().get(rowIndex);
                     UserManager.getInstance().removeUser(userToDelete);

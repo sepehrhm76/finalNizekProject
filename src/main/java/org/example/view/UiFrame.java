@@ -6,7 +6,9 @@ public class UiFrame extends JFrame {
 
     private static UiFrame instance = null;
     Members members = Members.getInstance();
+    Projects projects = Projects.getInstance();
     LoginPanel loginPanel=LoginPanel.getInstance();
+    boolean isLogin;
     private UiFrame() {
 
         setTitle("Sepiaj PMT");
@@ -15,19 +17,26 @@ public class UiFrame extends JFrame {
         setVisible(true);
         setResizable(false);
         setLocationRelativeTo(null);
+        isLogin = true;
 
         loginPanel.setBounds(0,0,getWidth(),getHeight());
         members.setBounds(0,0,getWidth(),getHeight());
 
+        add(MainPanel.getInstance());
+        MainPanel.getInstance().setVisible(true);
 //        add(loginPanel);
-        members.setVisible(true); //false
         add(members);
+        members.setVisible(true);
+
+//
     }
 
     public void switchToMainPanel() {
-        loginPanel.setVisible(true);//false
-       members.setVisible(true);
-        repaint();
+            loginPanel.setVisible(false);
+            MainPanel.getInstance().setVisible(true);
+            members.setVisible(true);
+            repaint();
+
     }
     public static UiFrame getInstance() {
         if (instance == null)

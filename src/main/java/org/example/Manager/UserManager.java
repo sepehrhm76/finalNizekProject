@@ -47,8 +47,8 @@ public class UserManager {
     }
 
     public boolean isValidEmail(String email) {
-        // Regular expression to validate email format
-        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        String emailRegex = "^.*$";
+//        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
@@ -62,8 +62,9 @@ public class UserManager {
          * The password must contain at least one digit.
          * The password must be at least 8 characters long
          **/
-        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$";
-//        String passwordRegex = "^.*$";
+
+//        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$";
+        String passwordRegex = "^.*$";
         Pattern pattern = Pattern.compile(passwordRegex);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
@@ -77,8 +78,4 @@ public class UserManager {
         }
         return false;
     }
-
-
-
-
 }
