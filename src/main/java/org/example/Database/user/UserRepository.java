@@ -19,7 +19,7 @@ public class UserRepository {
     private SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
 
     public boolean create(User user) {
-        String query = String.format("INSERT INTO %s " +
+        String query = String.format("INSERT OR REPLACE INTO %s " +
                         "(%s, %s, %s, %s, %s) " +
                         "VALUES (?, ?, ?, ?, ?)",
                 TABLE_NAME,
@@ -39,29 +39,29 @@ public class UserRepository {
         return rowsAffected > 0;
     }
 
-    public boolean update(User user) {
-        String query = String.format("UPDATE %s SET " +
-                        "%s = ?, %s = ?, %s = ?, %s = ?, %s = ? " +
-                        "WHERE %s = ?;",
-                TABLE_NAME,
-                Columns.firstname.toString(),
-                Columns.lastname.toString(),
-                Columns.email.toString(),
-                Columns.password.toString(),
-                Columns.role.toString(),
-                Columns.id.toString()
+//    public boolean update(User user) {
+//        String query = String.format("UPDATE %s SET " +
+//                        "%s = ?, %s = ?, %s = ?, %s = ?, %s = ? " +
+//                        "WHERE %s = ?;",
+//                TABLE_NAME,
+//                Columns.firstname.toString(),
+//                Columns.lastname.toString(),
+//                Columns.email.toString(),
+//                Columns.password.toString(),
+//                Columns.role.toString(),
+//                Columns.id.toString()
+//
+//        );
 
-        );
-
-        int rowsAffected = sqlite.executeUpdate(query,
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getRole(),
-                user.getId());
-        return rowsAffected > 0;
-    }
+//        int rowsAffected = sqlite.executeUpdate(query,
+//                user.getFirstName(),
+//                user.getLastName(),
+//                user.getEmail(),
+//                user.getPassword(),
+//                user.getRole(),
+//                user.getId());
+//        return rowsAffected > 0;
+//    }
 
     public void delete(User user) {
         delete(user.getId());

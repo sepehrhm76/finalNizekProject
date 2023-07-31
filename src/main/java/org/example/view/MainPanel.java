@@ -49,10 +49,18 @@ public class MainPanel extends JPanel implements TableModel{
             @Override
             public void onClick(int rowIndex) {
                 // Handle delete action here
-//                System.out.println("letsss edittttt  row at index: " + rowIndex);
-                // Implement your deletion logic or any other action here.
+//
 
                 AddUser addUserObject = new AddUser(addUser, userRepository.getAll().get(rowIndex));
+            }
+        }));
+
+        userTable.getColumn("Delete").setCellRenderer(new ButtonRenderer());
+
+        userTable.getColumn("Delete").setCellEditor(new ButtonEditor("Delete", new JCheckBox(), new ButtonCallback() {
+            @Override
+            public void onClick(int rowIndex) {
+//
             }
         }));
 
@@ -71,6 +79,7 @@ public class MainPanel extends JPanel implements TableModel{
         columnModel.getColumn(3).setPreferredWidth(200);
         columnModel.getColumn(4).setPreferredWidth(10);
         columnModel.getColumn(5).setPreferredWidth(10);
+        columnModel.getColumn(6).setPreferredWidth(10);
     }
 
     public void refreshTableData() {
@@ -81,7 +90,7 @@ public class MainPanel extends JPanel implements TableModel{
     }
     @Override
     public int getColumnCount() {
-        return 6;
+        return 7;
     }
     @Override
     public String getColumnName(int columnIndex) {
@@ -92,17 +101,18 @@ public class MainPanel extends JPanel implements TableModel{
             case 3 -> "Email";
             case 4 -> "Role";
             case 5 -> "Edit";
+            case 6 -> "Delete";
             default -> null;
         };
     }
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == 5) return JButton.class;
+        if (columnIndex == 5 && columnIndex == 6) return JButton.class;
         return String.class;
     }
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 5; // Allow editing only for the "Edit" button column
+        return columnIndex == 5 || columnIndex == 6;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -113,6 +123,7 @@ public class MainPanel extends JPanel implements TableModel{
             case 3 -> userRepository.getAll().get(rowIndex).getEmail();
             case 4 -> userRepository.getAll().get(rowIndex).getRole();
             case 5 -> null;
+            case 6 -> null;
             default -> null;
         };
     }

@@ -34,6 +34,15 @@ public class UserManager {
         }
     }
 
+//    public void editUser(String firstName, String lastName, String email, String password, UserRole role) {
+//        if (isValidEmail(email) && isValidPassword(password)) {
+//            User user = new User(firstName, lastName, email, password, role);
+//            userRepository.update(user);
+//        } else {
+//            throw new IllegalArgumentException("Email or password is not valid");
+//        }
+//    }
+
     public boolean isValidEmail(String email) {
         // Regular expression to validate email format
         String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";

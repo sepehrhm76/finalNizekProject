@@ -27,6 +27,7 @@ public class AddUser {
     private JComboBox<String> role;
     private JLabel errorLabel;
     private User user;
+
     public AddUser(JButton addUser, User user) {
 
         this.user = user;
@@ -53,32 +54,19 @@ public class AddUser {
         saveBtn.setBackground(new Color(33, 51, 99));
         saveBtn.setOpaque(true);
         dialog.add(saveBtn);
+
+
         saveBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                dialog.dispose(); // Close the popup when the button is clicked
-                try {
-                    validateForm();
-
-                    userManager.addUser(
-                           firstname.getText(),
-                           lastName.getText(),
-                           email.getText().toLowerCase(),
-                           new String(password.getPassword()),
-                           UserRole.valueOf(role.getSelectedItem().toString())
-                   );
-                    userAdded();
-
-                    mainPanel.userTable.setVisible(false);
-                    mainPanel.userTable.setVisible(true);
-
-                    dialog.dispose();
-
-                } catch (Exception err){
-                    showErrorPopup(err.getMessage());
-                    Logger.getInstance().logError("Error: " + err.getMessage());
-                }
-
+                saveNewUserData();
+//                String title = dialog.getTitle();
+//                if (title.equals("Add User")) {
+//                    saveNewUserData();
+//                    System.out.println("add");
+//                } else if (title.equals("Edit User")) {
+//                   editUserData();
+//                }
             }
         });
         //firstName Field
@@ -111,9 +99,7 @@ public class AddUser {
         checkPass.setBounds(210, 280, 240, 40);
         checkPass.setBorder(null);
 
-        if (user != null) {
-            firstname.setText(user.getFirstName());
-        }
+        showUserFields();
 
         JLabel firstnameLbl = new JLabel("User First Name:");
         firstnameLbl.setForeground(Color.black);
@@ -194,6 +180,64 @@ public class AddUser {
         dialog.setVisible(true);
     }
 
+   public void showUserFields() {
+       if (user != null) {
+           firstname.setText(user.getFirstName());
+           lastName.setText(user.getLastName());
+           email.setText(user.getEmail());
+           password.setText(user.getPassword());
+           checkPass.setText(user.getPassword());
+       }
+   }
+
+//   public void editUserData() {
+//       try {
+//               validateForm();
+//               userManager.editUser(
+//                       firstname.getText(),
+//                       lastName.getText(),
+//                       email.getText().toLowerCase(),
+//                       new String(password.getPassword()),
+//                       UserRole.valueOf(role.getSelectedItem().toString())
+//               );
+//               userAdded();
+//
+//               mainPanel.userTable.setVisible(false);
+//               mainPanel.userTable.setVisible(true);
+//
+//               dialog.dispose();
+//           } catch (Exception err) {
+//               showErrorPopup(err.getMessage());
+//               Logger.getInstance().logError("Error: " + err.getMessage());
+//           }
+//   }
+
+
+
+    public void saveNewUserData() {
+            try {
+                validateForm();
+
+                userManager.addUser(
+                        firstname.getText(),
+                        lastName.getText(),
+                        email.getText().toLowerCase(),
+                        new String(password.getPassword()),
+                        UserRole.valueOf(role.getSelectedItem().toString())
+                );
+                userAdded();
+
+                mainPanel.userTable.setVisible(false);
+                mainPanel.userTable.setVisible(true);
+
+                dialog.dispose();
+
+            } catch (Exception err) {
+                showErrorPopup(err.getMessage());
+                Logger.getInstance().logError("Error: " + err.getMessage());
+            }
+        }
+
     public void validateForm() {
         char[] password1 = password.getPassword();
         char[] password2 = checkPass.getPassword();
@@ -217,6 +261,4 @@ public class AddUser {
     private void userAdded() {
         JOptionPane.showMessageDialog(dialog, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
-
-
 }
