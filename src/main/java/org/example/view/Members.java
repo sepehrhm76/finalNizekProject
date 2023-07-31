@@ -1,6 +1,7 @@
 package org.example.view;
 
 import org.example.Database.user.UserRepository;
+import org.example.Manager.UserManager;
 import org.example.Model.User;
 
 import javax.swing.*;
@@ -11,16 +12,15 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
-public class MainPanel extends JPanel implements TableModel{
+public class Members extends JPanel implements TableModel{
 
-    private static MainPanel instance = null;
+    private static Members instance = null;
     UserRepository userRepository = new UserRepository();
     public JTable userTable = new JTable();
     private JButton addUser;
 
-    private MainPanel() {
+    private Members() {
         setLayout(null);
         setVisible(true);
         setBackground(Color.WHITE);
@@ -43,24 +43,28 @@ public class MainPanel extends JPanel implements TableModel{
     public void createTable() {
         userTable.setModel(this);
 
-        userTable.getColumn("Edit").setCellRenderer(new ButtonRenderer());
+        userTable.getColumn("Edit").setCellRenderer(new ButtonRenderer("Edit"));
 
         userTable.getColumn("Edit").setCellEditor(new ButtonEditor("Edit", new JCheckBox(), new ButtonCallback() {
             @Override
             public void onClick(int rowIndex) {
-                // Handle delete action here
-//
 
                 AddUser addUserObject = new AddUser(addUser, userRepository.getAll().get(rowIndex));
             }
         }));
 
-        userTable.getColumn("Delete").setCellRenderer(new ButtonRenderer());
+        userTable.getColumn("Delete").setCellRenderer(new ButtonRenderer("Delete"));
 
         userTable.getColumn("Delete").setCellEditor(new ButtonEditor("Delete", new JCheckBox(), new ButtonCallback() {
             @Override
             public void onClick(int rowIndex) {
-//
+                int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this member?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    User userToDelete = userRepository.getAll().get(rowIndex);
+                    UserManager.getInstance().removeUser(userToDelete);
+                    userTable.setVisible(false);
+                    userTable.setVisible(true);
+                }
             }
         }));
 
@@ -129,14 +133,6 @@ public class MainPanel extends JPanel implements TableModel{
     }
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//        List<User> users = userRepository.getAll();
-//
-//        if (columnIndex == 5) {
-//            System.out.println("hoyyy");
-//            // Perform the action when the "Edit" button is clicked
-//            // You can access the data for the selected row using rowIndex
-//            System.out.println("Edit button clicked for row " + rowIndex);
-//        }
     }
     @Override
     public void addTableModelListener(TableModelListener l) {
@@ -147,17 +143,16 @@ public class MainPanel extends JPanel implements TableModel{
         refreshTableData();
     }
 
-    public static MainPanel getInstance() {
+    public static Members getInstance() {
         if (instance == null)
-            instance = new MainPanel();
+            instance = new Members();
         return instance;
     }
 
-    // Custom cell renderer for the "Edit" button column
     private class ButtonRenderer extends JButton implements TableCellRenderer {
-        public ButtonRenderer() {
+        public ButtonRenderer(String title) {
             setOpaque(true);
-            setText("Edit");
+            setText(title);
         }
 
         @Override
@@ -228,7 +223,6 @@ public class MainPanel extends JPanel implements TableModel{
         }
     }
 
-    // Interface for the delete button callback
     interface ButtonCallback {
         void onClick(int rowIndex);
     }

@@ -5,7 +5,7 @@ import javax.swing.*;
 public class UiFrame extends JFrame {
 
     private static UiFrame instance = null;
-    MainPanel mainPanel=MainPanel.getInstance();
+    Members members = Members.getInstance();
     LoginPanel loginPanel=LoginPanel.getInstance();
     private UiFrame() {
 
@@ -17,16 +17,16 @@ public class UiFrame extends JFrame {
         setLocationRelativeTo(null);
 
         loginPanel.setBounds(0,0,getWidth(),getHeight());
-        mainPanel.setBounds(0,0,getWidth(),getHeight());
+        members.setBounds(0,0,getWidth(),getHeight());
 
 //        add(loginPanel);
-        mainPanel.setVisible(true); //false
-        add(mainPanel);
+        members.setVisible(true); //false
+        add(members);
     }
 
     public void switchToMainPanel() {
         loginPanel.setVisible(true);//false
-       mainPanel.setVisible(true);
+       members.setVisible(true);
         repaint();
     }
     public static UiFrame getInstance() {

@@ -10,7 +10,7 @@ public class LoginPanel extends JPanel {
     private static LoginPanel instance = null;
     private static final int MESSAGE_DURATION = 2000;
     UserManager userManager = UserManager.getInstance();
-    MainPanel mainPanel = MainPanel.getInstance();
+    Members members = Members.getInstance();
     private JLabel errorLabel;
     private JTextField emailField;
     private JPasswordField passwordField;
@@ -60,7 +60,7 @@ public class LoginPanel extends JPanel {
     }
     public void middlePanel() {
         //Middle panel setUp
-        mainPanel.setVisible(false);
+        members.setVisible(false);
         middlePanel.setBounds(460, 340, 500, 560);
         middlePanel.setVisible(true);
         middlePanel.setBackground(new Color(33, 51, 99));

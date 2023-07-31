@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 
 public class AddUser {
-    MainPanel mainPanel = MainPanel.getInstance();
+    Members members = Members.getInstance();
     UserManager userManager = UserManager.getInstance();
     private  Timer messageTimer;
     private static final int MESSAGE_DURATION = 2000;
@@ -59,14 +59,12 @@ public class AddUser {
         saveBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveNewUserData();
-//                String title = dialog.getTitle();
-//                if (title.equals("Add User")) {
-//                    saveNewUserData();
-//                    System.out.println("add");
-//                } else if (title.equals("Edit User")) {
-//                   editUserData();
-//                }
+
+                if (user != null) {
+                    updateUserData();
+                } else {
+                    saveNewUserData();
+                }
             }
         });
         //firstName Field
@@ -190,30 +188,6 @@ public class AddUser {
        }
    }
 
-//   public void editUserData() {
-//       try {
-//               validateForm();
-//               userManager.editUser(
-//                       firstname.getText(),
-//                       lastName.getText(),
-//                       email.getText().toLowerCase(),
-//                       new String(password.getPassword()),
-//                       UserRole.valueOf(role.getSelectedItem().toString())
-//               );
-//               userAdded();
-//
-//               mainPanel.userTable.setVisible(false);
-//               mainPanel.userTable.setVisible(true);
-//
-//               dialog.dispose();
-//           } catch (Exception err) {
-//               showErrorPopup(err.getMessage());
-//               Logger.getInstance().logError("Error: " + err.getMessage());
-//           }
-//   }
-
-
-
     public void saveNewUserData() {
             try {
                 validateForm();
@@ -225,10 +199,11 @@ public class AddUser {
                         new String(password.getPassword()),
                         UserRole.valueOf(role.getSelectedItem().toString())
                 );
-                userAdded();
+                JOptionPane.showMessageDialog(dialog, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                mainPanel.userTable.setVisible(false);
-                mainPanel.userTable.setVisible(true);
+
+                members.userTable.setVisible(false);
+                members.userTable.setVisible(true);
 
                 dialog.dispose();
 
@@ -237,6 +212,32 @@ public class AddUser {
                 Logger.getInstance().logError("Error: " + err.getMessage());
             }
         }
+
+    public void updateUserData() {
+        try {
+            validateForm();
+
+            userManager.updateUser(
+                    user.getId(),
+                    firstname.getText(),
+                    lastName.getText(),
+                    email.getText().toLowerCase(),
+                    new String(password.getPassword()),
+                    UserRole.valueOf(role.getSelectedItem().toString())
+            );
+            JOptionPane.showMessageDialog(dialog, "User edited successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+
+            members.userTable.setVisible(false);
+            members.userTable.setVisible(true);
+
+            dialog.dispose();
+
+        } catch (Exception err) {
+            showErrorPopup(err.getMessage());
+            Logger.getInstance().logError("Error: " + err.getMessage());
+        }
+    }
 
     public void validateForm() {
         char[] password1 = password.getPassword();
@@ -258,7 +259,4 @@ public class AddUser {
         JOptionPane.showMessageDialog(dialog, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    private void userAdded() {
-        JOptionPane.showMessageDialog(dialog, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-    }
 }

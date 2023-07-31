@@ -34,14 +34,17 @@ public class UserManager {
         }
     }
 
-//    public void editUser(String firstName, String lastName, String email, String password, UserRole role) {
-//        if (isValidEmail(email) && isValidPassword(password)) {
-//            User user = new User(firstName, lastName, email, password, role);
-//            userRepository.update(user);
-//        } else {
-//            throw new IllegalArgumentException("Email or password is not valid");
-//        }
-//    }
+    public void updateUser(int id, String firstName, String lastName, String email, String password, UserRole role) {
+            User user = new User(firstName, lastName, email, password, role);
+            userRepository.update(id, user);
+        }
+
+
+    public void removeUser(User user) {
+        if (user != null) {
+            userRepository.delete(user);
+        }
+    }
 
     public boolean isValidEmail(String email) {
         // Regular expression to validate email format
