@@ -13,10 +13,10 @@ import java.util.Arrays;
 
 
 public class AddUser {
+    private static final int MESSAGE_DURATION = 2000;
     Members members = Members.getInstance();
     UserManager userManager = UserManager.getInstance();
-    private  Timer messageTimer;
-    private static final int MESSAGE_DURATION = 2000;
+    private Timer messageTimer;
     private JButton saveBtn;
     private JDialog dialog;
     private JTextField firstname;
@@ -32,13 +32,12 @@ public class AddUser {
 
         this.user = user;
 
-       if (user == null) {
-           dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addUser),  "Add User", true);
+        if (user == null) {
+            dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addUser), "Add User", true);
 
-       }
-        else {
-           dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addUser),  "Edit User", true);
-       }
+        } else {
+            dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addUser), "Edit User", true);
+        }
 
         dialog.setLayout(null);
         dialog.setResizable(false);
@@ -97,8 +96,6 @@ public class AddUser {
         checkPass.setBounds(210, 280, 240, 40);
         checkPass.setBorder(null);
 
-        showUserFields();
-
         JLabel firstnameLbl = new JLabel("User First Name:");
         firstnameLbl.setForeground(Color.black);
         firstnameLbl.setBounds(30, -205, 300, 500);
@@ -130,9 +127,19 @@ public class AddUser {
         roleLbl.setFont(new Font("Arial Rounded", Font.BOLD, 17));
 
 
-        String[] options = {"","PO", "QA", "DEVELOPER"};
+        String[] options;
+        if (user != null && user.getRole() == UserRole.SUPER_ADMIN) {
+            options = new String[]{ UserRole.SUPER_ADMIN.toString() };
+        } else {
+            UserRole[] userRoles = UserRole.rolesWithoutSuperAdmin();
+            options = new String[userRoles.length + 1];
+            options[0] = "";
+            for (int i = 0; i < userRoles.length; i++) {
+                options[i + 1] = userRoles[i].toString();
+            }
+        }
         role = new JComboBox<>(options);
-        role.setBounds(210,360,240,40);
+        role.setBounds(210, 360, 240, 40);
 
         errorLabel = new JLabel("");
         errorLabel.setForeground(Color.red);
@@ -149,7 +156,6 @@ public class AddUser {
         messageTimer.setRepeats(false);
 
 
-
         email.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 String emailText = email.getText();
@@ -160,6 +166,8 @@ public class AddUser {
             }
         });
 
+
+        showUserFields();
 
         dialog.add(firstname);
         dialog.add(lastName);
@@ -178,40 +186,40 @@ public class AddUser {
         dialog.setVisible(true);
     }
 
-   public void showUserFields() {
-       if (user != null) {
-           firstname.setText(user.getFirstName());
-           lastName.setText(user.getLastName());
-           email.setText(user.getEmail());
-           password.setText(user.getPassword());
-           checkPass.setText(user.getPassword());
-       }
-   }
+    public void showUserFields() {
+        if (user != null) {
+            firstname.setText(user.getFirstName());
+            lastName.setText(user.getLastName());
+            email.setText(user.getEmail());
+            password.setText(user.getPassword());
+            checkPass.setText(user.getPassword());
+            role.setSelectedItem(user.getRole().toString());
+        }
+    }
 
     public void saveNewUserData() {
-            try {
-                validateForm();
+        try {
+            validateForm();
+            userManager.addUser(
+                    firstname.getText(),
+                    lastName.getText(),
+                    email.getText().toLowerCase(),
+                    new String(password.getPassword()),
+                    UserRole.fromString(role.getSelectedItem().toString())
+            );
+            JOptionPane.showMessageDialog(dialog, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                userManager.addUser(
-                        firstname.getText(),
-                        lastName.getText(),
-                        email.getText().toLowerCase(),
-                        new String(password.getPassword()),
-                        UserRole.valueOf(role.getSelectedItem().toString())
-                );
-                JOptionPane.showMessageDialog(dialog, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 
+            members.userTable.setVisible(false);
+            members.userTable.setVisible(true);
 
-                members.userTable.setVisible(false);
-                members.userTable.setVisible(true);
+            dialog.dispose();
 
-                dialog.dispose();
-
-            } catch (Exception err) {
-                showErrorPopup(err.getMessage());
-                Logger.getInstance().logError("Error: " + err.getMessage());
-            }
+        } catch (Exception err) {
+            showErrorPopup(err.getMessage());
+            Logger.getInstance().logError("Error: " + err.getMessage());
         }
+    }
 
     public void updateUserData() {
         try {
@@ -223,7 +231,7 @@ public class AddUser {
                     lastName.getText(),
                     email.getText().toLowerCase(),
                     new String(password.getPassword()),
-                    UserRole.valueOf(role.getSelectedItem().toString())
+                    UserRole.fromString(role.getSelectedItem().toString())
             );
             JOptionPane.showMessageDialog(dialog, "User edited successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 
@@ -243,10 +251,11 @@ public class AddUser {
         char[] password1 = password.getPassword();
         char[] password2 = checkPass.getPassword();
         String pass1ToString = new String(password1);
-        if (!userManager.isValidPassword(pass1ToString)) {throw new IllegalArgumentException("* The password must contain at least one uppercase letter.\n" +
-                "         * The password must contain at least one lowercase letter.\n" +
-                "         * The password must contain at least one digit.\n" +
-                "         * The password must be at least 8 characters long");
+        if (!userManager.isValidPassword(pass1ToString)) {
+            throw new IllegalArgumentException("* The password must contain at least one uppercase letter.\n" +
+                    "         * The password must contain at least one lowercase letter.\n" +
+                    "         * The password must contain at least one digit.\n" +
+                    "         * The password must be at least 8 characters long");
 
         }
         if (!Arrays.equals(password1, password2)) throw new IllegalArgumentException("Passwords do not match.");
@@ -255,6 +264,7 @@ public class AddUser {
         if (!userManager.isValidEmail(email.getText())) throw new IllegalArgumentException("Invalid email format.");
         if (role.getSelectedItem().equals("")) throw new IllegalArgumentException("Please select a role.");
     }
+
     private void showErrorPopup(String errorMessage) {
         JOptionPane.showMessageDialog(dialog, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }

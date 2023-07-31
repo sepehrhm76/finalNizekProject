@@ -69,7 +69,7 @@ public class Members extends JPanel implements TableModel{
         }));
 
         JScrollPane scrollPane = new JScrollPane(userTable);
-        scrollPane.setBounds(300, 70, 800, 500);
+        scrollPane.setBounds(300, 70, 1140, 970);
         add(scrollPane, BorderLayout.CENTER);
         setColumnWidths();
     }
@@ -78,7 +78,7 @@ public class Members extends JPanel implements TableModel{
         TableColumnModel columnModel = userTable.getColumnModel();
 
         columnModel.getColumn(0).setPreferredWidth(10);
-        columnModel.getColumn(1).setPreferredWidth(50);
+        columnModel.getColumn(1).setPreferredWidth(1);
         columnModel.getColumn(2).setPreferredWidth(70);
         columnModel.getColumn(3).setPreferredWidth(200);
         columnModel.getColumn(4).setPreferredWidth(10);

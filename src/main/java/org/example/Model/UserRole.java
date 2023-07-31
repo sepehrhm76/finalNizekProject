@@ -1,5 +1,7 @@
 package org.example.Model;
 
+import java.util.Arrays;
+
 public enum UserRole {
     SUPER_ADMIN,
     PO,
@@ -14,6 +16,14 @@ public enum UserRole {
             case "dev" -> DEVELOPER;
             default -> throw new IllegalArgumentException(String.format("%s is not valid UserRole", input));
         };
+    }
+
+    public static UserRole[] rolesWithoutSuperAdmin() {
+        UserRole[] roles = new UserRole[values().length - 1];
+        roles[0] = PO;
+        roles[1] = QA;
+        roles[2] = DEVELOPER;
+        return roles;
     }
 
     @Override
