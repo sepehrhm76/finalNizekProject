@@ -1,6 +1,6 @@
 package org.example.Database.user;
 
-enum Columns {
+enum UserColumns {
 
     id("id"),
     firstname("firstname"),
@@ -11,7 +11,7 @@ enum Columns {
 
     private final String text;
 
-    Columns(final String text) {
+    UserColumns(final String text) {
         this.text = text;
     }
 
