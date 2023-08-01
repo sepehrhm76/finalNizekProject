@@ -7,7 +7,8 @@ public class UiFrame extends JFrame {
     private static UiFrame instance = null;
     Members members = Members.getInstance();
     Projects projects = Projects.getInstance();
-    LoginPanel loginPanel=LoginPanel.getInstance();
+    LoginPanel loginPanel = LoginPanel.getInstance();
+    MainPanel mainPanel = MainPanel.getInstance();
     boolean isLogin;
     private UiFrame() {
 
@@ -23,20 +24,17 @@ public class UiFrame extends JFrame {
         members.setBounds(0,0,getWidth(),getHeight());
 
         add(MainPanel.getInstance());
-        MainPanel.getInstance().setVisible(true);
-//        add(loginPanel);
+        add(loginPanel);
         add(members);
-        members.setVisible(true);
 
 //
     }
 
     public void switchToMainPanel() {
             loginPanel.setVisible(false);
-            MainPanel.getInstance().setVisible(true);
-            members.setVisible(true);
+            mainPanel.setVisible(true);
+            projects.setVisible(true);
             repaint();
-
     }
     public static UiFrame getInstance() {
         if (instance == null)

@@ -2,16 +2,21 @@ package org.example.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainPanel extends JPanel {
 
-    JButton projects;
-    JButton membersButton;
     private static MainPanel instance = null;
+    Members members = Members.getInstance();
+    Projects projects = Projects.getInstance();
+    JButton projectsButton;
+    JButton membersButton;
+
 
     private MainPanel(){
         setLayout(null);
-        setVisible(true);
+        setVisible(false);
         setBackground(Color.darkGray);
         setBounds(0,0,300,1040);
         projectsBtn();
@@ -19,14 +24,22 @@ public class MainPanel extends JPanel {
     }
 
     private void projectsBtn() {
-        projects = new JButton("projects");
-        projects.setBounds(25, 100, 250, 45);
-        projects.setBorder(null);
-        projects.setForeground(Color.white);
-        projects.setBackground(new Color(33, 51, 99));
-        projects.setOpaque(true);
-        projects.setVisible(true);
-        add(projects);
+        projectsButton = new JButton("projects");
+        projectsButton.setBounds(25, 100, 250, 45);
+        projectsButton.setBorder(null);
+        projectsButton.setForeground(Color.white);
+        projectsButton.setBackground(new Color(33, 51, 99));
+        projectsButton.setOpaque(true);
+        projectsButton.setVisible(true);
+        add(projectsButton);
+
+        projectsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                members.setVisible(false);
+                projects.setVisible(true);
+            }
+        });
     }
 
     public void membersButtonInMain() {
@@ -37,6 +50,13 @@ public class MainPanel extends JPanel {
         membersButton.setBackground(new Color(33, 51, 99));
         membersButton.setOpaque(true);
         add(membersButton);
+        membersButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                projects.setVisible(false);
+                members.setVisible(true);
+            }
+        });
     }
 
     public static MainPanel getInstance() {

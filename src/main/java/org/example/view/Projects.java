@@ -8,7 +8,7 @@ public class Projects extends JPanel {
     
     public Projects(){
         setLayout(null);
-        setVisible(true);
+        setVisible(false);
         setBounds(300,0,1140,1040);
         setBackground(Color.WHITE);
     }
