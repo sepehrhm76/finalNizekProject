@@ -19,7 +19,8 @@ public class UiFrame extends JFrame {
         setLocationRelativeTo(null);
 
         add(loginPanel);
-        add(MainPanel.getInstance());
+        add(mainPanel);
+        add(projects);
         add(members);
 
 //

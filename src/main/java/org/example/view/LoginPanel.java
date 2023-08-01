@@ -1,6 +1,6 @@
 package org.example.view;
 
-import org.example.Manager.UserManager;
+import org.example.Conroller.UserController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +10,7 @@ public class LoginPanel extends JPanel {
     private static LoginPanel instance = null;
     private static final int MESSAGE_DURATION = 2000;
     Members members = Members.getInstance();
-    UserManager userManager = new UserManager();
+    UserController userController = new UserController();
 
     private JLabel errorLabel;
     private JTextField emailField;
@@ -139,7 +139,7 @@ public class LoginPanel extends JPanel {
                 String email = emailField.getText();
                 String password = new String(passwordField.getPassword());
 
-                if (userManager.validateUserLogin(email, password)) {
+                if (userController.validateUserLogin(email, password)) {
                     UiFrame.getInstance().switchToMainPanel();
 
                 } else {
@@ -165,7 +165,7 @@ public class LoginPanel extends JPanel {
 
         emailField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                if (!userManager.isValidEmail(emailField.getText())) {
+                if (!userController.isValidEmail(emailField.getText())) {
                     errorLabel.setText("Invalid email format!");
                     messageTimer.start();
                 }

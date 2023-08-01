@@ -1,6 +1,6 @@
 package org.example.view;
 
-import org.example.Manager.UserManager;
+import org.example.Conroller.UserController;
 import org.example.Model.User;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 public class Members extends JPanel implements TableModel{
 
     private static Members instance = null;
-    UserManager userManager = new UserManager();
+    UserController userController = new UserController();
     public JTable userTable = new JTable();
     private JButton addUser;
 
@@ -42,7 +42,7 @@ public class Members extends JPanel implements TableModel{
     public void createTable() {
         userTable.setModel(this);
         JScrollPane scrollPane = new JScrollPane(userTable);
-        scrollPane.setBounds(300, 70, 1140, 970);
+        scrollPane.setBounds(400, 95, 940, 895);
         add(scrollPane, BorderLayout.CENTER);
         setColumnWidths();
         userTable.setRowSelectionAllowed(false);
@@ -54,7 +54,7 @@ public class Members extends JPanel implements TableModel{
             @Override
             public void onClick(int rowIndex) {
 
-                AddUser addUserObject = new AddUser(addUser, userManager.getAllUser().get(rowIndex));
+                AddUser addUserObject = new AddUser(addUser, userController.getAllUser().get(rowIndex));
             }
         }));
 
@@ -68,8 +68,8 @@ public class Members extends JPanel implements TableModel{
                         JOptionPane.YES_NO_OPTION
                 );
                 if (option == JOptionPane.YES_OPTION) {
-                    User userToDelete = userManager.getAllUser().get(rowIndex);
-                   userManager.removeUser(userToDelete);
+                    User userToDelete = userController.getAllUser().get(rowIndex);
+                   userController.removeUser(userToDelete);
                     userTable.setVisible(false);
                     userTable.setVisible(true);
                 }
@@ -111,7 +111,7 @@ public class Members extends JPanel implements TableModel{
     }
     @Override
     public int getRowCount() {
-        return userManager.getAllUser().size();
+        return userController.getAllUser().size();
     }
     @Override
     public int getColumnCount() {
@@ -142,11 +142,11 @@ public class Members extends JPanel implements TableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> userManager.getAllUser().get(rowIndex).getId();
-            case 1 -> userManager.getAllUser().get(rowIndex).getFirstName();
-            case 2 -> userManager.getAllUser().get(rowIndex).getLastName();
-            case 3 -> userManager.getAllUser().get(rowIndex).getEmail();
-            case 4 -> userManager.getAllUser().get(rowIndex).getRole();
+            case 0 -> userController.getAllUser().get(rowIndex).getId();
+            case 1 -> userController.getAllUser().get(rowIndex).getFirstName();
+            case 2 -> userController.getAllUser().get(rowIndex).getLastName();
+            case 3 -> userController.getAllUser().get(rowIndex).getEmail();
+            case 4 -> userController.getAllUser().get(rowIndex).getRole();
             case 5 -> null;
             case 6 -> null;
             default -> null;
@@ -168,7 +168,7 @@ public class Members extends JPanel implements TableModel{
             instance = new Members();
         return instance;
     }
-    private class ButtonRenderer extends JButton implements TableCellRenderer {
+    class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer(String title) {
             setOpaque(true);
             setText(title);
@@ -179,7 +179,7 @@ public class Members extends JPanel implements TableModel{
             return this;
         }
     }
-    private static class ButtonEditor extends DefaultCellEditor {
+    static class ButtonEditor extends DefaultCellEditor {
         private final JButton button;
         private final ButtonCallback callback;
         private boolean isPushed;
@@ -189,7 +189,6 @@ public class Members extends JPanel implements TableModel{
             super(checkBox);
             this.callback = callback;
             button = new JButton();
-            button.setOpaque(true);
             this.title = title;
             button.addActionListener(new ActionListener() {
                 @Override
@@ -242,7 +241,7 @@ public class Members extends JPanel implements TableModel{
     interface ButtonCallback {
         void onClick(int rowIndex);
     }
-    private class NonSelectableCellRenderer extends DefaultTableCellRenderer {
+    class NonSelectableCellRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component component = super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);

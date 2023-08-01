@@ -22,7 +22,6 @@ public class MainPanel extends JPanel {
         projectsBtn();
         membersButtonInMain();
     }
-
     private void projectsBtn() {
         projectsButton = new JButton("projects");
         projectsButton.setBounds(25, 100, 250, 45);
@@ -41,7 +40,6 @@ public class MainPanel extends JPanel {
             }
         });
     }
-
     public void membersButtonInMain() {
         membersButton = new JButton("Members");
         membersButton.setBounds(25, 170, 250, 45);
@@ -58,7 +56,6 @@ public class MainPanel extends JPanel {
             }
         });
     }
-
     public static MainPanel getInstance() {
         if (instance == null)
             instance = new MainPanel();

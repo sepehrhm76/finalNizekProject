@@ -1,19 +1,19 @@
-package org.example.Manager;
+package org.example.Conroller;
 
 import org.example.Database.project.ProjectRepository;
 import org.example.Model.Project;
 import java.util.List;
 
-public class ProjectManager {
-    private static ProjectManager instance = null;
+public class ProjectController {
+    private static ProjectController instance = null;
     private ProjectRepository projectRepository = new ProjectRepository();
 
-    public ProjectManager() {
+    public ProjectController() {
     }
 
-    public static ProjectManager getInstance() {
+    public static ProjectController getInstance() {
         if (instance == null)
-            instance = new ProjectManager();
+            instance = new ProjectController();
         return instance;
     }
     public boolean hasAnyProject() {

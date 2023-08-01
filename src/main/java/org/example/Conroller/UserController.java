@@ -1,19 +1,18 @@
-package org.example.Manager;
+package org.example.Conroller;
 
 import org.example.Database.user.UserRepository;
 import org.example.Model.User;
 import org.example.Model.UserRole;
 import java.util.List;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserManager {
+public class UserController {
 
     private UserRepository userRepository = new UserRepository();
 
-    public UserManager(){
+    public UserController(){
     }
 
     public boolean hasAnyUser() {

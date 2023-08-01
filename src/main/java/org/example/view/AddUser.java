@@ -1,7 +1,7 @@
 package org.example.view;
 
 import org.example.Log.Logger;
-import org.example.Manager.UserManager;
+import org.example.Conroller.UserController;
 import org.example.Model.User;
 import org.example.Model.UserRole;
 
@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class AddUser {
     private static final int MESSAGE_DURATION = 2000;
     Members members = Members.getInstance();
-    UserManager userManager = new UserManager();
+    UserController userController = new UserController();
     private Timer messageTimer;
     private JButton saveBtn;
     private JDialog dialog;
@@ -159,7 +159,7 @@ public class AddUser {
         email.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 String emailText = email.getText();
-                if (!userManager.isValidEmail(emailText)) {
+                if (!userController.isValidEmail(emailText)) {
                     errorLabel.setText("Invalid email format!");
                     messageTimer.start();
                 }
@@ -200,7 +200,7 @@ public class AddUser {
     public void saveNewUserData() {
         try {
             validateForm();
-            userManager.addUser(
+            userController.addUser(
                     firstname.getText(),
                     lastName.getText(),
                     email.getText().toLowerCase(),
@@ -225,7 +225,7 @@ public class AddUser {
         try {
             validateForm();
 
-            userManager.updateUser(
+            userController.updateUser(
                     user.getId(),
                     firstname.getText(),
                     lastName.getText(),
@@ -251,7 +251,7 @@ public class AddUser {
         char[] password1 = password.getPassword();
         char[] password2 = checkPass.getPassword();
         String pass1ToString = new String(password1);
-        if (!userManager.isValidPassword(pass1ToString)) {
+        if (!userController.isValidPassword(pass1ToString)) {
             throw new IllegalArgumentException("* The password must contain at least one uppercase letter.\n" +
                     "         * The password must contain at least one lowercase letter.\n" +
                     "         * The password must contain at least one digit.\n" +
@@ -261,7 +261,7 @@ public class AddUser {
         if (!Arrays.equals(password1, password2)) throw new IllegalArgumentException("Passwords do not match.");
         if (firstname.getText().isBlank()) throw new IllegalArgumentException("Please enter first name.");
         if (lastName.getText().isBlank()) throw new IllegalArgumentException("Please enter last name.");
-        if (!userManager.isValidEmail(email.getText())) throw new IllegalArgumentException("Invalid email format.");
+        if (!userController.isValidEmail(email.getText())) throw new IllegalArgumentException("Invalid email format.");
         if (role.getSelectedItem().equals("")) throw new IllegalArgumentException("Please select a role.");
     }
 
