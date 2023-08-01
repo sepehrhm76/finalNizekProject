@@ -4,6 +4,8 @@ import org.example.Database.user.UserRepository;
 import org.example.Manager.UserManager;
 import org.example.Model.User;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
@@ -26,8 +28,6 @@ public class Members extends JPanel implements TableModel{
         addUserBtn();
         createTable();
     }
-
-
     public void addUserBtn() {
         addUser = new JButton("Add User");
         addUser.setBounds(1320, 30, 120, 40);
@@ -43,9 +43,15 @@ public class Members extends JPanel implements TableModel{
     }
     public void createTable() {
         userTable.setModel(this);
-
+        JScrollPane scrollPane = new JScrollPane(userTable);
+        scrollPane.setBounds(300, 70, 1140, 970);
+        add(scrollPane, BorderLayout.CENTER);
+        setColumnWidths();
+        userTable.setRowSelectionAllowed(false);
+        for (int i = 0; i <= 4; i++) {
+            userTable.getColumnModel().getColumn(i).setCellRenderer(new NonSelectableCellRenderer());
+        }
         userTable.getColumn("Edit").setCellRenderer(new ButtonRenderer("Edit"));
-
         userTable.getColumn("Edit").setCellEditor(new ButtonEditor("Edit", new JCheckBox(), new ButtonCallback() {
             @Override
             public void onClick(int rowIndex) {
@@ -55,7 +61,6 @@ public class Members extends JPanel implements TableModel{
         }));
 
         userTable.getColumn("Delete").setCellRenderer(new ButtonRenderer("Delete"));
-
         userTable.getColumn("Delete").setCellEditor(new ButtonEditor("Delete", new JCheckBox(), new ButtonCallback() {
             @Override
             public void onClick(int rowIndex) {
@@ -73,12 +78,26 @@ public class Members extends JPanel implements TableModel{
             }
         }));
 
-        JScrollPane scrollPane = new JScrollPane(userTable);
-        scrollPane.setBounds(300, 70, 1140, 970);
-        add(scrollPane, BorderLayout.CENTER);
-        setColumnWidths();
-    }
+        userTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Check for double-click (left mouse button)
+                if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
+                    int row = userTable.rowAtPoint(e.getPoint());
+                    int column = userTable.columnAtPoint(e.getPoint());
+                    // Only execute if the double click happened on a valid row and column
+                    if (row >= 0 && column >= 0) {
+                        // Get the value of the cell and print it
+                        Object cellValue = userTable.getValueAt(row, column);
+                        System.out.println("Double-clicked: " + cellValue);
+                        // Add your desired functionality here when a row is double-clicked
+                    }
+                }
+            }
+        });
 
+
+    }
     private void setColumnWidths() {
         TableColumnModel columnModel = userTable.getColumnModel();
 
@@ -90,12 +109,11 @@ public class Members extends JPanel implements TableModel{
         columnModel.getColumn(5).setPreferredWidth(10);
         columnModel.getColumn(6).setPreferredWidth(10);
     }
-
     public void refreshTableData() {
     }
     @Override
     public int getRowCount() {
-        return userRepository.getAll().size();
+        return UserManager.getInstance().getAllUser().size();
     }
     @Override
     public int getColumnCount() {
@@ -121,7 +139,7 @@ public class Members extends JPanel implements TableModel{
     }
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 5 || columnIndex == 6;
+        return columnIndex >= 5;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -147,13 +165,11 @@ public class Members extends JPanel implements TableModel{
     public void removeTableModelListener(TableModelListener l) {
         refreshTableData();
     }
-
     public static Members getInstance() {
         if (instance == null)
             instance = new Members();
         return instance;
     }
-
     private class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer(String title) {
             setOpaque(true);
@@ -165,8 +181,6 @@ public class Members extends JPanel implements TableModel{
             return this;
         }
     }
-
-    // Custom cell editor for the delete button
     private static class ButtonEditor extends DefaultCellEditor {
         private final JButton button;
         private final ButtonCallback callback;
@@ -227,9 +241,15 @@ public class Members extends JPanel implements TableModel{
             super.fireEditingStopped();
         }
     }
-
     interface ButtonCallback {
         void onClick(int rowIndex);
+    }
+    private class NonSelectableCellRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component component = super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
+            return component;
+        }
     }
 }
 

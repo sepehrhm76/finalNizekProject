@@ -36,7 +36,7 @@ public class LoginPanel extends JPanel {
 
 
     private LoginPanel() {
-
+        setVisible(true);
         setLayout(null);
         setBackground(new Color(33, 51, 99));
         setSize(1440,1040);

@@ -3,7 +3,9 @@ package org.example.Manager;
 import org.example.Database.user.UserRepository;
 import org.example.Model.User;
 import org.example.Model.UserRole;
+import java.util.List;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +46,10 @@ public class UserManager {
         if (user != null) {
             userRepository.delete(user);
         }
+    }
+
+    public List<User> getAllUser() {
+       return userRepository.getAll();
     }
 
     public boolean isValidEmail(String email) {
