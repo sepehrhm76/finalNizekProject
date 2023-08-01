@@ -11,16 +11,9 @@ import java.util.regex.Pattern;
 
 public class UserManager {
 
-    private static UserManager instance = null;
     private UserRepository userRepository = new UserRepository();
 
-    private UserManager(){
-    }
-
-    public static UserManager getInstance() {
-        if (instance == null)
-            instance = new UserManager();
-        return instance;
+    public UserManager(){
     }
 
     public boolean hasAnyUser() {

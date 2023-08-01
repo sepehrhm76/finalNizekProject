@@ -9,8 +9,9 @@ import java.awt.event.ActionListener;
 public class LoginPanel extends JPanel {
     private static LoginPanel instance = null;
     private static final int MESSAGE_DURATION = 2000;
-    UserManager userManager = UserManager.getInstance();
     Members members = Members.getInstance();
+    UserManager userManager = new UserManager();
+
     private JLabel errorLabel;
     private JTextField emailField;
     private JPasswordField passwordField;

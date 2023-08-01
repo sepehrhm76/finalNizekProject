@@ -1,9 +1,7 @@
 package org.example.view;
 
-import org.example.Database.user.UserRepository;
 import org.example.Manager.UserManager;
 import org.example.Model.User;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.*;
@@ -16,7 +14,7 @@ import java.awt.event.ActionListener;
 public class Members extends JPanel implements TableModel{
 
     private static Members instance = null;
-    UserRepository userRepository = new UserRepository();
+    UserManager userManager = new UserManager();
     public JTable userTable = new JTable();
     private JButton addUser;
 
@@ -56,7 +54,7 @@ public class Members extends JPanel implements TableModel{
             @Override
             public void onClick(int rowIndex) {
 
-                AddUser addUserObject = new AddUser(addUser, userRepository.getAll().get(rowIndex));
+                AddUser addUserObject = new AddUser(addUser, userManager.getAllUser().get(rowIndex));
             }
         }));
 
@@ -70,8 +68,8 @@ public class Members extends JPanel implements TableModel{
                         JOptionPane.YES_NO_OPTION
                 );
                 if (option == JOptionPane.YES_OPTION) {
-                    User userToDelete = userRepository.getAll().get(rowIndex);
-                    UserManager.getInstance().removeUser(userToDelete);
+                    User userToDelete = userManager.getAllUser().get(rowIndex);
+                   userManager.removeUser(userToDelete);
                     userTable.setVisible(false);
                     userTable.setVisible(true);
                 }
@@ -113,7 +111,7 @@ public class Members extends JPanel implements TableModel{
     }
     @Override
     public int getRowCount() {
-        return UserManager.getInstance().getAllUser().size();
+        return userManager.getAllUser().size();
     }
     @Override
     public int getColumnCount() {
@@ -144,11 +142,11 @@ public class Members extends JPanel implements TableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> userRepository.getAll().get(rowIndex).getId();
-            case 1 -> userRepository.getAll().get(rowIndex).getFirstName();
-            case 2 -> userRepository.getAll().get(rowIndex).getLastName();
-            case 3 -> userRepository.getAll().get(rowIndex).getEmail();
-            case 4 -> userRepository.getAll().get(rowIndex).getRole();
+            case 0 -> userManager.getAllUser().get(rowIndex).getId();
+            case 1 -> userManager.getAllUser().get(rowIndex).getFirstName();
+            case 2 -> userManager.getAllUser().get(rowIndex).getLastName();
+            case 3 -> userManager.getAllUser().get(rowIndex).getEmail();
+            case 4 -> userManager.getAllUser().get(rowIndex).getRole();
             case 5 -> null;
             case 6 -> null;
             default -> null;

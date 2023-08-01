@@ -1,10 +1,7 @@
 package org.example.Manager;
-import org.example.Database.project.ProjectRepository;
-import org.example.Database.user.UserRepository;
-import org.example.Model.Project;
-import org.example.Model.User;
-import org.example.Model.UserRole;
 
+import org.example.Database.project.ProjectRepository;
+import org.example.Model.Project;
 import java.util.List;
 
 public class ProjectManager {

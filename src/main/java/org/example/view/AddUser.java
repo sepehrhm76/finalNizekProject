@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class AddUser {
     private static final int MESSAGE_DURATION = 2000;
     Members members = Members.getInstance();
-    UserManager userManager = UserManager.getInstance();
+    UserManager userManager = new UserManager();
     private Timer messageTimer;
     private JButton saveBtn;
     private JDialog dialog;
