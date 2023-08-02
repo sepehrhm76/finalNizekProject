@@ -16,17 +16,17 @@ public class AddUser {
     private static final int MESSAGE_DURATION = 2000;
     Members members = Members.getInstance();
     UserController userController = new UserController();
-    private Timer messageTimer;
-    private JButton saveBtn;
-    private JDialog dialog;
-    private JTextField firstname;
-    private JTextField lastName;
-    private JTextField email;
-    private JPasswordField password;
-    private JPasswordField checkPass;
-    private JComboBox<String> role;
-    private JLabel errorLabel;
-    private User user;
+    Timer messageTimer;
+    JButton saveBtn;
+    JDialog dialog;
+    JTextField firstname;
+    JTextField lastName;
+    JTextField email;
+    JPasswordField password;
+    JPasswordField checkPass;
+    JComboBox<String> role;
+    JLabel errorLabel;
+    User user;
 
     public AddUser(JButton addUser, User user) {
 

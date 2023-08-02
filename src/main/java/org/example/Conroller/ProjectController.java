@@ -23,7 +23,7 @@ public class ProjectController {
             Project project = new Project(name, description);
             projectRepository.create(project);
         }
-    public void editProject(int id, String name, String description) {
+    public void updateProject(int id, String name, String description) {
         Project project = new Project(name, description);
         projectRepository.update(id, project);
     }

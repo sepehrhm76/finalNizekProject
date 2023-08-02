@@ -3,8 +3,6 @@ package org.example.view;
 import org.example.Conroller.ProjectController;
 import org.example.Log.Logger;
 import org.example.Model.Project;
-import org.example.Model.User;
-import org.example.Model.UserRole;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
@@ -13,59 +11,64 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Projects extends JPanel implements TableModel {
-    private static Projects instance = null;
-    public JTable projectTable = new JTable();
-    private JButton addProject;
+    static Projects instance = null;
+    JTable projectTable = new JTable();
+    JButton addProject;
     ProjectController projectController = new ProjectController();
-    
+
     public Projects(){
         setLayout(null);
         setVisible(false);
         setBounds(300,0,1140,1040);
         setBackground(Color.cyan);
         createTable();
+        addProjectBtn();
     }
+    public void addProjectBtn() {
+        addProject = new JButton("Add Project");
+        addProject.setBounds(1020, 30, 120, 40);
+        addProject.setBorder(null);
+        addProject.setForeground(Color.white);
+        addProject.setBackground(new Color(33, 51, 99));
+        addProject.setOpaque(true);
+        add(addProject);
+        addProject.addActionListener(e -> {
+            AddProject addProjectObject = new AddProject(addProject, null);
+        });
 
+    }
     public void createTable() {
         projectTable.setModel(this);
         JScrollPane scrollPane = new JScrollPane(projectTable);
-        scrollPane.setBounds(100, 95, 940, 895);
+        scrollPane.setBounds(100, 300, 940, 450);
         add(scrollPane, BorderLayout.CENTER);
         setColumnWidths();
         projectTable.setRowSelectionAllowed(false);
         for (int i = 0; i <= 4; i++) {
-            projectTable.getColumnModel().getColumn(i).setCellRenderer(new Projects.NonSelectableCellRenderer());
+            projectTable.getColumnModel().getColumn(i).setCellRenderer(new NonSelectableCellRenderer());
         }
-        projectTable.getColumn("Edit").setCellRenderer(new Projects.ButtonRenderer("Edit"));
-        projectTable.getColumn("Edit").setCellEditor(new Projects.ButtonEditor("Edit", new JCheckBox(), new Members.ButtonCallback() {
-            @Override
-            public void onClick(int rowIndex) {
+        projectTable.getColumn("Edit").setCellRenderer(new ButtonRenderer("Edit"));
+        projectTable.getColumn("Edit").setCellEditor(new Projects.ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
 
-//                AddUser addUserObject = new AddUser(addUser, userController.getAllUser().get(rowIndex));
-            }
+            AddProject addProjectObject = new AddProject(addProject, projectController.getAllProject().get(rowIndex));
         }));
 
-            projectTable.getColumn("Delete").setCellRenderer(new Projects.ButtonRenderer("Delete"));
-            projectTable.getColumn("Delete").setCellEditor(new Projects.ButtonEditor("Delete", new JCheckBox(), new Members.ButtonCallback() {
-                @Override
-                public void onClick(int rowIndex) {
-                    int option = JOptionPane.showConfirmDialog(null,
-                            "Are you sure you want to delete this project?",
-                            "Confirmation",
-                            JOptionPane.YES_NO_OPTION
-                    );
-                    if (option == JOptionPane.YES_OPTION) {
-                        Project projectToDelete = projectController.getAllProject().get(rowIndex);
-                        projectController.removeProject(projectToDelete);
-                        projectTable.setVisible(false);
-                        projectTable.setVisible(true);
-                    }
+            projectTable.getColumn("Delete").setCellRenderer(new ButtonRenderer("Delete"));
+            projectTable.getColumn("Delete").setCellEditor(new Projects.ButtonEditor("Delete", new JCheckBox(), rowIndex -> {
+                int option = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to delete this project?",
+                        "Confirmation",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (option == JOptionPane.YES_OPTION) {
+                    Project projectToDelete = projectController.getAllProject().get(rowIndex);
+                    projectController.removeProject(projectToDelete);
+                    projectTable.setVisible(false);
+                    projectTable.setVisible(true);
                 }
             }));
 
@@ -77,26 +80,45 @@ public class Projects extends JPanel implements TableModel {
                         int row = projectTable.rowAtPoint(e.getPoint());
                         int column = projectTable.columnAtPoint(e.getPoint());
                         // Only execute if the double click happened on a valid row and column
-                        if (row >= 0 && column >= 0) {
-                            // Get the value of the cell and print it
-                            Object cellValue = projectTable.getValueAt(row, column);
-                            System.out.println("Double-clicked: " + cellValue);
-                            // Add your desired functionality here when a row is double-clicked
+                        if (row >= 0 && column == 2) {
+                            String description = (String) projectTable.getValueAt(row, column);
+                            showDescriptionDialog(description);
                         }
                     }
                 }
             });
         }
+        private void showDescriptionDialog(String description) {
+            JDialog descriptionDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Description", true);
+            descriptionDialog.setLayout(new BorderLayout());
+            descriptionDialog.setSize(500, 200);
+            descriptionDialog.setLocationRelativeTo(null);
+
+            JTextArea descriptionTextArea = new JTextArea(description);
+            descriptionTextArea.setBackground(Color.WHITE);
+            descriptionTextArea.setLineWrap(true);
+            descriptionTextArea.setWrapStyleWord(true);
+            descriptionTextArea.setEditable(false);
+
+            JScrollPane scrollPane = new JScrollPane(descriptionTextArea);
+            descriptionDialog.add(scrollPane, BorderLayout.CENTER);
+
+            JButton okButton = new JButton("OK");
+            okButton.addActionListener(e -> descriptionDialog.dispose());
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            buttonPanel.add(okButton);
+            descriptionDialog.add(buttonPanel, BorderLayout.SOUTH);
+
+            descriptionDialog.setVisible(true);
+        }
     @Override
     public int getRowCount() {
         return projectController.getAllProject().size();
     }
-
     @Override
     public int getColumnCount() {
         return 5;
     }
-
     @Override
     public String getColumnName(int columnIndex) {
         return switch (columnIndex) {
@@ -108,37 +130,29 @@ public class Projects extends JPanel implements TableModel {
             default -> null;
         };
     }
-
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == 3 && columnIndex == 4) return JButton.class;
         return String.class;
     }
-
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex >= 3;
     }
-
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
             case 0 -> projectController.getAllProject().get(rowIndex).getId();
             case 1 -> projectController.getAllProject().get(rowIndex).getName();
             case 2 -> projectController.getAllProject().get(rowIndex).getDescription();
-            case 3 -> null;
-            case 4 -> null;
             default -> null;
         };
     }
-
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     }
     @Override
     public void addTableModelListener(TableModelListener l) {
     }
-
     @Override
     public void removeTableModelListener(TableModelListener l) {
     }
@@ -147,17 +161,16 @@ public class Projects extends JPanel implements TableModel {
 
         columnModel.getColumn(0).setPreferredWidth(10);
         columnModel.getColumn(1).setPreferredWidth(100);
-        columnModel.getColumn(2).setPreferredWidth(350);
-        columnModel.getColumn(3).setPreferredWidth(40);
-        columnModel.getColumn(3).setPreferredWidth(40);
+        columnModel.getColumn(2).setPreferredWidth(390);
+        columnModel.getColumn(3).setPreferredWidth(20);
+        columnModel.getColumn(4).setPreferredWidth(20);
     }
     public static Projects getInstance() {
         if (instance == null)
             instance = new Projects();
         return instance;
     }
-
-    private class ButtonRenderer extends JButton implements TableCellRenderer {
+    private static class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer(String title) {
             setOpaque(true);
             setText(title);
@@ -171,22 +184,17 @@ public class Projects extends JPanel implements TableModel {
     }
     private static class ButtonEditor extends DefaultCellEditor {
         private final JButton button;
-        private final Members.ButtonCallback callback;
         private boolean isPushed;
         private int currentRow;
-        private String title;
+        String title;
         public ButtonEditor(String title, JCheckBox checkBox, Members.ButtonCallback callback) {
             super(checkBox);
-            this.callback = callback;
             button = new JButton();
             button.setOpaque(true);
             this.title = title;
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    fireEditingStopped();
-                    callback.onClick(currentRow);
-                }
+            button.addActionListener(e -> {
+                fireEditingStopped();
+                callback.onClick(currentRow);
             });
 
 
@@ -210,10 +218,6 @@ public class Projects extends JPanel implements TableModel {
 
         @Override
         public Object getCellEditorValue() {
-            if (isPushed) {
-                // Button was clicked, but we don't need to do anything here.
-                // The action is handled in the actionPerformed method.
-            }
             isPushed = false;
             return title;
         }
@@ -232,11 +236,10 @@ public class Projects extends JPanel implements TableModel {
     interface ButtonCallback {
         void onClick(int rowIndex);
     }
-    private class NonSelectableCellRenderer extends DefaultTableCellRenderer {
+    private static class NonSelectableCellRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component component = super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
-            return component;
+            return super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
         }
     }
 }

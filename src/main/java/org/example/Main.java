@@ -12,7 +12,6 @@ public class Main {
         ProjectController projectController = new ProjectController();
 
         SwingUtilities.invokeLater(UiFrame::getInstance);
-        System.out.println(projectController.getAllProject());
 
     }
 }

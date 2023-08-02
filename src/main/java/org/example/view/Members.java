@@ -42,7 +42,7 @@ public class Members extends JPanel implements TableModel{
     public void createTable() {
         userTable.setModel(this);
         JScrollPane scrollPane = new JScrollPane(userTable);
-        scrollPane.setBounds(400, 95, 940, 895);
+        scrollPane.setBounds(400, 300, 940, 450);;
         add(scrollPane, BorderLayout.CENTER);
         setColumnWidths();
         userTable.setRowSelectionAllowed(false);
@@ -50,29 +50,23 @@ public class Members extends JPanel implements TableModel{
             userTable.getColumnModel().getColumn(i).setCellRenderer(new NonSelectableCellRenderer());
         }
         userTable.getColumn("Edit").setCellRenderer(new ButtonRenderer("Edit"));
-        userTable.getColumn("Edit").setCellEditor(new ButtonEditor("Edit", new JCheckBox(), new ButtonCallback() {
-            @Override
-            public void onClick(int rowIndex) {
+        userTable.getColumn("Edit").setCellEditor(new ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
 
-                AddUser addUserObject = new AddUser(addUser, userController.getAllUser().get(rowIndex));
-            }
+            AddUser addUserObject = new AddUser(addUser, userController.getAllUser().get(rowIndex));
         }));
 
         userTable.getColumn("Delete").setCellRenderer(new ButtonRenderer("Delete"));
-        userTable.getColumn("Delete").setCellEditor(new ButtonEditor("Delete", new JCheckBox(), new ButtonCallback() {
-            @Override
-            public void onClick(int rowIndex) {
-                int option = JOptionPane.showConfirmDialog(null,
-                        "Are you sure you want to delete this member?",
-                        "Confirmation",
-                        JOptionPane.YES_NO_OPTION
-                );
-                if (option == JOptionPane.YES_OPTION) {
-                    User userToDelete = userController.getAllUser().get(rowIndex);
-                   userController.removeUser(userToDelete);
-                    userTable.setVisible(false);
-                    userTable.setVisible(true);
-                }
+        userTable.getColumn("Delete").setCellEditor(new ButtonEditor("Delete", new JCheckBox(), rowIndex -> {
+            int option = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete this member?",
+                    "Confirmation",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (option == JOptionPane.YES_OPTION) {
+                User userToDelete = userController.getAllUser().get(rowIndex);
+               userController.removeUser(userToDelete);
+                userTable.setVisible(false);
+                userTable.setVisible(true);
             }
         }));
 

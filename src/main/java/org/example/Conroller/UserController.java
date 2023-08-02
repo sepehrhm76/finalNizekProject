@@ -33,7 +33,6 @@ public class UserController {
             userRepository.update(id, user);
         }
 
-
     public void removeUser(User user) {
         if (user != null) {
             userRepository.delete(user);

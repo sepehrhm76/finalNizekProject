@@ -1,7 +1,7 @@
 package org.example.Model;
 
 public class Project {
-    int id;
+    private int id;
     String name;
     String description;
 
