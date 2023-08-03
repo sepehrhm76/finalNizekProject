@@ -13,19 +13,16 @@ public class ProjectDetailsPanel extends JPanel {
     private ProjectDetailsPanel() {
         setLayout(null);
         setBounds(300,0,1140,1040);
-        titleLabel = new JLabel();
-        titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 16));
-        titleLabel.setBounds(500,500,500,100);
         setVisible(false);
+        titleLabel = new JLabel();
         add(titleLabel);
     }
 
     public void setUpData(Project project) {
         this.project = project;
-        titleLabel.setText("Project Title:" + this.project.getName());
-        titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 16));
-        titleLabel.setBounds(500,500,500,100);
-        Logger.getInstance().logDebug(project.toString());
+        titleLabel.setText(this.project.getName() + " Project");
+        titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 30));
+        titleLabel.setBounds(450,60,500,100);
     }
 
     public static ProjectDetailsPanel getInstance() {
@@ -33,5 +30,4 @@ public class ProjectDetailsPanel extends JPanel {
             instance = new ProjectDetailsPanel();
         return instance;
     }
-
 }

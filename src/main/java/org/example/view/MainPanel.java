@@ -52,6 +52,7 @@ public class MainPanel extends JPanel {
             Members.getInstance().userTable.setVisible(false);
             Members.getInstance().userTable.setVisible(true);
             projects.setVisible(false);
+            ProjectDetailsPanel.getInstance().setVisible(false);
             members.setVisible(true);
         });
     }

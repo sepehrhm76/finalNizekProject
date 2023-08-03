@@ -86,7 +86,6 @@ public class Projects extends JPanel implements TableModel {
                         if (row >= 0) {
                             if (column >= 0 && column <= 1) {
                                 Project selectedProject = projectController.getAllProject().get(row);
-                                UiFrame.getInstance().add(ProjectDetailsPanel.getInstance());
                                 ProjectDetailsPanel.getInstance().setVisible(true);
                                 ProjectDetailsPanel.getInstance().setUpData(selectedProject);
                                 setVisible(false);
