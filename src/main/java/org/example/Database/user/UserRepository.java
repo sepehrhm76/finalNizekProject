@@ -74,7 +74,7 @@ public class UserRepository {
         ResultSet result = sqlite.executeQuery(String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, UserColumns.id), userId);
         try {
             if (result.next()) {
-                return this.createUserFromResultSet(result);
+                return UserRepository.createUserFromResultSet(result);
             }
         } catch (Exception e) {
             Logger.getInstance().logError("Error reading ResultSet: " + e.getMessage());
@@ -89,7 +89,7 @@ public class UserRepository {
         ResultSet result = sqlite.executeQuery(query);
         try {
             while (result.next()) {
-                list.add(this.createUserFromResultSet(result));
+                list.add(UserRepository.createUserFromResultSet(result));
             }
         } catch (Exception e) {
             Logger.getInstance().logError("Error reading ResultSet: " + e.getMessage());
@@ -102,7 +102,7 @@ public class UserRepository {
         return count > 0;
     }
 
-    private User createUserFromResultSet(ResultSet result) throws Exception {
+    public static User createUserFromResultSet(ResultSet result) throws Exception {
         int id = result.getInt(UserColumns.id.toString());
         String firstName = result.getString(UserColumns.firstname.toString());
         String lastName = result.getString(UserColumns.lastname.toString());
