@@ -14,18 +14,19 @@ public class UserRepository {
 
     private static final String TABLE_NAME = "user";
 
-    private SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
+
+    private final SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
 
     public boolean create(User user) {
         String query = String.format("INSERT INTO %s " +
                         "(%s, %s, %s, %s, %s) " +
                         "VALUES (?, ?, ?, ?, ?)",
                 TABLE_NAME,
-                UserColumns.firstname.toString(),
-                UserColumns.lastname.toString(),
-                UserColumns.email.toString(),
-                UserColumns.password.toString(),
-                UserColumns.role.toString()
+                UserColumns.firstname,
+                UserColumns.lastname,
+                UserColumns.email,
+                UserColumns.password,
+                UserColumns.role
         );
 
         int rowsAffected = sqlite.executeUpdate(query,
@@ -40,12 +41,12 @@ public class UserRepository {
     public boolean update(int id, User user) {
         String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?",
                 TABLE_NAME,
-                UserColumns.firstname.toString(),
-                UserColumns.lastname.toString(),
-                UserColumns.email.toString(),
-                UserColumns.password.toString(),
-                UserColumns.role.toString(),
-                UserColumns.id.toString()
+                UserColumns.firstname,
+                UserColumns.lastname,
+                UserColumns.email,
+                UserColumns.password,
+                UserColumns.role,
+                UserColumns.id
         );
 
         int rowsAffected = sqlite.executeUpdate(query,
@@ -64,13 +65,13 @@ public class UserRepository {
 
     public void delete(int userId) {
         sqlite.executeUpdate(
-                String.format("DELETE FROM %s WHERE %s = ?;", TABLE_NAME, UserColumns.id.toString()), userId
+                String.format("DELETE FROM %s WHERE %s = ?;", TABLE_NAME, UserColumns.id), userId
         );
     }
 
     public User get(int userId) {
 
-        ResultSet result = sqlite.executeQuery(String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, UserColumns.id.toString()), userId);
+        ResultSet result = sqlite.executeQuery(String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, UserColumns.id), userId);
         try {
             if (result.next()) {
                 return this.createUserFromResultSet(result);
@@ -100,7 +101,6 @@ public class UserRepository {
         int count = sqlite.executeUpdate(String.format("SELECT COUNT(*) FROM %s",TABLE_NAME));
         return count > 0;
     }
-
 
     private User createUserFromResultSet(ResultSet result) throws Exception {
         int id = result.getInt(UserColumns.id.toString());

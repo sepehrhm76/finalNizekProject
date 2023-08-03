@@ -75,14 +75,21 @@ public class Projects extends JPanel implements TableModel {
             projectTable.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    // Check for double-click (left mouse button)
                     if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
                         int row = projectTable.rowAtPoint(e.getPoint());
                         int column = projectTable.columnAtPoint(e.getPoint());
-                        // Only execute if the double click happened on a valid row and column
-                        if (row >= 0 && column == 2) {
-                            String description = (String) projectTable.getValueAt(row, column);
-                            showDescriptionDialog(description);
+
+                        if (row >= 0) {
+                            if (column >= 0 && column <= 1) {
+                                Project selectedProject = projectController.getAllProject().get(row);
+                                ProjectDetailsPanel projectDetailsPanel = new ProjectDetailsPanel(selectedProject);
+                                projectDetailsPanel.setVisible(true);
+                                setVisible(false);
+
+                            } else {
+                                String description = (String) projectTable.getValueAt(row, 2);
+                                showDescriptionDialog(description);
+                            }
                         }
                     }
                 }

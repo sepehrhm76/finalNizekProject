@@ -42,7 +42,7 @@ public class Members extends JPanel implements TableModel{
     public void createTable() {
         userTable.setModel(this);
         JScrollPane scrollPane = new JScrollPane(userTable);
-        scrollPane.setBounds(400, 300, 940, 450);;
+        scrollPane.setBounds(400, 300, 940, 450);
         add(scrollPane, BorderLayout.CENTER);
         setColumnWidths();
         userTable.setRowSelectionAllowed(false);
@@ -162,7 +162,7 @@ public class Members extends JPanel implements TableModel{
             instance = new Members();
         return instance;
     }
-    class ButtonRenderer extends JButton implements TableCellRenderer {
+    static class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer(String title) {
             setOpaque(true);
             setText(title);
@@ -175,21 +175,16 @@ public class Members extends JPanel implements TableModel{
     }
     static class ButtonEditor extends DefaultCellEditor {
         private final JButton button;
-        private final ButtonCallback callback;
         private boolean isPushed;
         private int currentRow;
-        private String title;
+        private final String title;
         public ButtonEditor(String title, JCheckBox checkBox, ButtonCallback callback) {
             super(checkBox);
-            this.callback = callback;
             button = new JButton();
             this.title = title;
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    fireEditingStopped();
-                    callback.onClick(currentRow);
-                }
+            button.addActionListener(e -> {
+                fireEditingStopped();
+                callback.onClick(currentRow);
             });
 
 
@@ -213,10 +208,6 @@ public class Members extends JPanel implements TableModel{
 
         @Override
         public Object getCellEditorValue() {
-            if (isPushed) {
-                // Button was clicked, but we don't need to do anything here.
-                // The action is handled in the actionPerformed method.
-            }
             isPushed = false;
             return title;
         }
@@ -235,7 +226,7 @@ public class Members extends JPanel implements TableModel{
     interface ButtonCallback {
         void onClick(int rowIndex);
     }
-    class NonSelectableCellRenderer extends DefaultTableCellRenderer {
+    static class NonSelectableCellRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component component = super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);

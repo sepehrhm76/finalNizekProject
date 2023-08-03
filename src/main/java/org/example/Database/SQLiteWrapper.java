@@ -8,6 +8,7 @@ public class SQLiteWrapper {
 
     private static SQLiteWrapper instance = null;
 
+
     private Connection connection;
 
     private SQLiteWrapper() {
@@ -29,7 +30,6 @@ public class SQLiteWrapper {
         return instance;
     }
 
-    // Execute an SQL query that returns a ResultSet
     public ResultSet executeQuery(String query, Object... params) {
         ResultSet resultSet = null;
         try {
@@ -63,6 +63,7 @@ public class SQLiteWrapper {
         }
         return rowsAffected;
     }
+
     public void closeConnection() {
         try {
             if (connection != null) {

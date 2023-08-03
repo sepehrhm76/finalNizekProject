@@ -55,15 +55,12 @@ public class AddUser {
         dialog.add(saveBtn);
 
 
-        saveBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        saveBtn.addActionListener(e -> {
 
-                if (user != null) {
-                    updateUserData();
-                } else {
-                    saveNewUserData();
-                }
+            if (user != null) {
+                updateUserData();
+            } else {
+                saveNewUserData();
             }
         });
         //firstName Field
@@ -147,12 +144,7 @@ public class AddUser {
         errorLabel.setFont(new Font("Arial Rounded", Font.BOLD, 15));
 
 
-        messageTimer = new Timer(MESSAGE_DURATION, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                errorLabel.setText("");
-            }
-        });
+        messageTimer = new Timer(MESSAGE_DURATION, e -> errorLabel.setText(""));
         messageTimer.setRepeats(false);
 
 

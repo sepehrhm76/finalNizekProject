@@ -10,6 +10,7 @@ import java.util.List;
 public class ProjectRepository {
     private static final String TABLE_NAME = "project";
 
+
     private SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
 
     public boolean create(Project project) {
@@ -84,7 +85,6 @@ public class ProjectRepository {
         int count = sqlite.executeUpdate(String.format("SELECT COUNT(*) FROM %s",TABLE_NAME));
         return count > 0;
     }
-
 
     private Project createProjectFromResultSet(ResultSet result) throws Exception {
         int id = result.getInt(ProjectColumns.id.toString());
