@@ -1,44 +1,37 @@
 package org.example.view;
 
+import org.example.Log.Logger;
 import org.example.Model.Project;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ProjectDetailsPanel extends JPanel {
-    private final Project project;
-    public ProjectDetailsPanel(Project project) {
-        this.project = project;
-        initUI();
-    }
-    private void initUI() {
-        setLayout(new BorderLayout());
-
-        JLabel titleLabel = new JLabel("Project Title:");
+    private static ProjectDetailsPanel instance = null;
+    private Project project;
+    JLabel titleLabel;
+    private ProjectDetailsPanel() {
+        setLayout(null);
+        setBounds(300,0,1140,1040);
+        titleLabel = new JLabel();
         titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 16));
+        titleLabel.setBounds(500,500,500,100);
+        setVisible(false);
+        add(titleLabel);
+    }
 
-        JLabel descriptionLabel = new JLabel("Description:");
-        descriptionLabel.setFont(new Font("Arial Rounded", Font.BOLD, 16));
+    public void setUpData(Project project) {
+        this.project = project;
+        titleLabel.setText("Project Title:" + this.project.getName());
+        titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 16));
+        titleLabel.setBounds(500,500,500,100);
+        Logger.getInstance().logDebug(project.toString());
+    }
 
-        JLabel titleLabelValue = new JLabel(project.getName());
-        titleLabelValue.setFont(new Font("Arial Rounded", Font.PLAIN, 16));
-
-        JTextArea descriptionTextArea = new JTextArea(project.getDescription());
-        descriptionTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        descriptionTextArea.setLineWrap(true);
-        descriptionTextArea.setWrapStyleWord(true);
-        descriptionTextArea.setEditable(false);
-
-        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        titlePanel.add(titleLabel);
-        titlePanel.add(titleLabelValue);
-
-        JPanel descriptionPanel = new JPanel(new BorderLayout());
-        descriptionPanel.add(descriptionLabel, BorderLayout.NORTH);
-        descriptionPanel.add(new JScrollPane(descriptionTextArea), BorderLayout.CENTER);
-
-        add(titlePanel, BorderLayout.NORTH);
-        add(descriptionPanel, BorderLayout.CENTER);
+    public static ProjectDetailsPanel getInstance() {
+        if (instance == null)
+            instance = new ProjectDetailsPanel();
+        return instance;
     }
 
 }

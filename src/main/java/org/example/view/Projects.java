@@ -15,12 +15,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Projects extends JPanel implements TableModel {
-    static Projects instance = null;
+    private static Projects instance = null;
     JTable projectTable = new JTable();
     JButton addProject;
     ProjectController projectController = new ProjectController();
 
-    public Projects(){
+    private Projects(){
         setLayout(null);
         setVisible(false);
         setBounds(300,0,1140,1040);
@@ -28,9 +28,11 @@ public class Projects extends JPanel implements TableModel {
         createTable();
         addProjectBtn();
     }
+
+
     public void addProjectBtn() {
         addProject = new JButton("Add Project");
-        addProject.setBounds(1020, 30, 120, 40);
+        addProject.setBounds(1020, 80, 120, 40);
         addProject.setBorder(null);
         addProject.setForeground(Color.white);
         addProject.setBackground(new Color(33, 51, 99));
@@ -41,6 +43,8 @@ public class Projects extends JPanel implements TableModel {
         });
 
     }
+
+
     public void createTable() {
         projectTable.setModel(this);
         JScrollPane scrollPane = new JScrollPane(projectTable);
@@ -82,10 +86,10 @@ public class Projects extends JPanel implements TableModel {
                         if (row >= 0) {
                             if (column >= 0 && column <= 1) {
                                 Project selectedProject = projectController.getAllProject().get(row);
-                                ProjectDetailsPanel projectDetailsPanel = new ProjectDetailsPanel(selectedProject);
-                                projectDetailsPanel.setVisible(true);
+                                UiFrame.getInstance().add(ProjectDetailsPanel.getInstance());
+                                ProjectDetailsPanel.getInstance().setVisible(true);
+                                ProjectDetailsPanel.getInstance().setUpData(selectedProject);
                                 setVisible(false);
-
                             } else {
                                 String description = (String) projectTable.getValueAt(row, 2);
                                 showDescriptionDialog(description);
@@ -118,14 +122,20 @@ public class Projects extends JPanel implements TableModel {
 
             descriptionDialog.setVisible(true);
         }
+
+
     @Override
     public int getRowCount() {
         return projectController.getAllProject().size();
     }
+
+
     @Override
     public int getColumnCount() {
         return 5;
     }
+
+
     @Override
     public String getColumnName(int columnIndex) {
         return switch (columnIndex) {
@@ -137,14 +147,20 @@ public class Projects extends JPanel implements TableModel {
             default -> null;
         };
     }
+
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return String.class;
     }
+
+
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex >= 3;
     }
+
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
@@ -154,15 +170,23 @@ public class Projects extends JPanel implements TableModel {
             default -> null;
         };
     }
+
+
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     }
+
+
     @Override
     public void addTableModelListener(TableModelListener l) {
     }
+
+
     @Override
     public void removeTableModelListener(TableModelListener l) {
     }
+
+
     private void setColumnWidths() {
         TableColumnModel columnModel = projectTable.getColumnModel();
 
@@ -172,11 +196,15 @@ public class Projects extends JPanel implements TableModel {
         columnModel.getColumn(3).setPreferredWidth(20);
         columnModel.getColumn(4).setPreferredWidth(20);
     }
+
+
     public static Projects getInstance() {
         if (instance == null)
             instance = new Projects();
         return instance;
     }
+
+
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer(String title) {
             setOpaque(true);
@@ -189,6 +217,8 @@ public class Projects extends JPanel implements TableModel {
             return this;
         }
     }
+
+
     private static class ButtonEditor extends DefaultCellEditor {
         private final JButton button;
         private boolean isPushed;
@@ -240,9 +270,13 @@ public class Projects extends JPanel implements TableModel {
             super.fireEditingStopped();
         }
     }
+
+
     interface ButtonCallback {
         void onClick(int rowIndex);
     }
+
+
     private static class NonSelectableCellRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

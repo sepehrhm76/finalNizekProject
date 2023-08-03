@@ -16,7 +16,7 @@ public class Members extends JPanel implements TableModel{
     private static Members instance = null;
     UserController userController = new UserController();
     public JTable userTable = new JTable();
-    private JButton addUser;
+    private JButton addUserBtn;
 
     private Members() {
         setLayout(null);
@@ -27,16 +27,16 @@ public class Members extends JPanel implements TableModel{
         createTable();
     }
     public void addUserBtn() {
-        addUser = new JButton("Add User");
-        addUser.setBounds(1320, 30, 120, 40);
-        addUser.setBorder(null);
-        addUser.setForeground(Color.white);
-        addUser.setBackground(new Color(33, 51, 99));
-        addUser.setOpaque(true);
-        add(addUser);
+        addUserBtn = new JButton("Add User");
+        addUserBtn.setBounds(1320, 80, 120, 40);
+        addUserBtn.setBorder(null);
+        addUserBtn.setForeground(Color.white);
+        addUserBtn.setBackground(new Color(33, 51, 99));
+        addUserBtn.setOpaque(true);
+        add(addUserBtn);
 
-        addUser.addActionListener(e -> {
-            AddUser addUserObject = new AddUser(addUser, null);
+        addUserBtn.addActionListener(e -> {
+            AddUser addUserObject = new AddUser(addUserBtn, null);
         });
     }
     public void createTable() {
@@ -52,7 +52,7 @@ public class Members extends JPanel implements TableModel{
         userTable.getColumn("Edit").setCellRenderer(new ButtonRenderer("Edit"));
         userTable.getColumn("Edit").setCellEditor(new ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
 
-            AddUser addUserObject = new AddUser(addUser, userController.getAllUser().get(rowIndex));
+            AddUser addUserObject = new AddUser(addUserBtn, userController.getAllUser().get(rowIndex));
         }));
 
         userTable.getColumn("Delete").setCellRenderer(new ButtonRenderer("Delete"));

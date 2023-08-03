@@ -48,12 +48,11 @@ public class MainPanel extends JPanel {
         membersButton.setBackground(new Color(33, 51, 99));
         membersButton.setOpaque(true);
         add(membersButton);
-        membersButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                projects.setVisible(false);
-                members.setVisible(true);
-            }
+        membersButton.addActionListener(e -> {
+            Members.getInstance().userTable.setVisible(false);
+            Members.getInstance().userTable.setVisible(true);
+            projects.setVisible(false);
+            members.setVisible(true);
         });
     }
     public static MainPanel getInstance() {
