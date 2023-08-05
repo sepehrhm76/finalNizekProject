@@ -24,7 +24,6 @@ public class Members extends JPanel implements TableModel{
     private Members() {
         setLayout(null);
         setVisible(false);
-        setBackground(Color.CYAN);
         setBounds(300,0,1140,1040);
         addUserBtn();
         createTable();

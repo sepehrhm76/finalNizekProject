@@ -24,7 +24,6 @@ public class Projects extends JPanel implements TableModel {
         setLayout(null);
         setVisible(false);
         setBounds(300,0,1140,1040);
-        setBackground(Color.cyan);
         createTable();
         addProjectBtn();
     }

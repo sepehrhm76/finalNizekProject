@@ -16,6 +16,7 @@ public class ProjectDetailsPanel extends JPanel {
     UserController userController = new UserController();
     JLabel titleLabel;
     JDialog manageMembersDialog;
+    JDialog addMember;
 
     private ProjectDetailsPanel() {
         setLayout(null);
@@ -53,20 +54,29 @@ public class ProjectDetailsPanel extends JPanel {
         addMemberBtn.addActionListener(e -> openPageToShowAllToAddProjectMember());
         JButton deleteMemberBtn = new JButton("Delete Member");
         deleteMemberBtn.addActionListener(e -> {
-            int choice = JOptionPane.showConfirmDialog(
-                    manageMembersDialog,
-                    "Are you sure you want to remove the selected members from the project?",
-                    "Confirm Removal",
-                    JOptionPane.YES_NO_OPTION
-            );
-            if (choice == JOptionPane.YES_OPTION) {
-                for (int i = 0; i < checkBoxes.size(); i++) {
+            int selectedCount = 0;
+            for (int i = 0; i < checkBoxes.size(); i++) {
+                if (checkBoxes.get(i).isSelected()) {
+                    selectedCount++;
+                }
+            }
+
+            if (selectedCount == 0) {
+                JOptionPane.showMessageDialog(this, "No members selected for deletion.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            int confirmationResult = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to delete the selected member(s)?",
+                    "Confirmation", JOptionPane.YES_NO_OPTION);
+
+            if (confirmationResult == JOptionPane.YES_OPTION) {
+                for (int i = checkBoxes.size() - 1; i >= 0; i--) {
                     if (checkBoxes.get(i).isSelected()) {
                         User selectedUser = userList.get(i);
                         projectUserController.removeUserFromProject(selectedUser, this.project);
                     }
                 }
-
             }
             manageMembersDialog.setVisible(false);
             openManageMembersPopup();
@@ -80,7 +90,7 @@ public class ProjectDetailsPanel extends JPanel {
     }
 
     public void openPageToShowAllToAddProjectMember() {
-        JDialog addMember = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Add Members To This Project", true);
+        addMember = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Add Members To This Project", true);
         addMember.setSize(500, 500);
         addMember.setLocationRelativeTo(null);
         addMember.setResizable(false);
@@ -105,11 +115,18 @@ public class ProjectDetailsPanel extends JPanel {
         addMember.add(scrollPane, BorderLayout.CENTER);
         JButton addButton = new JButton("Add");
         addButton.addActionListener(e -> {
+            int addedMembersCount = 0;
             for (int i = 0; i < checkBoxes.size(); i++) {
                 if (checkBoxes.get(i).isSelected()) {
                     User selectedUser = userList.get(i);
                     projectUserController.addUserToProject(selectedUser, this.project);
+                    addedMembersCount++;
                 }
+            }
+            if (addedMembersCount > 0) {
+                JOptionPane.showMessageDialog(null, addedMembersCount + " member(s) added.");
+            } else {
+                JOptionPane.showMessageDialog(null, "No members selected.");
             }
             manageMembersDialog.setVisible(false);
             openManageMembersPopup();
