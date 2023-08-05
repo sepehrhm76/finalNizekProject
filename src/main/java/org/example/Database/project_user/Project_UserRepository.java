@@ -32,12 +32,12 @@ public class Project_UserRepository {
     }
 
     public boolean removeUserFromProject(int userId, int projectId) {
-        String query = String.format("DELETE FROM %s WHERE %s = ? AND %s = ?" +
+        String query = String.format("DELETE FROM %s WHERE %s = ? AND %s = ?",
                 TABLE_NAME,
                 Project_UserColumns.project_id.toString(),
                 Project_UserColumns.user_id.toString()
         );
-
+        System.out.println(query);
         int rowsAffected = sqlite.executeUpdate(query,
                 projectId,
                 userId);
