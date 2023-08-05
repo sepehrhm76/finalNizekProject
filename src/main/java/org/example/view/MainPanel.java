@@ -10,6 +10,7 @@ public class MainPanel extends JPanel {
     private static MainPanel instance = null;
     Members members = Members.getInstance();
     Projects projects = Projects.getInstance();
+    ProjectDetailsPanel projectDetailsPanel = ProjectDetailsPanel.getInstance();
     JButton projectsButton;
     JButton membersButton;
 
@@ -32,12 +33,11 @@ public class MainPanel extends JPanel {
         projectsButton.setVisible(true);
         add(projectsButton);
 
-        projectsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                members.setVisible(false);
-                projects.setVisible(true);
-            }
+        projectsButton.addActionListener(e -> {
+            members.setVisible(false);
+            projects.setVisible(true);
+            projectDetailsPanel.setVisible(false);
+
         });
     }
     public void membersButtonInMain() {

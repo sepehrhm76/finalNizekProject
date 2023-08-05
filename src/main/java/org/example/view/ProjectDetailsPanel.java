@@ -4,21 +4,17 @@ import org.example.Conroller.Project_UserController;
 import org.example.Conroller.UserController;
 import org.example.Model.Project;
 import org.example.Model.User;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ProjectDetailsPanel extends JPanel {
     private static ProjectDetailsPanel instance = null;
     private Project project;
-    private Project_UserController projectUserController = Project_UserController.getInstance();
+    private final Project_UserController projectUserController = Project_UserController.getInstance();
     UserController userController = new UserController();
     JLabel titleLabel;
-    private JButton manageMembersButton;
     JDialog manageMembersDialog;
 
     private ProjectDetailsPanel() {
@@ -57,13 +53,23 @@ public class ProjectDetailsPanel extends JPanel {
         addMemberBtn.addActionListener(e -> openPageToShowAllToAddProjectMember());
         JButton deleteMemberBtn = new JButton("Delete Member");
         deleteMemberBtn.addActionListener(e -> {
-
-            for (int i = 0; i < checkBoxes.size(); i++) {
-                if (checkBoxes.get(i).isSelected()) {
-                    User selectedUser = userList.get(i);
-                    projectUserController.removeUserFromProject(selectedUser, this.project);
+            int choice = JOptionPane.showConfirmDialog(
+                    manageMembersDialog,
+                    "Are you sure you want to remove the selected members from the project?",
+                    "Confirm Removal",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (choice == JOptionPane.YES_OPTION) {
+                for (int i = 0; i < checkBoxes.size(); i++) {
+                    if (checkBoxes.get(i).isSelected()) {
+                        User selectedUser = userList.get(i);
+                        projectUserController.removeUserFromProject(selectedUser, this.project);
+                    }
                 }
+
             }
+            manageMembersDialog.setVisible(false);
+            openManageMembersPopup();
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -97,25 +103,26 @@ public class ProjectDetailsPanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(contentPanel);
         addMember.add(scrollPane, BorderLayout.CENTER);
-        JButton closeButton = new JButton("Add");
-        closeButton.addActionListener(e -> {
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(e -> {
             for (int i = 0; i < checkBoxes.size(); i++) {
                 if (checkBoxes.get(i).isSelected()) {
                     User selectedUser = userList.get(i);
                     projectUserController.addUserToProject(selectedUser, this.project);
                 }
             }
+            manageMembersDialog.setVisible(false);
+            openManageMembersPopup();
             addMember.dispose();
-
         });
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(closeButton);
+        buttonPanel.add(addButton);
         addMember.add(buttonPanel, BorderLayout.SOUTH);
         addMember.setVisible(true);
     }
 
     public void manageMemberBtn() {
-        manageMembersButton = new JButton("Manage Project Members");
+        JButton manageMembersButton = new JButton("Manage Project Members");
         manageMembersButton.setBounds(880, 100, 240, 40);
         manageMembersButton.addActionListener(e -> openManageMembersPopup());
         add(manageMembersButton);
