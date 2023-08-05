@@ -43,6 +43,10 @@ public class UserController {
        return userRepository.getAll();
     }
 
+    public List<User> getAllUsersNotInProject(int projectId) {
+        return userRepository.getAllUsersNotInProject(projectId);
+    }
+
     public boolean isValidEmail(String email) {
         String emailRegex = "^.*$";
 //        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";

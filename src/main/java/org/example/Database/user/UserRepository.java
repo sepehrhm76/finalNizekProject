@@ -97,6 +97,27 @@ public class UserRepository {
         return list;
     }
 
+    public List<User> getAllUsersNotInProject(int projectId) {
+        ArrayList<User> list = new ArrayList<>();
+
+        String query = String.format("""
+                SELECT * FROM %s WHERE NOT EXISTS (
+                    SELECT *
+                    FROM project_user
+                    WHERE project_user.user_id = user.id AND project_user.project_id = ?
+                );
+                """, TABLE_NAME) ;
+        ResultSet result = sqlite.executeQuery(query, projectId);
+        try {
+            while (result.next()) {
+                list.add(UserRepository.createUserFromResultSet(result));
+            }
+        } catch (Exception e) {
+            Logger.getInstance().logError("Error reading ResultSet: " + e.getMessage());
+        }
+        return list;
+    }
+
     public boolean hasAnyUser() {
         int count = sqlite.executeUpdate(String.format("SELECT COUNT(*) FROM %s",TABLE_NAME));
         return count > 0;

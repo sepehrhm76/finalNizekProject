@@ -64,9 +64,6 @@ public class ProjectDetailsPanel extends JPanel {
                     projectUserController.removeUserFromProject(selectedUser, this.project);
                 }
             }
-            manageMembersDialog.dispose();
-
-
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -81,7 +78,7 @@ public class ProjectDetailsPanel extends JPanel {
         addMember.setSize(500, 500);
         addMember.setLocationRelativeTo(null);
         addMember.setResizable(false);
-        List<User> userList = userController.getAllUser();
+        List<User> userList = userController.getAllUsersNotInProject(this.project.getId());
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
@@ -119,7 +116,7 @@ public class ProjectDetailsPanel extends JPanel {
 
     public void manageMemberBtn() {
         manageMembersButton = new JButton("Manage Project Members");
-        manageMembersButton.setBounds(450, 160, 240, 40);
+        manageMembersButton.setBounds(880, 100, 240, 40);
         manageMembersButton.addActionListener(e -> openManageMembersPopup());
         add(manageMembersButton);
     }

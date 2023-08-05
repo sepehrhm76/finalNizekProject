@@ -10,6 +10,9 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Members extends JPanel implements TableModel{
 
@@ -135,12 +138,14 @@ public class Members extends JPanel implements TableModel{
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+
+        List<User> users = userController.getAllUser();
         return switch (columnIndex) {
-            case 0 -> userController.getAllUser().get(rowIndex).getId();
-            case 1 -> userController.getAllUser().get(rowIndex).getFirstName();
-            case 2 -> userController.getAllUser().get(rowIndex).getLastName();
-            case 3 -> userController.getAllUser().get(rowIndex).getEmail();
-            case 4 -> userController.getAllUser().get(rowIndex).getRole();
+            case 0 -> users.get(rowIndex).getId();
+            case 1 -> users.get(rowIndex).getFirstName();
+            case 2 -> users.get(rowIndex).getLastName();
+            case 3 -> users.get(rowIndex).getEmail();
+            case 4 -> users.get(rowIndex).getRole();
             case 5 -> null;
             case 6 -> null;
             default -> null;
