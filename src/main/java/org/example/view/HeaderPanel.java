@@ -10,7 +10,7 @@ public class HeaderPanel extends JPanel {
         setLayout(null);
         setVisible(false);
         setBackground(Color.gray);
-        setBounds(300,0,1140,60);
+        setBounds(300,0,1140,40);
     }
 
     public static HeaderPanel getInstance() {

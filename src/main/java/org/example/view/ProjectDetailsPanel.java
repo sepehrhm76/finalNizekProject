@@ -26,10 +26,12 @@ public class ProjectDetailsPanel extends JPanel {
         titleLabel = new JLabel();
         descriptionTextArea = new JTextArea();
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
-        descriptionScrollPane.setBounds(200, 200, 650, 500);
+        descriptionScrollPane.setBounds(200, 300, 650, 500);
         add(descriptionScrollPane);
         add(titleLabel);
         manageMemberBtn();
+        buttons();
+
     }
 
     public void openManageMembersPopup() {
@@ -155,12 +157,48 @@ public class ProjectDetailsPanel extends JPanel {
         this.project = project;
         titleLabel.setText(this.project.getName() + " Project");
         titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 30));
-        titleLabel.setBounds(450,60,500,100);
+        titleLabel.setBounds(400,100,500,100);
         descriptionTextArea.setEditable(false);
         descriptionTextArea.setLineWrap(true);
         descriptionTextArea.setWrapStyleWord(true);
         descriptionTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
         descriptionTextArea.setText(this.project.getDescription());
+    }
+
+    public void buttons() {
+        JButton projectDetailsButton = new JButton("Project Details");
+        projectDetailsButton.setBounds(20, 50, 150, 40);
+        add(projectDetailsButton,0);
+
+        JButton boardsButton = new JButton("Boards");
+        boardsButton.setBounds(190, 50, 150, 40);
+        boardsButton.addActionListener(e -> {
+           Project_Board projectBoard = new Project_Board(this.project);
+           setVisible(false);
+           UiFrame.getInstance().add(projectBoard);
+           projectBoard.setVisible(true);
+        });
+        add(boardsButton,0);
+
+        JButton allIssuesButton = new JButton("All Issues");
+        allIssuesButton.setBounds(360, 50, 150, 40);
+        allIssuesButton.addActionListener(e -> {
+           Project_allIssue projectAllIssue = new Project_allIssue(this.project);
+            setVisible(false);
+            UiFrame.getInstance().add(projectAllIssue);
+            projectAllIssue.setVisible(true);
+        });
+        add(allIssuesButton,0);
+
+        JButton reportButton = new JButton("Reports");
+        reportButton.setBounds(530, 50, 150, 40);
+        reportButton.addActionListener(e -> {
+            Project_Report projectReport = new Project_Report(this.project);
+            setVisible(false);
+            UiFrame.getInstance().add(projectReport);
+            projectReport.setVisible(true);
+        });
+        add(reportButton,0);
     }
 
     public static ProjectDetailsPanel getInstance() {
