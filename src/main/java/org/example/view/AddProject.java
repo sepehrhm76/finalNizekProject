@@ -62,6 +62,10 @@ public class AddProject {
         descriptionLabel.setBounds(20, -120, 300, 500);
         descriptionLabel.setFont(new Font("Arial Rounded", Font.BOLD, 17));
 
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
+        descriptionScrollPane.setBounds(20, 150, 460, 250);
+        dialog.add(descriptionScrollPane);
+
         saveBtn = new JButton("Save");
         saveBtn.setBounds(190, 420, 120, 43);
         saveBtn.setBorder(null);
@@ -78,7 +82,7 @@ public class AddProject {
         });
         showProjectFields();
         dialog.add(nameFiled);
-        dialog.add(descriptionField);
+        dialog.add(descriptionScrollPane);
         dialog.add(nameLabel);
         dialog.add(descriptionLabel);
         dialog.add(saveBtn);

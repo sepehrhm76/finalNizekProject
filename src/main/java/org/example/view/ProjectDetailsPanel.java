@@ -17,12 +17,17 @@ public class ProjectDetailsPanel extends JPanel {
     JLabel titleLabel;
     JDialog manageMembersDialog;
     JDialog addMember;
+    private JTextArea descriptionTextArea;
 
     private ProjectDetailsPanel() {
         setLayout(null);
         setBounds(300, 0, 1140, 1040);
         setVisible(false);
         titleLabel = new JLabel();
+        descriptionTextArea = new JTextArea();
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
+        descriptionScrollPane.setBounds(200, 200, 650, 500);
+        add(descriptionScrollPane);
         add(titleLabel);
         manageMemberBtn();
     }
@@ -151,6 +156,11 @@ public class ProjectDetailsPanel extends JPanel {
         titleLabel.setText(this.project.getName() + " Project");
         titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 30));
         titleLabel.setBounds(450,60,500,100);
+        descriptionTextArea.setEditable(false);
+        descriptionTextArea.setLineWrap(true);
+        descriptionTextArea.setWrapStyleWord(true);
+        descriptionTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        descriptionTextArea.setText(this.project.getDescription());
     }
 
     public static ProjectDetailsPanel getInstance() {

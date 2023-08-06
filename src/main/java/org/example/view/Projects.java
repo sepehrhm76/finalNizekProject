@@ -83,14 +83,11 @@ public class Projects extends JPanel implements TableModel {
                         int column = projectTable.columnAtPoint(e.getPoint());
 
                         if (row >= 0) {
-                            if (column >= 0 && column <= 1) {
+                            if (column >= 0 && column <= 2) {
                                 Project selectedProject = projectController.getAllProject().get(row);
                                 ProjectDetailsPanel.getInstance().setVisible(true);
                                 ProjectDetailsPanel.getInstance().setUpData(selectedProject);
                                 setVisible(false);
-                            } else {
-                                String description = (String) projectTable.getValueAt(row, 2);
-                                showDescriptionDialog(description);
                             }
                         }
                     }

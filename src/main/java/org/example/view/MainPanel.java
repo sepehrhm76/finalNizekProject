@@ -34,6 +34,7 @@ public class MainPanel extends JPanel {
         add(projectsButton);
 
         projectsButton.addActionListener(e -> {
+
             members.setVisible(false);
             projects.setVisible(true);
             projectDetailsPanel.setVisible(false);
