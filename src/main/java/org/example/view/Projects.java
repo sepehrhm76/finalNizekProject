@@ -94,29 +94,7 @@ public class Projects extends JPanel implements TableModel {
                 }
             });
         }
-        private void showDescriptionDialog(String description) {
-            JDialog descriptionDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Description", true);
-            descriptionDialog.setLayout(new BorderLayout());
-            descriptionDialog.setSize(500, 200);
-            descriptionDialog.setLocationRelativeTo(null);
 
-            JTextArea descriptionTextArea = new JTextArea(description);
-            descriptionTextArea.setBackground(Color.WHITE);
-            descriptionTextArea.setLineWrap(true);
-            descriptionTextArea.setWrapStyleWord(true);
-            descriptionTextArea.setEditable(false);
-
-            JScrollPane scrollPane = new JScrollPane(descriptionTextArea);
-            descriptionDialog.add(scrollPane, BorderLayout.CENTER);
-
-            JButton okButton = new JButton("OK");
-            okButton.addActionListener(e -> descriptionDialog.dispose());
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            buttonPanel.add(okButton);
-            descriptionDialog.add(buttonPanel, BorderLayout.SOUTH);
-
-            descriptionDialog.setVisible(true);
-        }
 
 
     @Override

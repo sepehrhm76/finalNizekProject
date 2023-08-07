@@ -1,15 +1,15 @@
 package org.example.Model;
 
 public enum IssueType {
-    STORY,
-    TASK,
-    BUG;
+    story,
+    task,
+    bug;
 
     public static IssueType fromString(String input) {
         return switch (input) {
-            case "Story" -> STORY;
-            case "Task" -> TASK;
-            case "Bug" -> BUG;
+            case "story" -> story;
+            case "task" -> task;
+            case "bug" -> bug;
             default -> throw new IllegalArgumentException(String.format("%s is not valid Type", input));
         };
     }
@@ -17,9 +17,9 @@ public enum IssueType {
     @Override
     public String toString() {
         return switch (this) {
-            case STORY -> "Story";
-            case TASK -> "Task";
-            case BUG -> "Bug";
+            case story -> "story";
+            case task -> "task";
+            case bug -> "bug";
         };
     }
 

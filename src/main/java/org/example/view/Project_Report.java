@@ -50,6 +50,9 @@ public class Project_Report extends JPanel {
 
         JButton reportButton = new JButton("Reports");
         reportButton.setBounds(830, 50, 150, 40);
+        allIssuesButton.addActionListener(e -> {
+
+        });
         add(reportButton);
     }
 }

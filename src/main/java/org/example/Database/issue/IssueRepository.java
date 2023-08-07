@@ -121,7 +121,6 @@ public class IssueRepository {
         String cDate = result.getString(IssueColumns.cDate.toString());
         return new Issue(id, title, description, tag, type, priority, user_id,project_id,cDate);
     }
-
 }
 
 

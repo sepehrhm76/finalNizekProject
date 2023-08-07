@@ -4,7 +4,7 @@ public enum IssueColumns {
     id("id"),
     title("title"),
     description("description"),
-    tag("tag"),
+    tag("tags"),
     type("type"),
     priority("priority"),
     user_id("user_id"),
