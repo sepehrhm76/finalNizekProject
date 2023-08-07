@@ -14,7 +14,7 @@ public class Project_Board extends JPanel {
         setVisible(false);
         buttons();
         JButton jButton = new JButton("board");
-        jButton.setBounds(500,500,100,100);
+        jButton.setBounds(500, 500, 100, 100);
         add(jButton);
     }
 
@@ -22,9 +22,10 @@ public class Project_Board extends JPanel {
         JButton projectDetailsButton = new JButton("Project Details");
         projectDetailsButton.setBounds(320, 50, 150, 40);
         projectDetailsButton.addActionListener(e -> {
+            setVisible(false);
             ProjectDetailsPanel.getInstance().setVisible(true);
             ProjectDetailsPanel.getInstance().setUpData(this.project);
-            setVisible(false);
+
         });
         add(projectDetailsButton);
 
@@ -35,8 +36,8 @@ public class Project_Board extends JPanel {
         JButton allIssuesButton = new JButton("All Issues");
         allIssuesButton.setBounds(660, 50, 150, 40);
         allIssuesButton.addActionListener(e -> {
-            Project_allIssue projectAllIssue = new Project_allIssue(this.project);
             setVisible(false);
+            Project_allIssue projectAllIssue = new Project_allIssue(this.project);
             UiFrame.getInstance().add(projectAllIssue);
             projectAllIssue.setVisible(true);
         });
@@ -45,10 +46,10 @@ public class Project_Board extends JPanel {
         JButton reportButton = new JButton("Reports");
         reportButton.setBounds(830, 50, 150, 40);
         reportButton.addActionListener(e -> {
-           Project_Report projectReport = new Project_Report(this.project);
-           setVisible(false);
-           UiFrame.getInstance().add(projectReport);
-           projectReport.setVisible(true);
+            setVisible(false);
+            Project_Report projectReport = new Project_Report(this.project);
+            UiFrame.getInstance().add(projectReport);
+            projectReport.setVisible(true);
         });
         add(reportButton);
     }

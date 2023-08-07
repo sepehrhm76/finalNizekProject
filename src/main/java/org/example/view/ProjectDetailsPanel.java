@@ -4,19 +4,20 @@ import org.example.Conroller.Project_UserController;
 import org.example.Conroller.UserController;
 import org.example.Model.Project;
 import org.example.Model.User;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectDetailsPanel extends JPanel {
     private static ProjectDetailsPanel instance = null;
-    private Project project;
     private final Project_UserController projectUserController = Project_UserController.getInstance();
     UserController userController = new UserController();
     JLabel titleLabel;
     JDialog manageMembersDialog;
     JDialog addMember;
+    private Project project;
     private JTextArea descriptionTextArea;
 
     private ProjectDetailsPanel() {
@@ -34,6 +35,12 @@ public class ProjectDetailsPanel extends JPanel {
 
     }
 
+    public static ProjectDetailsPanel getInstance() {
+        if (instance == null)
+            instance = new ProjectDetailsPanel();
+        return instance;
+    }
+
     public void openManageMembersPopup() {
         manageMembersDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Manage Members", true);
         manageMembersDialog.setLayout(new BorderLayout());
@@ -45,7 +52,7 @@ public class ProjectDetailsPanel extends JPanel {
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         List<JCheckBox> checkBoxes = new ArrayList<>();
 
-        for (User user: userList) {
+        for (User user : userList) {
             String userData = user.getFirstName() + "  -  " +
                     user.getLastName() + "  -  " +
                     user.getEmail() + "  -  " +
@@ -154,12 +161,11 @@ public class ProjectDetailsPanel extends JPanel {
         add(manageMembersButton);
     }
 
-
     public void setUpData(Project project) {
         this.project = project;
         titleLabel.setText(this.project.getName() + " Project");
         titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 30));
-        titleLabel.setBounds(400,100,500,100);
+        titleLabel.setBounds(400, 100, 500, 100);
         descriptionTextArea.setEditable(false);
         descriptionTextArea.setLineWrap(true);
         descriptionTextArea.setWrapStyleWord(true);
@@ -170,42 +176,36 @@ public class ProjectDetailsPanel extends JPanel {
     public void buttons() {
         JButton projectDetailsButton = new JButton("Project Details");
         projectDetailsButton.setBounds(20, 50, 150, 40);
-        add(projectDetailsButton,0);
+        add(projectDetailsButton, 0);
 
         JButton boardsButton = new JButton("Boards");
         boardsButton.setBounds(190, 50, 150, 40);
         boardsButton.addActionListener(e -> {
-           Project_Board projectBoard = new Project_Board(this.project);
-           setVisible(false);
-           UiFrame.getInstance().add(projectBoard);
-           projectBoard.setVisible(true);
+            setVisible(false);
+            Project_Board projectBoard = new Project_Board(this.project);
+            UiFrame.getInstance().add(projectBoard);
+            projectBoard.setVisible(true);
         });
-        add(boardsButton,0);
+        add(boardsButton, 0);
 
         JButton allIssuesButton = new JButton("All Issues");
         allIssuesButton.setBounds(360, 50, 150, 40);
         allIssuesButton.addActionListener(e -> {
-           Project_allIssue projectAllIssue = new Project_allIssue(this.project);
             setVisible(false);
+            Project_allIssue projectAllIssue = new Project_allIssue(this.project);
             UiFrame.getInstance().add(projectAllIssue);
             projectAllIssue.setVisible(true);
         });
-        add(allIssuesButton,0);
+        add(allIssuesButton, 0);
 
         JButton reportButton = new JButton("Reports");
         reportButton.setBounds(530, 50, 150, 40);
         reportButton.addActionListener(e -> {
-            Project_Report projectReport = new Project_Report(this.project);
             setVisible(false);
+            Project_Report projectReport = new Project_Report(this.project);
             UiFrame.getInstance().add(projectReport);
             projectReport.setVisible(true);
         });
-        add(reportButton,0);
-    }
-
-    public static ProjectDetailsPanel getInstance() {
-        if (instance == null)
-            instance = new ProjectDetailsPanel();
-        return instance;
+        add(reportButton, 0);
     }
 }

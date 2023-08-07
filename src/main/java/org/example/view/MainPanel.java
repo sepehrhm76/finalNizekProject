@@ -52,9 +52,11 @@ public class MainPanel extends JPanel {
         membersButton.addActionListener(e -> {
             projects.setVisible(false);
             ProjectDetailsPanel.getInstance().setVisible(false);
-            members.setVisible(true);
             Members.getInstance().userTable.setVisible(false);
             Members.getInstance().userTable.setVisible(true);
+            members.setVisible(false);
+            members.setVisible(true);
+
         });
     }
     public static MainPanel getInstance() {
