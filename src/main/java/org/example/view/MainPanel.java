@@ -1,5 +1,7 @@
 package org.example.view;
 
+import org.example.Model.Project;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -51,11 +53,8 @@ public class MainPanel extends JPanel {
         add(membersButton);
         membersButton.addActionListener(e -> {
             projects.setVisible(false);
-            ProjectDetailsPanel.getInstance().setVisible(false);
-            Members.getInstance().userTable.setVisible(false);
-            Members.getInstance().userTable.setVisible(true);
-            members.setVisible(false);
             members.setVisible(true);
+            projectDetailsPanel.setVisible(false);
 
         });
     }
