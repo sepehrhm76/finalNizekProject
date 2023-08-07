@@ -132,10 +132,12 @@ public class ProjectDetailsPanel extends JPanel {
             }
             if (addedMembersCount > 0) {
                 JOptionPane.showMessageDialog(null, addedMembersCount + " member(s) added.");
+                addMember.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "No members selected.");
+                addMember.dispose();
             }
-            manageMembersDialog.setVisible(false);
+            manageMembersDialog.dispose();
             openManageMembersPopup();
             addMember.dispose();
         });

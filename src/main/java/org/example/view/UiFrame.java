@@ -28,7 +28,7 @@ public class UiFrame extends JFrame {
         add(projects);
         add(projectDetailsPanel);
         add(members);
-        switchToMainPanel();
+//        switchToMainPanel();
 
     }
 
