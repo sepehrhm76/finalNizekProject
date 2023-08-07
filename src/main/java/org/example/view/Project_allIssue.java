@@ -26,6 +26,7 @@ public class Project_allIssue extends JPanel implements TableModel {
         setVisible(false);
         buttons();
         addIssueBtn();
+        createTable();
     }
 
     public void addIssueBtn() {
@@ -40,8 +41,6 @@ public class Project_allIssue extends JPanel implements TableModel {
         addIssue.addActionListener(e -> {
 
         });
-
-        createTable();
     }
 
     public void createTable() {
@@ -68,7 +67,7 @@ public class Project_allIssue extends JPanel implements TableModel {
                     JOptionPane.YES_NO_OPTION
             );
             if (option == JOptionPane.YES_OPTION) {
-                Issue issueToDelete = issueController.getAllIssues().get(rowIndex);
+                Issue issueToDelete = issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex);
                 issueController.removeIssue(issueToDelete);
                 issuesTable.setVisible(false);
                 issuesTable.setVisible(true);
@@ -119,7 +118,7 @@ public class Project_allIssue extends JPanel implements TableModel {
 
     @Override
     public int getRowCount() {
-        return issueController.getAllIssues().size();
+        return issueController.getIssuesByProjectId(this.project.getId()).size();
     }
 
     @Override
@@ -157,14 +156,14 @@ public class Project_allIssue extends JPanel implements TableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> issueController.getAllIssues().get(rowIndex).getId();
-            case 1 -> issueController.getAllIssues().get(rowIndex).getTitle();
-            case 2 -> issueController.getAllIssues().get(rowIndex).getDescription();
-            case 3 -> issueController.getAllIssues().get(rowIndex).getTag();
-            case 4 -> issueController.getAllIssues().get(rowIndex).getType();
-            case 5 -> issueController.getAllIssues().get(rowIndex).getPriority();
-            case 6 -> issueController.getAllIssues().get(rowIndex).getUser_id();
-            case 7 -> issueController.getAllIssues().get(rowIndex).getCDate();
+            case 0 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getId();
+            case 1 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getTitle();
+            case 2 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getDescription();
+            case 3 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getTag();
+            case 4 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getType();
+            case 5 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getPriority();
+            case 6 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getUser_id();
+            case 7 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getCDate();
             default -> null;
         };
     }

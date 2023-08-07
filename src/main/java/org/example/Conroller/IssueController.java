@@ -34,7 +34,7 @@ public class IssueController {
         }
     }
 
-    public List<Issue> getAllIssues() {
-        return issueRepository.getAll();
+    public List<Issue> getIssuesByProjectId(int projectId) {
+        return issueRepository.getIssueByProjectId(projectId);
     }
 }

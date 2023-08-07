@@ -89,11 +89,11 @@ public class IssueRepository {
         return null;
     }
 
-    public List<Issue> getAll() {
+    public List<Issue> getIssueByProjectId(int projectId) {
         ArrayList<Issue> list = new ArrayList<>();
 
-        String query = String.format("SELECT * FROM %s", TABLE_NAME);
-        ResultSet result = sqlite.executeQuery(query);
+        String query = String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, IssueColumns.project_id);
+        ResultSet result = sqlite.executeQuery(query, projectId);
         try {
             while (result.next()) {
                 list.add(this.createIssueFromResultSet(result));
