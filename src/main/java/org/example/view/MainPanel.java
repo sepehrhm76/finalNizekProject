@@ -12,7 +12,6 @@ public class MainPanel extends JPanel {
     private static MainPanel instance = null;
     Members members = Members.getInstance();
     Projects projects = Projects.getInstance();
-    ProjectDetailsPanel projectDetailsPanel = ProjectDetailsPanel.getInstance();
     JButton projectsButton;
     JButton membersButton;
 
@@ -25,6 +24,11 @@ public class MainPanel extends JPanel {
         projectsBtn();
         membersButtonInMain();
     }
+
+    public void removeAllPanels() {
+        if (projects != null) projects.setVisible(false);
+        if (members != null) members.setVisible(false);
+    }
     private void projectsBtn() {
         projectsButton = new JButton("projects");
         projectsButton.setBounds(25, 100, 250, 45);
@@ -36,11 +40,8 @@ public class MainPanel extends JPanel {
         add(projectsButton);
 
         projectsButton.addActionListener(e -> {
-
-            members.setVisible(false);
+            removeAllPanels();
             projects.setVisible(true);
-            projectDetailsPanel.setVisible(false);
-
         });
     }
     public void membersButtonInMain() {
@@ -52,10 +53,8 @@ public class MainPanel extends JPanel {
         membersButton.setOpaque(true);
         add(membersButton);
         membersButton.addActionListener(e -> {
-            projects.setVisible(false);
+            removeAllPanels();
             members.setVisible(true);
-            projectDetailsPanel.setVisible(false);
-
         });
     }
     public static MainPanel getInstance() {

@@ -10,7 +10,6 @@ public class UiFrame extends JFrame {
     LoginPanel loginPanel = LoginPanel.getInstance();
     MainPanel mainPanel = MainPanel.getInstance();
     HeaderPanel headerPanel = HeaderPanel.getInstance();
-    ProjectDetailsPanel projectDetailsPanel = ProjectDetailsPanel.getInstance();
 
 
     private UiFrame() {
@@ -26,9 +25,8 @@ public class UiFrame extends JFrame {
         add(mainPanel);
         add(headerPanel);
         add(projects);
-        add(projectDetailsPanel);
         add(members);
-//        switchToMainPanel();
+        switchToMainPanel();
 
     }
 
@@ -36,7 +34,7 @@ public class UiFrame extends JFrame {
             loginPanel.setVisible(false);
             mainPanel.setVisible(true);
             headerPanel.setVisible(true);
-            projects.setVisible(true);
+            MainPanel.getInstance().projectsButton.doClick();
             repaint();
     }
     public static UiFrame getInstance() {

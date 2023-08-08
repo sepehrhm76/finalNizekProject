@@ -19,6 +19,7 @@ public class Projects extends JPanel implements TableModel {
     JTable projectTable = new JTable();
     JButton addProject;
     ProjectController projectController = new ProjectController();
+    InsideProjectButtons insideProjectButtons;
 
     private Projects(){
         setLayout(null);
@@ -26,6 +27,15 @@ public class Projects extends JPanel implements TableModel {
         setBounds(300,0,1140,1040);
         createTable();
         addProjectBtn();
+        headTitle();
+    }
+
+    public void headTitle() {
+        JLabel memberHeadTitle = new JLabel("Projects");
+        memberHeadTitle.setBounds(350, -100, 1000, 500);
+        memberHeadTitle.setForeground(new Color(33, 51, 99));
+        memberHeadTitle.setFont(new Font("Arial Rounded", Font.BOLD, 100));
+        add(memberHeadTitle);
     }
 
 
@@ -85,8 +95,13 @@ public class Projects extends JPanel implements TableModel {
                         if (row >= 0) {
                             if (column >= 0 && column <= 2) {
                                 Project selectedProject = projectController.getAllProject().get(row);
-                                ProjectDetailsPanel.getInstance().setVisible(true);
-                                ProjectDetailsPanel.getInstance().setUpData(selectedProject);
+                                if (insideProjectButtons != null) {
+                                    insideProjectButtons.setVisible(false);
+                                }
+                                insideProjectButtons = new InsideProjectButtons(selectedProject);
+                                UiFrame.getInstance().add(insideProjectButtons);
+                                insideProjectButtons.setVisible(true);
+                                insideProjectButtons.projectDetailsButton.doClick();
                                 setVisible(false);
                             }
                         }

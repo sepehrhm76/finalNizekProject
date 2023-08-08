@@ -27,6 +27,7 @@ public class Members extends JPanel implements TableModel{
         setBounds(0,0,1140,1040);
         addUserBtn();
         createTable();
+        headTitle();
     }
     public void addUserBtn() {
         addUserBtn = new JButton("Add User");
@@ -41,6 +42,15 @@ public class Members extends JPanel implements TableModel{
             AddUser addUserObject = new AddUser(addUserBtn, null);
         });
     }
+
+    public void headTitle() {
+        JLabel memberHeadTitle = new JLabel("Members");
+        memberHeadTitle.setBounds(600, -100, 1000, 500);
+        memberHeadTitle.setForeground(new Color(33, 51, 99));
+        memberHeadTitle.setFont(new Font("Arial Rounded", Font.BOLD, 100));
+        add(memberHeadTitle);
+    }
+
     public void createTable() {
         userTable.setModel(this);
         JScrollPane scrollPane = new JScrollPane(userTable);

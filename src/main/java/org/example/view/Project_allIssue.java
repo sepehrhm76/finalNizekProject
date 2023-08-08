@@ -20,18 +20,18 @@ public class Project_allIssue extends JPanel implements TableModel {
     public JTable issuesTable = new JTable();
 
     public Project_allIssue(Project project) {
+        System.out.println("all issues");
         this.project = project;
         setLayout(null);
         setBounds(300, 0, 1140, 1040);
-        setVisible(false);
-        buttons();
+        setVisible(true);
         addIssueBtn();
         createTable();
     }
 
     public void addIssueBtn() {
         addIssue = new JButton("Add Issue");
-        addIssue.setBounds(1320, 50, 120, 40);
+        addIssue.setBounds(1020, 100, 120, 40);
         addIssue.setBorder(null);
         addIssue.setForeground(Color.white);
         addIssue.setBackground(new Color(33, 51, 99));
@@ -46,7 +46,7 @@ public class Project_allIssue extends JPanel implements TableModel {
     public void createTable() {
         issuesTable.setModel(this);
         JScrollPane scrollPane = new JScrollPane(issuesTable);
-        scrollPane.setBounds(300, 100, 1140, 940);
+        scrollPane.setBounds(20, 160, 1100, 840);
         add(scrollPane, BorderLayout.CENTER);
         setColumnWidths();
         issuesTable.setRowSelectionAllowed(false);
@@ -195,40 +195,6 @@ public class Project_allIssue extends JPanel implements TableModel {
         columnModel.getColumn(9).setPreferredWidth(50);
     }
 
-    public void buttons() {
-        JButton projectDetailsButton = new JButton("Project Details");
-        projectDetailsButton.setBounds(320, 50, 150, 40);
-        projectDetailsButton.addActionListener(e -> {
-            setVisible(false);
-            ProjectDetailsPanel.getInstance().setVisible(true);
-            ProjectDetailsPanel.getInstance().setUpData(this.project);
-        });
-        add(projectDetailsButton);
-
-        JButton boardsButton = new JButton("Boards");
-        boardsButton.setBounds(490, 50, 150, 40);
-        boardsButton.addActionListener(e -> {
-            setVisible(false);
-            Project_Board projectBoard = new Project_Board(this.project);
-            UiFrame.getInstance().add(projectBoard);
-            projectBoard.setVisible(true);
-        });
-        add(boardsButton);
-
-        JButton allIssuesButton = new JButton("All Issues");
-        allIssuesButton.setBounds(660, 50, 150, 40);
-        add(allIssuesButton);
-
-        JButton reportButton = new JButton("Reports");
-        reportButton.setBounds(830, 50, 150, 40);
-        reportButton.addActionListener(e -> {
-            setVisible(false);
-            Project_Report projectReport = new Project_Report(this.project);
-            UiFrame.getInstance().add(projectReport);
-            projectReport.setVisible(true);
-        });
-        add(reportButton);
-    }
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer(String title) {

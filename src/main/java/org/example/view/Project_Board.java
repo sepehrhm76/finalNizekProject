@@ -8,49 +8,17 @@ public class Project_Board extends JPanel {
     Project project;
 
     public Project_Board(Project project) {
+        System.out.println("BOARD");
         this.project = project;
         setLayout(null);
         setBounds(300, 0, 1140, 1040);
-        setVisible(false);
-        buttons();
+        setVisible(true);
+        JLabel hi=new JLabel("HIIII");
+        hi.setBounds(50,50,100,1000);
+        add(hi);
+
         JButton jButton = new JButton("board");
         jButton.setBounds(500, 500, 100, 100);
         add(jButton);
-    }
-
-    public void buttons() {
-        JButton projectDetailsButton = new JButton("Project Details");
-        projectDetailsButton.setBounds(320, 50, 150, 40);
-        projectDetailsButton.addActionListener(e -> {
-            setVisible(false);
-            ProjectDetailsPanel.getInstance().setVisible(true);
-            ProjectDetailsPanel.getInstance().setUpData(this.project);
-
-        });
-        add(projectDetailsButton);
-
-        JButton boardsButton = new JButton("Boards");
-        boardsButton.setBounds(490, 50, 150, 40);
-        add(boardsButton);
-
-        JButton allIssuesButton = new JButton("All Issues");
-        allIssuesButton.setBounds(660, 50, 150, 40);
-        allIssuesButton.addActionListener(e -> {
-            setVisible(false);
-            Project_allIssue projectAllIssue = new Project_allIssue(this.project);
-            UiFrame.getInstance().add(projectAllIssue);
-            projectAllIssue.setVisible(true);
-        });
-        add(allIssuesButton);
-
-        JButton reportButton = new JButton("Reports");
-        reportButton.setBounds(830, 50, 150, 40);
-        reportButton.addActionListener(e -> {
-            setVisible(false);
-            Project_Report projectReport = new Project_Report(this.project);
-            UiFrame.getInstance().add(projectReport);
-            projectReport.setVisible(true);
-        });
-        add(reportButton);
     }
 }
