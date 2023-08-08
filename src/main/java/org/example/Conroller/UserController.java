@@ -43,6 +43,15 @@ public class UserController {
        return userRepository.getAll();
     }
 
+    public User getUserById(int userId) {
+        for (User user : userRepository.getAll()) {
+            if (user.getId() == userId) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     public List<User> getAllUsersNotInProject(int projectId) {
         return userRepository.getAllUsersNotInProject(projectId);
     }

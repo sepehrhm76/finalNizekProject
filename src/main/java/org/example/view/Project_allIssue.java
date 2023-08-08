@@ -1,8 +1,11 @@
 package org.example.view;
 
 import org.example.Conroller.IssueController;
+import org.example.Conroller.UserController;
 import org.example.Model.Issue;
 import org.example.Model.Project;
+import org.example.Model.User;
+
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -18,6 +21,7 @@ public class Project_allIssue extends JPanel implements TableModel {
     JButton addIssue;
     IssueController issueController = new IssueController();
     public JTable issuesTable = new JTable();
+    UserController userController = new UserController();
 
     public Project_allIssue(Project project) {
         System.out.println("all issues");
@@ -62,7 +66,7 @@ public class Project_allIssue extends JPanel implements TableModel {
         issuesTable.getColumn("Delete").setCellRenderer(new Members.ButtonRenderer("Delete"));
         issuesTable.getColumn("Delete").setCellEditor(new Members.ButtonEditor("Delete", new JCheckBox(), rowIndex -> {
             int option = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to delete this member?",
+                    "Are you sure you want to delete this issue?",
                     "Confirmation",
                     JOptionPane.YES_NO_OPTION
             );
@@ -81,10 +85,10 @@ public class Project_allIssue extends JPanel implements TableModel {
                 if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
                     int row = issuesTable.rowAtPoint(e.getPoint());
                     int column = issuesTable.columnAtPoint(e.getPoint());
-                    // Only execute if the double click happened on a valid row and column
                     if (row >= 0 && column >= 0) {
-                        // Get the value of the cell and print it
+                        String columnTitle = issuesTable.getColumnName(column);
                         Object cellValue = issuesTable.getValueAt(row, column);
+                        showDescriptionDialog(columnTitle, cellValue.toString());
 
                     }
                 }
@@ -92,13 +96,13 @@ public class Project_allIssue extends JPanel implements TableModel {
         });
     }
 
-    private void showDescriptionDialog(String description) {
-        JDialog descriptionDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Description", true);
+    private void showDescriptionDialog(String columnTitle, String data) {
+        JDialog descriptionDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), columnTitle, true);
         descriptionDialog.setLayout(new BorderLayout());
         descriptionDialog.setSize(500, 200);
         descriptionDialog.setLocationRelativeTo(null);
 
-        JTextArea descriptionTextArea = new JTextArea(description);
+        JTextArea descriptionTextArea = new JTextArea(data);
         descriptionTextArea.setBackground(Color.WHITE);
         descriptionTextArea.setLineWrap(true);
         descriptionTextArea.setWrapStyleWord(true);
@@ -155,18 +159,39 @@ public class Project_allIssue extends JPanel implements TableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return switch (columnIndex) {
-            case 0 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getId();
-            case 1 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getTitle();
-            case 2 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getDescription();
-            case 3 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getTag();
-            case 4 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getType();
-            case 5 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getPriority();
-            case 6 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getUser_id();
-            case 7 -> issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex).getCDate();
-            default -> null;
-        };
+        Issue issue = issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex);
+
+        switch (columnIndex) {
+            case 0:
+                return issue.getId();
+            case 1:
+                return issue.getTitle();
+            case 2:
+                return issue.getDescription();
+            case 3:
+                return issue.getTag();
+            case 4:
+                return issue.getType();
+            case 5:
+                return issue.getPriority();
+            case 6:
+                int userId = issue.getUser_id();
+                UserController userController = new UserController();
+                User user = userController.getUserById(userId);
+
+                if (user != null) {
+                    return " (ID: " + user.getId() + ")" +user.getFirstName() + " " + user.getLastName();
+                } else {
+                    return "Unknown User";
+                }
+
+            case 7:
+                return issue.getCDate();
+            default:
+                return null;
+        }
     }
+
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -183,16 +208,16 @@ public class Project_allIssue extends JPanel implements TableModel {
     private void setColumnWidths() {
         TableColumnModel columnModel = issuesTable.getColumnModel();
 
-        columnModel.getColumn(0).setPreferredWidth(10);
-        columnModel.getColumn(1).setPreferredWidth(100);
-        columnModel.getColumn(2).setPreferredWidth(130);
+        columnModel.getColumn(0).setPreferredWidth(40);
+        columnModel.getColumn(1).setPreferredWidth(150);
+        columnModel.getColumn(2).setPreferredWidth(200);
         columnModel.getColumn(3).setPreferredWidth(100);
-        columnModel.getColumn(4).setPreferredWidth(50);
-        columnModel.getColumn(5).setPreferredWidth(50);
-        columnModel.getColumn(6).setPreferredWidth(50);
-        columnModel.getColumn(7).setPreferredWidth(50);
-        columnModel.getColumn(8).setPreferredWidth(50);
-        columnModel.getColumn(9).setPreferredWidth(50);
+        columnModel.getColumn(4).setPreferredWidth(100);
+        columnModel.getColumn(5).setPreferredWidth(80);
+        columnModel.getColumn(6).setPreferredWidth(180);
+        columnModel.getColumn(7).setPreferredWidth(120);
+        columnModel.getColumn(8).setPreferredWidth(70);
+        columnModel.getColumn(9).setPreferredWidth(70);
     }
 
 

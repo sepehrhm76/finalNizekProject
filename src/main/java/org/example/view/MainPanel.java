@@ -26,7 +26,10 @@ public class MainPanel extends JPanel {
     }
 
     public void removeAllPanels() {
-        if (projects != null) projects.setVisible(false);
+        if (projects != null) {
+            projects.setVisible(false);
+       if (projects.insideProjectButtons != null) projects.insideProjectButtons.setVisible(false);
+        }
         if (members != null) members.setVisible(false);
     }
     private void projectsBtn() {

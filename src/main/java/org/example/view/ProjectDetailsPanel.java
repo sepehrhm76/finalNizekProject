@@ -27,7 +27,7 @@ public class ProjectDetailsPanel extends JPanel {
         titleLabel = new JLabel();
         descriptionTextArea = new JTextArea();
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
-        descriptionScrollPane.setBounds(200, 300, 650, 500);
+        descriptionScrollPane.setBounds(200, 200, 650, 500);
         add(descriptionScrollPane);
         add(titleLabel);
         manageMemberBtn();
@@ -162,8 +162,9 @@ public class ProjectDetailsPanel extends JPanel {
     public void setUpData(Project project) {
         this.project = project;
         titleLabel.setText(this.project.getName() + " Project");
-        titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 30));
-        titleLabel.setBounds(400, 100, 500, 100);
+        titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 40));
+        titleLabel.setBounds(400, 50, 500, 100);
+        titleLabel.setForeground(new Color(33, 51, 99));
         descriptionTextArea.setEditable(false);
         descriptionTextArea.setLineWrap(true);
         descriptionTextArea.setWrapStyleWord(true);
