@@ -37,6 +37,7 @@ public class AddIssue {
 
         initFields();
         setupUI();
+        showIssueFields();
         showAddIssueDialog();
     }
 
@@ -77,7 +78,7 @@ public class AddIssue {
                     JOptionPane.showMessageDialog(dialog, "Title, Description and Type fields must be filled.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                editeIssue();
+//                editeIssue();
             }
         });
     }
@@ -152,8 +153,14 @@ public class AddIssue {
             err.printStackTrace();
         }
     }
-    public void editeIssue() {
-
+    public void showIssueFields() {
+        if (issue != null) {
+            titleField.setText(issue.getTitle());
+            descriptionArea.setText(issue.getDescription());
+            tagField.setText(issue.getTag());
+            typeComboBox.getSelectedItem();
+            priorityComboBox.getSelectedItem();
+        }
     }
     private void showErrorPopup(String errorMessage) {
         JOptionPane.showMessageDialog(dialog, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
