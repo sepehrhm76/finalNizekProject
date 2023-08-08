@@ -18,10 +18,9 @@ import java.awt.event.MouseEvent;
 
 public class Project_allIssue extends JPanel implements TableModel {
     Project project;
-    JButton addIssue;
+    JButton addIssueBtn;
     IssueController issueController = new IssueController();
     public JTable issuesTable = new JTable();
-    UserController userController = new UserController();
 
     public Project_allIssue(Project project) {
         System.out.println("all issues");
@@ -34,16 +33,16 @@ public class Project_allIssue extends JPanel implements TableModel {
     }
 
     public void addIssueBtn() {
-        addIssue = new JButton("Add Issue");
-        addIssue.setBounds(1020, 100, 120, 40);
-        addIssue.setBorder(null);
-        addIssue.setForeground(Color.white);
-        addIssue.setBackground(new Color(33, 51, 99));
-        addIssue.setOpaque(true);
-        add(addIssue);
+        addIssueBtn = new JButton("Add Issue");
+        addIssueBtn.setBounds(1020, 100, 120, 40);
+        addIssueBtn.setBorder(null);
+        addIssueBtn.setForeground(Color.white);
+        addIssueBtn.setBackground(new Color(33, 51, 99));
+        addIssueBtn.setOpaque(true);
+        add(addIssueBtn);
 
-        addIssue.addActionListener(e -> {
-
+        addIssueBtn.addActionListener(e -> {
+            AddIssue addIssue = new AddIssue(addIssueBtn,null);
         });
     }
 
@@ -60,7 +59,7 @@ public class Project_allIssue extends JPanel implements TableModel {
         issuesTable.getColumn("Edit").setCellRenderer(new Members.ButtonRenderer("Edit"));
         issuesTable.getColumn("Edit").setCellEditor(new Members.ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
 
-//            AddUser addUserObject = new AddUser(addUserBtn, userController.getAllUser().get(rowIndex));
+            AddIssue editeIssueData = new AddIssue(addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex));
         }));
 
         issuesTable.getColumn("Delete").setCellRenderer(new Members.ButtonRenderer("Delete"));
@@ -81,7 +80,6 @@ public class Project_allIssue extends JPanel implements TableModel {
         issuesTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Check for double-click (left mouse button)
                 if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
                     int row = issuesTable.rowAtPoint(e.getPoint());
                     int column = issuesTable.columnAtPoint(e.getPoint());
