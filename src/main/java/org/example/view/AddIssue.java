@@ -5,11 +5,11 @@ import org.example.Log.Logger;
 import org.example.Model.Issue;
 import org.example.Model.IssuePriority;
 import org.example.Model.IssueType;
+import org.example.Model.Project;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class AddIssue {
     Issue issue;
@@ -21,9 +21,13 @@ public class AddIssue {
     JComboBox<IssueType> typeComboBox;
     JComboBox<IssuePriority> priorityComboBox;
     IssueController issueController = new IssueController();
+    Project project;
+    AddIssueListener addIssueListener;
 
-    public AddIssue(JButton addIssue, Issue issue) {
+    public AddIssue(AddIssueListener addIssueListener, JButton addIssue, Issue issue, Project project) {
         this.issue = issue;
+        this.project = project;
+        this.addIssueListener = addIssueListener;
 
         if (issue == null) {
             dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addIssue), "Add Issue", true);
@@ -68,9 +72,12 @@ public class AddIssue {
         saveBtn.addActionListener(e -> {
             if (issue == null) {
                 if (isValidInput()) {
+                    saveNewIssueData();
                 } else {
                     JOptionPane.showMessageDialog(dialog, "Title, Description and Type fields must be filled.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                 }
+            } else {
+                editeIssue();
             }
         });
     }
@@ -105,11 +112,17 @@ public class AddIssue {
         priorityComboBox.setBounds(500, 350, 200, 25);
 
         dialog.add(createLabel("Assign to user:", 90, 500, 100, 25));
-
-        dialog.add(saveBtn);
-        saveBtn.setBounds(350, 700, 100, 25);
-
         dialog.setResizable(false);
+        dialog.add(saveBtn);
+
+
+        saveBtn.setBorder(null);
+        saveBtn.setForeground(Color.white);
+        saveBtn.setBackground(new Color(33, 51, 99));
+        saveBtn.setOpaque(true);
+        saveBtn.setBounds(350, 700, 120, 43);
+
+
     }
 
     private JLabel createLabel(String text, int x, int y, int width, int height) {
@@ -117,23 +130,36 @@ public class AddIssue {
         label.setBounds(x, y, width, height);
         return label;
     }
+
     public void saveNewIssueData() {
         try {
-
             issueController.addIssue(
                     titleField.getText(),
-                    descriptionArea.getText()
-            );
-            JOptionPane.showMessageDialog(dialog, "Project added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-            projects.projectTable.setVisible(false);
-            projects.projectTable.setVisible(true);
-
+                    descriptionArea.getText(),
+                    tagField.getText(),
+                    IssueType.fromString(typeComboBox.getSelectedItem().toString()),
+                    IssuePriority.fromString(priorityComboBox.getSelectedItem().toString()),
+                    null,
+                    this.project.getId(),
+                    null
+                    );
+            JOptionPane.showMessageDialog(dialog, "Issue added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            addIssueListener.onIssueCreatedOrEdited();
             dialog.dispose();
-
         } catch (Exception err) {
             showErrorPopup(err.getMessage());
-            Logger.getInstance().logError("Error: " + err.getMessage());
+            Logger.getInstance().logError("Error: " + err.getLocalizedMessage());
+            err.printStackTrace();
         }
+    }
+    public void editeIssue() {
+
+    }
+    private void showErrorPopup(String errorMessage) {
+        JOptionPane.showMessageDialog(dialog, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+     interface AddIssueListener {
+        void onIssueCreatedOrEdited();
     }
 }

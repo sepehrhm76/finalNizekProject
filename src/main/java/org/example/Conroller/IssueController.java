@@ -18,12 +18,12 @@ public class IssueController {
         return issueRepository.hasAnyIssue();
     }
 
-    public void addIssue(String title, String description, String tag, IssueType type, IssuePriority priority, int user_id, int project_id, String cDate){
+    public void addIssue(String title, String description, String tag, IssueType type, IssuePriority priority, Integer user_id, int project_id, String cDate){
         Issue issue = new Issue(title, description, tag, type, priority, user_id, project_id, cDate);
         issueRepository.create(issue);
     }
 
-    public void updateIssue(int id, String title, String description, String tag, IssueType type, IssuePriority priority, int user_id, int project_id, String cDate){
+    public void updateIssue(int id, String title, String description, String tag, IssueType type, IssuePriority priority, Integer user_id, int project_id, String cDate){
         Issue issue = new Issue(title, description, tag, type, priority, user_id, project_id, cDate);
         issueRepository.update(id, issue);
     }

@@ -7,12 +7,12 @@ public class Issue {
     String tag;
     IssueType type;
     IssuePriority priority;
-    int user_id;
+    Integer user_id;
     int project_id;
     String cDate;
 
 
-    public Issue(int id,String title, String description, String tag, IssueType type, IssuePriority priority, int user_id, int project_id, String cDate) {
+    public Issue(int id,String title, String description, String tag, IssueType type, IssuePriority priority, Integer user_id, int project_id, String cDate) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -24,7 +24,7 @@ public class Issue {
         this.cDate = cDate;
     }
 
-    public Issue(String title, String description, String tag, IssueType type, IssuePriority priority, int user_id, int project_id, String cDate) {
+    public Issue(String title, String description, String tag, IssueType type, IssuePriority priority, Integer user_id, int project_id, String cDate) {
         this(-1,title,description,tag,type,priority,user_id,project_id,cDate);
     }
 
@@ -76,11 +76,11 @@ public class Issue {
         this.priority = priority;
     }
 
-    public int getUser_id() {
+    public Integer getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(Integer user_id) {
         this.user_id = user_id;
     }
 

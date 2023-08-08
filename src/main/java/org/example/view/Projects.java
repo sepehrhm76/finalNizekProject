@@ -1,15 +1,11 @@
 package org.example.view;
 
 import org.example.Conroller.ProjectController;
-import org.example.Log.Logger;
 import org.example.Model.Project;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -40,7 +36,7 @@ public class Projects extends JPanel implements TableModel {
 
     public void addProjectBtn() {
         addProject = new JButton("Add Project");
-        addProject.setBounds(1020, 80, 120, 40);
+        addProject.setBounds(1020, 200, 120, 40);
         addProject.setBorder(null);
         addProject.setForeground(Color.white);
         addProject.setBackground(new Color(33, 51, 99));
@@ -58,6 +54,13 @@ public class Projects extends JPanel implements TableModel {
         JScrollPane scrollPane = new JScrollPane(projectTable);
         scrollPane.setBounds(100, 300, 940, 450);
         add(scrollPane, BorderLayout.CENTER);
+
+
+        JTableHeader tableHeader = projectTable.getTableHeader();
+        tableHeader.setFont(new Font("Arial Rounded", Font.BOLD, 12));
+        tableHeader.setBackground(new Color(33, 51, 99));
+        tableHeader.setForeground(Color.white);
+
         setColumnWidths();
         projectTable.setRowSelectionAllowed(false);
         for (int i = 0; i <= 4; i++) {
@@ -108,8 +111,6 @@ public class Projects extends JPanel implements TableModel {
                 }
             });
         }
-
-
 
     @Override
     public int getRowCount() {
@@ -270,4 +271,5 @@ public class Projects extends JPanel implements TableModel {
             return super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
         }
     }
+
 }

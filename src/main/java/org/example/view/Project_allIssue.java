@@ -8,22 +8,18 @@ import org.example.Model.User;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Project_allIssue extends JPanel implements TableModel {
+public class Project_allIssue extends JPanel implements TableModel, AddIssue.AddIssueListener {
     Project project;
     JButton addIssueBtn;
     IssueController issueController = new IssueController();
     public JTable issuesTable = new JTable();
 
     public Project_allIssue(Project project) {
-        System.out.println("all issues");
         this.project = project;
         setLayout(null);
         setBounds(300, 0, 1140, 1040);
@@ -42,7 +38,7 @@ public class Project_allIssue extends JPanel implements TableModel {
         add(addIssueBtn);
 
         addIssueBtn.addActionListener(e -> {
-            AddIssue addIssue = new AddIssue(addIssueBtn,null);
+            AddIssue addIssue = new AddIssue(this,addIssueBtn,null,this.project);
         });
     }
 
@@ -51,6 +47,12 @@ public class Project_allIssue extends JPanel implements TableModel {
         JScrollPane scrollPane = new JScrollPane(issuesTable);
         scrollPane.setBounds(20, 160, 1100, 840);
         add(scrollPane, BorderLayout.CENTER);
+
+        JTableHeader tableHeader = issuesTable.getTableHeader();
+        tableHeader.setFont(new Font("Arial Rounded", Font.BOLD, 12));
+        tableHeader.setBackground(new Color(33, 51, 99));
+        tableHeader.setForeground(Color.white);
+
         setColumnWidths();
         issuesTable.setRowSelectionAllowed(false);
         for (int i = 0; i <= 9; i++) {
@@ -59,7 +61,7 @@ public class Project_allIssue extends JPanel implements TableModel {
         issuesTable.getColumn("Edit").setCellRenderer(new Members.ButtonRenderer("Edit"));
         issuesTable.getColumn("Edit").setCellEditor(new Members.ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
 
-            AddIssue editeIssueData = new AddIssue(addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex));
+            AddIssue editeIssueData = new AddIssue(this, addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex),this.project);
         }));
 
         issuesTable.getColumn("Delete").setCellRenderer(new Members.ButtonRenderer("Delete"));
@@ -180,7 +182,7 @@ public class Project_allIssue extends JPanel implements TableModel {
                 if (user != null) {
                     return " (ID: " + user.getId() + ")" +user.getFirstName() + " " + user.getLastName();
                 } else {
-                    return "Unknown User";
+                    return "        -";
                 }
 
             case 7:
@@ -216,6 +218,12 @@ public class Project_allIssue extends JPanel implements TableModel {
         columnModel.getColumn(7).setPreferredWidth(120);
         columnModel.getColumn(8).setPreferredWidth(70);
         columnModel.getColumn(9).setPreferredWidth(70);
+    }
+
+    @Override
+    public void onIssueCreatedOrEdited() {
+        issuesTable.setVisible(false);
+        issuesTable.setVisible(true);
     }
 
 

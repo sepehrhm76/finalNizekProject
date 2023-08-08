@@ -20,6 +20,7 @@ public class Members extends JPanel implements TableModel{
     UserController userController = new UserController();
     public JTable userTable = new JTable();
     private JButton addUserBtn;
+    private JTextField searchField;
 
     private Members() {
         setLayout(null);
@@ -30,7 +31,7 @@ public class Members extends JPanel implements TableModel{
     }
     public void addUserBtn() {
         addUserBtn = new JButton("Add User");
-        addUserBtn.setBounds(1320, 80, 120, 40);
+        addUserBtn.setBounds(1320, 200, 120, 40);
         addUserBtn.setBorder(null);
         addUserBtn.setForeground(Color.white);
         addUserBtn.setBackground(new Color(33, 51, 99));
@@ -55,7 +56,14 @@ public class Members extends JPanel implements TableModel{
         JScrollPane scrollPane = new JScrollPane(userTable);
         scrollPane.setBounds(400, 300, 940, 450);
         add(scrollPane, BorderLayout.CENTER);
+
+        JTableHeader tableHeader = userTable.getTableHeader();
+        tableHeader.setFont(new Font("Arial Rounded", Font.BOLD, 12));
+        tableHeader.setBackground(new Color(33, 51, 99));
+        tableHeader.setForeground(Color.white);
+
         setColumnWidths();
+
         userTable.setRowSelectionAllowed(false);
         for (int i = 0; i <= 4; i++) {
             userTable.getColumnModel().getColumn(i).setCellRenderer(new NonSelectableCellRenderer());
