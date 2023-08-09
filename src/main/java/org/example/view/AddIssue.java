@@ -27,10 +27,11 @@ public class AddIssue {
     AddIssueListener addIssueListener;
     User user;
 
-    public AddIssue(AddIssueListener addIssueListener, JButton addIssue, Issue issue, Project project) {
+    public AddIssue(AddIssueListener addIssueListener, JButton addIssue, Issue issue, Project project, User user) {
         this.issue = issue;
         this.project = project;
         this.addIssueListener = addIssueListener;
+        this.user = user;
 
         if (issue == null) {
             dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addIssue), "Add Issue", true);
@@ -203,7 +204,7 @@ public class AddIssue {
             if (!e.getValueIsAdjusting()) {
                 int selectedIndex = userListJList.getSelectedIndex();
                 if (selectedIndex >= 0) {
-                    user=userList.get(selectedIndex);
+                    user = userList.get(selectedIndex);
                     String selectedUserData =user.getId() + user.getFirstName() + user.getLastName();
                     assignUserField.setText(selectedUserData);
                 }
@@ -222,7 +223,9 @@ public class AddIssue {
             tagField.setText(issue.getTag());
             typeComboBox.setSelectedItem(issue.getType().toString());
             priorityComboBox.setSelectedItem(issue.getPriority().toString());
-            if (issue.getUser_id() != -1) {
+            if (user != null) {
+                assignUserField.setText(user.getId() + " " + user.getFirstName() + " " + user.getLastName());
+            } else if (issue.getUser_id() != -1) {
                 assignUserField.setText(issue.getUser_id().toString());
             }
         }

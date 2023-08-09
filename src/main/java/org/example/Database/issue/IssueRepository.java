@@ -85,6 +85,36 @@ public class IssueRepository {
         return null;
     }
 
+    public List<Issue> getIssuesWithAndFilter(int projectId, int userId, IssuePriority priority) {
+        ArrayList<Issue> list = new ArrayList<>();
+
+        String query = String.format("SELECT * FROM %s WHERE %s=? AND %s=? AND %s=?", TABLE_NAME, IssueColumns.project_id, IssueColumns.user_id, IssueColumns.priority);
+        ResultSet result = sqlite.executeQuery(query, projectId, userId, priority.toString());
+        try {
+            while (result.next()) {
+                list.add(this.createIssueFromResultSet(result));
+            }
+        } catch (Exception e) {
+            Logger.getInstance().logError("Error reading ResultSet: " + e.getMessage());
+        }
+        return list;
+    }
+
+    public List<Issue> getIssuesWithOrFilter(int projectId, int userId, IssuePriority priority) {
+        ArrayList<Issue> list = new ArrayList<>();
+
+        String query = String.format("SELECT * FROM %s WHERE %s=? AND %s=? OR %s=?", TABLE_NAME, IssueColumns.project_id, IssueColumns.user_id, IssueColumns.priority);
+        ResultSet result = sqlite.executeQuery(query, projectId, userId, priority.toString());
+        try {
+            while (result.next()) {
+                list.add(this.createIssueFromResultSet(result));
+            }
+        } catch (Exception e) {
+            Logger.getInstance().logError("Error reading ResultSet: " + e.getMessage());
+        }
+        return list;
+    }
+
     public List<Issue> getIssueByProjectId(int projectId) {
         ArrayList<Issue> list = new ArrayList<>();
 

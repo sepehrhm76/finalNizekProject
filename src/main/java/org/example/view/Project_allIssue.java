@@ -44,7 +44,7 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         add(addIssueBtn);
 
         addIssueBtn.addActionListener(e -> {
-            AddIssue addIssue = new AddIssue(this,addIssueBtn,null,this.project);
+            AddIssue addIssue = new AddIssue(this,addIssueBtn,null,this.project, null);
 
             searchField.requestFocus();
         });
@@ -96,8 +96,11 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         }
         issuesTable.getColumn("Edit").setCellRenderer(new Members.ButtonRenderer("Edit"));
         issuesTable.getColumn("Edit").setCellEditor(new Members.ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
-
-            AddIssue editeIssueData = new AddIssue(this, addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex),this.project);
+            Issue issue = issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex);
+            int userId = issue.getUser_id();
+            UserController userController = new UserController();
+            User user = userController.getUserById(userId);
+            AddIssue editeIssueData = new AddIssue(this, addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex),this.project, user);
         }));
 
         issuesTable.getColumn("Delete").setCellRenderer(new Members.ButtonRenderer("Delete"));
