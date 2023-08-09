@@ -2,10 +2,7 @@ package org.example.view;
 
 import org.example.Conroller.IssueController;
 import org.example.Log.Logger;
-import org.example.Model.Issue;
-import org.example.Model.IssuePriority;
-import org.example.Model.IssueType;
-import org.example.Model.Project;
+import org.example.Model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +15,8 @@ public class AddIssue {
     JTextField titleField;
     JTextArea descriptionArea;
     JTextField tagField;
-    JComboBox<IssueType> typeComboBox;
-    JComboBox<IssuePriority> priorityComboBox;
+    JComboBox<String> typeComboBox;
+    JComboBox<String> priorityComboBox;
     IssueController issueController = new IssueController();
     Project project;
     AddIssueListener addIssueListener;
@@ -59,13 +56,13 @@ public class AddIssue {
         typeComboBox = new JComboBox<>();
         typeComboBox.addItem(null);
         for (IssueType type : IssueType.values()) {
-            typeComboBox.addItem(type);
+            typeComboBox.addItem(type.toString());
         }
 
         priorityComboBox = new JComboBox<>();
         priorityComboBox.addItem(null);
         for (IssuePriority priority : IssuePriority.values()) {
-            priorityComboBox.addItem(priority);
+            priorityComboBox.addItem(priority.toString());
         }
 
 
@@ -78,7 +75,11 @@ public class AddIssue {
                     JOptionPane.showMessageDialog(dialog, "Title, Description and Type fields must be filled.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-//                editeIssue();
+                if (isValidInput()) {
+                updateIssueData();
+                } else {
+                    JOptionPane.showMessageDialog(dialog, "Title, Description and Type fields must be filled.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
@@ -143,7 +144,7 @@ public class AddIssue {
                     null,
                     this.project.getId(),
                     null
-                    );
+            );
             JOptionPane.showMessageDialog(dialog, "Issue added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             addIssueListener.onIssueCreatedOrEdited();
             dialog.dispose();
@@ -153,20 +154,46 @@ public class AddIssue {
             err.printStackTrace();
         }
     }
+
     public void showIssueFields() {
         if (issue != null) {
             titleField.setText(issue.getTitle());
             descriptionArea.setText(issue.getDescription());
             tagField.setText(issue.getTag());
-            typeComboBox.getSelectedItem();
-            priorityComboBox.getSelectedItem();
+            typeComboBox.setSelectedItem(issue.getType().toString());
+            priorityComboBox.setSelectedItem(issue.getPriority().toString());
         }
     }
+
     private void showErrorPopup(String errorMessage) {
         JOptionPane.showMessageDialog(dialog, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-     interface AddIssueListener {
+    public void updateIssueData() {
+        try {
+            issueController.updateIssue(
+                    this.issue.getId(),
+                    titleField.getText(),
+                    descriptionArea.getText(),
+                    tagField.getText(),
+                    IssueType.fromString(typeComboBox.getSelectedItem().toString()),
+                    IssuePriority.fromString(priorityComboBox.getSelectedItem().toString()),
+                    null,
+                    this.project.getId(),
+                    null
+            );
+            JOptionPane.showMessageDialog(dialog, "User edited successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            addIssueListener.onIssueCreatedOrEdited();
+            dialog.dispose();
+
+        } catch (Exception err) {
+            showErrorPopup(err.getMessage());
+            Logger.getInstance().logError("Error: " + err.getMessage());
+        }
+    }
+
+
+    interface AddIssueListener {
         void onIssueCreatedOrEdited();
     }
 }
