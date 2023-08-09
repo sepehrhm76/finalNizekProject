@@ -5,6 +5,8 @@ import org.example.Model.User;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
 import java.awt.*;
@@ -58,6 +60,49 @@ public class Members extends JPanel implements TableModel{
         scrollPane.setBounds(400, 300, 940, 450);
         add(scrollPane, BorderLayout.CENTER);
 
+        JLabel searchLabel = new JLabel("Search:");
+        searchLabel.setBounds(350, 260, 60, 30);
+        add(searchLabel);
+
+        JTextField searchField = new JTextField();
+        searchField.setBounds(400, 260, 200, 30);
+        add(searchField);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(this);
+        userTable.setRowSorter(sorter);
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                performSearch(sorter, searchField.getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                performSearch(sorter, searchField.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                performSearch(sorter, searchField.getText());
+            }
+        });
+        userTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Check for double-click (left mouse button)
+                if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
+                    int row = userTable.rowAtPoint(e.getPoint());
+                    int column = userTable.columnAtPoint(e.getPoint());
+                    // Only execute if the double click happened on a valid row and column
+                    if (row >= 0 && column >= 0) {
+                        // Get the value of the cell and print it
+                        Object cellValue = userTable.getValueAt(row, column);
+                        System.out.println("Double-clicked: " + cellValue);
+                        // Add your desired functionality here when a row is double-clicked
+                    }
+                }
+            }
+        });
+
         JTableHeader tableHeader = userTable.getTableHeader();
         tableHeader.setFont(new Font("Arial Rounded", Font.BOLD, 12));
         tableHeader.setBackground(new Color(33, 51, 99));
@@ -107,8 +152,10 @@ public class Members extends JPanel implements TableModel{
                 }
             }
         });
+    }
 
-
+    private void performSearch(TableRowSorter<TableModel> sorter, String searchText) {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
     }
     private void setColumnWidths() {
         TableColumnModel columnModel = userTable.getColumnModel();

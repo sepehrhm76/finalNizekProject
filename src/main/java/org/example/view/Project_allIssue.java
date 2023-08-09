@@ -59,6 +59,10 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(this);
         issuesTable.setRowSorter(sorter);
 
+        JLabel searchLabel = new JLabel("Search:");
+        searchLabel.setBounds(100, 120, 60, 30);
+        add(searchLabel);
+
         searchField.setBounds(150, 120, 200, 30);
         add(searchField);
 

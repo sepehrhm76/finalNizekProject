@@ -4,11 +4,14 @@ import org.example.Conroller.ProjectController;
 import org.example.Model.Project;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 
 public class Projects extends JPanel implements TableModel {
     private static Projects instance = null;
@@ -16,6 +19,7 @@ public class Projects extends JPanel implements TableModel {
     JButton addProject;
     ProjectController projectController = new ProjectController();
     InsideProjectButtons insideProjectButtons;
+    private JTextField searchField;
 
     private Projects(){
         setLayout(null);
@@ -24,6 +28,34 @@ public class Projects extends JPanel implements TableModel {
         createTable();
         addProjectBtn();
         headTitle();
+
+        searchField = new JTextField();
+        searchField.setBounds(100, 250, 200, 25);
+        add(searchField);
+
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
+        });
+    }
+
+    private void filterTable() {
+        String searchText = searchField.getText().toLowerCase();
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(projectTable.getModel());
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText)); // Case-insensitive filter
+        projectTable.setRowSorter(sorter);
     }
 
     public void headTitle() {
@@ -55,6 +87,9 @@ public class Projects extends JPanel implements TableModel {
         JScrollPane scrollPane = new JScrollPane(projectTable);
         scrollPane.setBounds(100, 300, 940, 450);
         add(scrollPane, BorderLayout.CENTER);
+
+        projectTable.setRowSorter(new TableRowSorter<>(projectTable.getModel()));
+
 
 
         JTableHeader tableHeader = projectTable.getTableHeader();
