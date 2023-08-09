@@ -51,7 +51,7 @@ public class ProjectDetailsPanel extends JPanel {
         List<JCheckBox> checkBoxes = new ArrayList<>();
 
         for (User user : userList) {
-            String userData = user.getFirstName() + "  -  " +
+            String userData = user.getId() + "  -  " + user.getFirstName() + "  -  " +
                     user.getLastName() + "  -  " +
                     user.getEmail() + "  -  " +
                     user.getRole();
@@ -113,7 +113,7 @@ public class ProjectDetailsPanel extends JPanel {
         List<JCheckBox> checkBoxes = new ArrayList<>();
 
         for (User user : userList) {
-            String userData = user.getFirstName() + "  -  " +
+            String userData = user.getId() + "  -  " + user.getFirstName() + "  -  " +
                     user.getLastName() + "  -  " +
                     user.getEmail() + "  -  " +
                     user.getRole();

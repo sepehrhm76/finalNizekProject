@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
     private MainPanel(){
         setLayout(null);
         setVisible(false);
-        setBackground(Color.darkGray);
+        setBackground(new Color(119,141,169));
         setBounds(0,0,300,1040);
         projectsBtn();
         membersButtonInMain();

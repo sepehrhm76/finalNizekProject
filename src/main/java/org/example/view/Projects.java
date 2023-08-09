@@ -20,6 +20,7 @@ public class Projects extends JPanel implements TableModel {
     private Projects(){
         setLayout(null);
         setBounds(300,0,1140,1040);
+        setBackground(Color.WHITE);
         createTable();
         addProjectBtn();
         headTitle();

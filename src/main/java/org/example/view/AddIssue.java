@@ -1,11 +1,13 @@
 package org.example.view;
 
 import org.example.Conroller.IssueController;
+import org.example.Conroller.Project_UserController;
 import org.example.Log.Logger;
 import org.example.Model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 
 public class AddIssue {
@@ -19,9 +21,11 @@ public class AddIssue {
     JComboBox<String> typeComboBox;
     JComboBox<String> priorityComboBox;
     IssueController issueController = new IssueController();
+    Project_UserController projectUserController = Project_UserController.getInstance();
     Project project;
     JButton selectUserButton;
     AddIssueListener addIssueListener;
+    User user;
 
     public AddIssue(AddIssueListener addIssueListener, JButton addIssue, Issue issue, Project project) {
         this.issue = issue;
@@ -161,9 +165,11 @@ public class AddIssue {
         userSelectionDialog.setLayout(null);
         userSelectionDialog.setSize(500, 500);
         userSelectionDialog.setLocationRelativeTo(dialog);
+
+        showProjectUsersToAddToIssue(userSelectionDialog);
+
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(e -> {
-
             userSelectionDialog.dispose();
         });
         confirmButton.setBounds(200, 400, 100, 30);
@@ -172,10 +178,49 @@ public class AddIssue {
         confirmButton.setBackground(new Color(33, 51, 99));
         confirmButton.setOpaque(true);
         userSelectionDialog.add(confirmButton);
+
         userSelectionDialog.setVisible(true);
     }
 
+    private void showProjectUsersToAddToIssue(JDialog parentDialog) {
+        List<User> userList = projectUserController.getUsersByProject(this.project);
+
+        DefaultListModel<String> userListModel = new DefaultListModel<>();
+        for (User user : userList) {
+            String userData = user.getId() + "  -  " + user.getFirstName() + "  -  " +
+                    user.getLastName() + "  -  " +
+                    user.getEmail() + "  -  " +
+                    user.getRole();
+            userListModel.addElement(userData);
+        }
+
+
+        JList<String> userListJList = new JList<>(userListModel);
+        userListJList.setCellRenderer(new CheckboxListCellRenderer<>());
+        userListJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        userListJList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedIndex = userListJList.getSelectedIndex();
+                if (selectedIndex >= 0) {
+                    user=userList.get(selectedIndex);
+                    String selectedUserData =user.getId() + user.getFirstName() + user.getLastName();
+                    assignUserField.setText(selectedUserData);
+                }
+            }
+        });
+
+        JScrollPane userListScrollPane = new JScrollPane(userListJList);
+        userListScrollPane.setBounds(10, 10, 470, 350);
+        parentDialog.add(userListScrollPane);
+    }
+
+
     public void saveNewIssueData() {
+        int selectedUserId = -1;
+        if (user != null){
+            selectedUserId = user.getId();
+        }
         try {
             issueController.addIssue(
                     titleField.getText(),
@@ -183,7 +228,7 @@ public class AddIssue {
                     tagField.getText(),
                     IssueType.fromString(typeComboBox.getSelectedItem().toString()),
                     IssuePriority.fromString(priorityComboBox.getSelectedItem().toString()),
-                    null,
+                    selectedUserId,
                     this.project.getId(),
                     null
             );
@@ -220,7 +265,7 @@ public class AddIssue {
                     tagField.getText(),
                     IssueType.fromString(typeComboBox.getSelectedItem().toString()),
                     IssuePriority.fromString(priorityComboBox.getSelectedItem().toString()),
-                    null,
+                    this.issue.getUser_id(),
                     this.project.getId(),
                     null
             );
@@ -237,5 +282,21 @@ public class AddIssue {
 
     interface AddIssueListener {
         void onIssueCreatedOrEdited();
+    }
+
+    public class CheckboxListCellRenderer<E> extends JCheckBox implements ListCellRenderer<E> {
+        @Override
+        public Component getListCellRendererComponent(JList<? extends E> list, E value, int index,
+                                                      boolean isSelected, boolean cellHasFocus) {
+            setComponentOrientation(list.getComponentOrientation());
+            setSelected(isSelected);
+            setEnabled(list.isEnabled());
+            setFont(list.getFont());
+            setBackground(list.getBackground());
+            setForeground(list.getForeground());
+            setText(value.toString());
+
+            return this;
+        }
     }
 }
