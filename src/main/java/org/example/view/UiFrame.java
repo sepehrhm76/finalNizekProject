@@ -31,7 +31,7 @@ public class UiFrame extends JFrame {
     public void switchToMainPanel() {
             loginPanel.setVisible(false);
             mainPanel.setVisible(true);
-            MainPanel.getInstance().projectsButton.doClick();
+            MainPanel.getInstance().membersButton.doClick();
             repaint();
     }
     public static UiFrame getInstance() {

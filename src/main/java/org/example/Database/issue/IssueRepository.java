@@ -13,8 +13,8 @@ public class IssueRepository {
 
     public boolean create(Issue issue) {
         String query = String.format("INSERT INTO %s " +
-                        "(%s, %s, %s, %s, %s, %s, %s, %s) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                        "(%s, %s, %s, %s, %s, %s, %s) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)",
                 TABLE_NAME,
                 IssueColumns.title.toString(),
                 IssueColumns.description.toString(),
@@ -22,8 +22,7 @@ public class IssueRepository {
                 IssueColumns.type.toString(),
                 IssueColumns.priority.toString(),
                 IssueColumns.user_id.toString(),
-                IssueColumns.project_id.toString(),
-                IssueColumns.cDate.toString()
+                IssueColumns.project_id.toString()
         );
 
         int rowsAffected = sqlite.executeUpdate(query,
@@ -33,14 +32,13 @@ public class IssueRepository {
                 issue.getType(),
                 issue.getPriority(),
                 issue.getUser_id(),
-                issue.getProject_id(),
-                issue.getCDate()
+                issue.getProject_id()
         );
         return rowsAffected > 0;
     }
 
     public boolean update(int id, Issue issue) {
-        String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?",
+        String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?",
                 TABLE_NAME,
                 IssueColumns.title.toString(),
                 IssueColumns.description.toString(),
@@ -49,7 +47,6 @@ public class IssueRepository {
                 IssueColumns.priority.toString(),
                 IssueColumns.user_id.toString(),
                 IssueColumns.project_id.toString(),
-                IssueColumns.cDate.toString(),
                 IssueColumns.id.toString()
         );
 
@@ -61,7 +58,6 @@ public class IssueRepository {
                 issue.getPriority(),
                 issue.getUser_id(),
                 issue.getProject_id(),
-                issue.getCDate(),
                 id);
         return rowsAffected > 0;
     }

@@ -5,7 +5,9 @@ import org.example.Conroller.UserController;
 import org.example.Model.Issue;
 import org.example.Model.Project;
 import org.example.Model.User;
-
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
@@ -186,7 +188,18 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
                 }
 
             case 7:
-                return issue.getCDate();
+                String utcDateString = issue.getCDate();
+                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                ZonedDateTime utcDateTime = ZonedDateTime.parse(utcDateString, inputFormatter.withZone(ZoneId.of("UTC")));
+
+                ZoneId localZone = ZoneId.systemDefault();
+                ZonedDateTime localDateTime = utcDateTime.withZoneSameInstant(localZone);
+
+                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String formattedLocalDateTime = localDateTime.format(outputFormatter);
+
+                return formattedLocalDateTime;
+
             default:
                 return null;
         }
