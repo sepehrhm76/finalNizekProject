@@ -15,10 +15,12 @@ public class AddIssue {
     JTextField titleField;
     JTextArea descriptionArea;
     JTextField tagField;
+    JTextField assignUserField;
     JComboBox<String> typeComboBox;
     JComboBox<String> priorityComboBox;
     IssueController issueController = new IssueController();
     Project project;
+    JButton selectUserButton;
     AddIssueListener addIssueListener;
 
     public AddIssue(AddIssueListener addIssueListener, JButton addIssue, Issue issue, Project project) {
@@ -41,7 +43,7 @@ public class AddIssue {
     public void showAddIssueDialog() {
         dialog.setLayout(null);
         dialog.setResizable(false);
-        dialog.setSize(800, 800);
+        dialog.setSize(800, 650);
         dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(UiFrame.getInstance()));
         dialog.setVisible(true);
     }
@@ -52,6 +54,8 @@ public class AddIssue {
         descriptionArea = new JTextArea();
 
         tagField = new JTextField();
+
+        assignUserField = new JTextField();
 
         typeComboBox = new JComboBox<>();
         typeComboBox.addItem(null);
@@ -64,6 +68,12 @@ public class AddIssue {
         for (IssuePriority priority : IssuePriority.values()) {
             priorityComboBox.addItem(priority.toString());
         }
+
+        selectUserButton = new JButton("Select User");
+        selectUserButton.addActionListener(e -> {
+            openUserSelectionDialog();
+        });
+
 
 
         saveBtn = new JButton("Save");
@@ -113,16 +123,28 @@ public class AddIssue {
         dialog.add(priorityComboBox);
         priorityComboBox.setBounds(500, 350, 200, 25);
 
-        dialog.add(createLabel("Assign to user:", 90, 500, 100, 25));
+        dialog.add(createLabel("Assign to user:", 90, 430, 100, 25));
+        dialog.add(assignUserField);
+        assignUserField.setBounds(200,430,200,25);
+        assignUserField.setEditable(false);
+
+
+        dialog.add(selectUserButton);
+
         dialog.setResizable(false);
         dialog.add(saveBtn);
-
 
         saveBtn.setBorder(null);
         saveBtn.setForeground(Color.white);
         saveBtn.setBackground(new Color(33, 51, 99));
         saveBtn.setOpaque(true);
-        saveBtn.setBounds(350, 700, 120, 43);
+        saveBtn.setBounds(350, 550, 120, 43);
+
+        selectUserButton.setBorder(null);
+        selectUserButton.setForeground(Color.white);
+        selectUserButton.setBackground(new Color(33, 51, 99));
+        selectUserButton.setOpaque(true);
+        selectUserButton.setBounds(420, 432, 100, 20);
 
 
     }
@@ -131,6 +153,26 @@ public class AddIssue {
         JLabel label = new JLabel(text);
         label.setBounds(x, y, width, height);
         return label;
+    }
+
+    private void openUserSelectionDialog() {
+        JDialog userSelectionDialog = new JDialog(dialog, "Select User", true);
+        userSelectionDialog.setResizable(false);
+        userSelectionDialog.setLayout(null);
+        userSelectionDialog.setSize(500, 500);
+        userSelectionDialog.setLocationRelativeTo(dialog);
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(e -> {
+
+            userSelectionDialog.dispose();
+        });
+        confirmButton.setBounds(200, 400, 100, 30);
+        confirmButton.setBorder(null);
+        confirmButton.setForeground(Color.white);
+        confirmButton.setBackground(new Color(33, 51, 99));
+        confirmButton.setOpaque(true);
+        userSelectionDialog.add(confirmButton);
+        userSelectionDialog.setVisible(true);
     }
 
     public void saveNewIssueData() {
