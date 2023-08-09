@@ -215,6 +215,22 @@ public class AddIssue {
         parentDialog.add(userListScrollPane);
     }
 
+    public void showIssueFields() {
+        if (issue != null) {
+            titleField.setText(issue.getTitle());
+            descriptionArea.setText(issue.getDescription());
+            tagField.setText(issue.getTag());
+            typeComboBox.setSelectedItem(issue.getType().toString());
+            priorityComboBox.setSelectedItem(issue.getPriority().toString());
+            if (issue.getUser_id() != -1) {
+                assignUserField.setText(issue.getUser_id().toString());
+            }
+        }
+    }
+
+    private void showErrorPopup(String errorMessage) {
+        JOptionPane.showMessageDialog(dialog, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
     public void saveNewIssueData() {
         int selectedUserId = -1;
@@ -242,21 +258,11 @@ public class AddIssue {
         }
     }
 
-    public void showIssueFields() {
-        if (issue != null) {
-            titleField.setText(issue.getTitle());
-            descriptionArea.setText(issue.getDescription());
-            tagField.setText(issue.getTag());
-            typeComboBox.setSelectedItem(issue.getType().toString());
-            priorityComboBox.setSelectedItem(issue.getPriority().toString());
-        }
-    }
-
-    private void showErrorPopup(String errorMessage) {
-        JOptionPane.showMessageDialog(dialog, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
     public void updateIssueData() {
+        int selectedUserId = -1;
+        if (user != null){
+            selectedUserId = user.getId();
+        }
         try {
             issueController.updateIssue(
                     this.issue.getId(),
@@ -265,7 +271,7 @@ public class AddIssue {
                     tagField.getText(),
                     IssueType.fromString(typeComboBox.getSelectedItem().toString()),
                     IssuePriority.fromString(priorityComboBox.getSelectedItem().toString()),
-                    this.issue.getUser_id(),
+                    selectedUserId,
                     this.project.getId(),
                     null
             );
