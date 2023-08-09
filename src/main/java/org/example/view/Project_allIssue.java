@@ -9,17 +9,21 @@ import java.time.ZonedDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.table.TableRowSorter;
 
 public class Project_allIssue extends JPanel implements TableModel, AddIssue.AddIssueListener {
     Project project;
     JButton addIssueBtn;
     IssueController issueController = new IssueController();
     public JTable issuesTable = new JTable();
+    private JTextField searchField = new JTextField();
 
     public Project_allIssue(Project project) {
         this.project = project;
@@ -41,6 +45,8 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
 
         addIssueBtn.addActionListener(e -> {
             AddIssue addIssue = new AddIssue(this,addIssueBtn,null,this.project);
+
+            searchField.requestFocus();
         });
     }
 
@@ -49,6 +55,30 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         JScrollPane scrollPane = new JScrollPane(issuesTable);
         scrollPane.setBounds(20, 160, 1100, 840);
         add(scrollPane, BorderLayout.CENTER);
+
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(this);
+        issuesTable.setRowSorter(sorter);
+
+        searchField.setBounds(150, 120, 200, 30);
+        add(searchField);
+
+        // Add a DocumentListener to the search field to perform real-time filtering
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                performSearch();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                performSearch();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                performSearch();
+            }
+        });
 
         JTableHeader tableHeader = issuesTable.getTableHeader();
         tableHeader.setFont(new Font("Arial Rounded", Font.BOLD, 12));
@@ -96,6 +126,14 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
                 }
             }
         });
+    }
+
+    private void performSearch() {
+        String searchText = searchField.getText();
+        TableRowSorter<TableModel> sorter = (TableRowSorter<TableModel>) issuesTable.getRowSorter();
+
+        // Set the filter based on the search text
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText)); // (?i) for case-insensitive search
     }
 
     private void showDescriptionDialog(String columnTitle, String data) {
