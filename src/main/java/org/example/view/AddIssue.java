@@ -251,10 +251,10 @@ public class AddIssue {
 
     public void saveNewIssueData() {
         int selectedUserId = -1;
+        IssueState selectedState = null;
         if (user != null){
             selectedUserId = user.getId();
         }
-        IssueState selectedState = null;
 
         if (stateComboBox.getSelectedItem() != null) {
             selectedState = IssueState.fromString(stateComboBox.getSelectedItem().toString());
@@ -284,8 +284,12 @@ public class AddIssue {
 
     public void updateIssueData() {
         int selectedUserId = -1;
+        IssueState selectedState = null;
         if (user != null){
             selectedUserId = user.getId();
+        }
+        if (stateComboBox.getSelectedItem() != null) {
+            selectedState = IssueState.fromString(stateComboBox.getSelectedItem().toString());
         }
         try {
             issueController.updateIssue(
@@ -298,7 +302,7 @@ public class AddIssue {
                     selectedUserId,
                     this.project.getId(),
                     null,
-                    IssueState.fromString(stateComboBox.getSelectedItem().toString())
+                    selectedState
             );
             JOptionPane.showMessageDialog(dialog, "Issue edited successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             addIssueListener.onIssueCreatedOrEdited();
@@ -309,7 +313,6 @@ public class AddIssue {
             Logger.getInstance().logError("Error: " + err.getMessage());
         }
     }
-
 
     interface AddIssueListener {
         void onIssueCreatedOrEdited();

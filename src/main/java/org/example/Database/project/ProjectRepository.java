@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectRepository {
+
     private static final String TABLE_NAME = "project";
 
 
@@ -86,7 +87,7 @@ public class ProjectRepository {
         return count > 0;
     }
 
-    private Project createProjectFromResultSet(ResultSet result) throws Exception {
+    public Project createProjectFromResultSet(ResultSet result) throws Exception {
         int id = result.getInt(ProjectColumns.id.toString());
         String name = result.getString(ProjectColumns.name.toString());
         String description = result.getString(ProjectColumns.description.toString());

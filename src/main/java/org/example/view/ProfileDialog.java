@@ -1,6 +1,6 @@
 package org.example.view;
 
-        import org.example.Log.Logger;
+import org.example.Log.Logger;
         import org.example.Conroller.UserController;
         import org.example.Model.User;
         import org.example.Model.UserRole;
@@ -59,15 +59,12 @@ public class ProfileDialog {
         logout.setOpaque(true);
         dialog.add(logout);
 
-
         saveBtn.addActionListener(e -> {
             updateUserData();
         });
 
         logout.addActionListener(e -> {
-            dialog.dispose();
-            UiFrame.getInstance().logout();
-            userController.logout();
+
         });
         //firstName Field
         firstname = new JTextField();
@@ -183,6 +180,7 @@ public class ProfileDialog {
             checkPass.setText(user.getPassword());
         }
     }
+
     public void updateUserData() {
         try {
             validateForm();

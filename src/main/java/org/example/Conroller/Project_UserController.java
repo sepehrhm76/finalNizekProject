@@ -45,6 +45,17 @@ public class Project_UserController {
         return projectUserRepository.getUsersByProject(projectId);
     }
 
+    public List<Project> getsProjectsByUser() {
+        User user = UserController.getInstance().getCurrentUser();
+        if (user == null) {
+            return null;
+        }
+
+        int userId = user.getId();
+
+        return projectUserRepository.getProjectsByUser(userId);
+    }
+
     public static Project_UserController getInstance() {
         if (instance == null)
             instance = new Project_UserController();

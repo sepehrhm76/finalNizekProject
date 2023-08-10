@@ -52,6 +52,7 @@ public class LoginPanel extends JPanel {
         errorLabel();
         loginButtonAndListener();
     }
+
     public void headerLabel() {
         JLabel headerLabel = new JLabel("Sepiaj PMT");
         headerLabel.setForeground(Color.white);
@@ -59,6 +60,7 @@ public class LoginPanel extends JPanel {
         headerLabel.setFont(new Font("Arial Rounded", Font.BOLD, 100));
         add(headerLabel);
     }
+
     public void middlePanel() {
         //Middle panel setUp
         members.setVisible(false);
@@ -68,6 +70,7 @@ public class LoginPanel extends JPanel {
         middlePanel.setLayout(null);
         add(middlePanel);
     }
+
     public void emailLabel() {
         JLabel emailLabel = new JLabel("Enter your Email Address:");
         emailLabel.setForeground(Color.black);
@@ -75,6 +78,7 @@ public class LoginPanel extends JPanel {
         emailLabel.setFont(new Font("Arial Rounded", Font.BOLD, 17));
         middlePanel.add(emailLabel);
     }
+
     public void passwordLabel() {
         JLabel passwordLabel = new JLabel("Enter your Password:");
         passwordLabel.setForeground(Color.black);
@@ -82,6 +86,7 @@ public class LoginPanel extends JPanel {
         passwordLabel.setFont(new Font("Arial Rounded", Font.BOLD, 16));
         middlePanel.add(passwordLabel);
     }
+
     public void emailFieldOption() {
         emailField = new JTextField();
         emailField.setBackground(new Color(219, 234, 255));
@@ -89,6 +94,7 @@ public class LoginPanel extends JPanel {
         emailField.setBorder(null);
         middlePanel.add(emailField);
     }
+
     public void passwordFieldOption() {
         passwordField = new JPasswordField();
         passwordField.setBackground(new Color(219, 234, 255));
@@ -96,6 +102,7 @@ public class LoginPanel extends JPanel {
         passwordField.setBorder(null);
         middlePanel.add(passwordField);
     }
+
     public void middlePanelHeader1() {
         JLabel secondPanelLabel = new JLabel("Log In To Manage your Projects");
         secondPanelLabel.setForeground(Color.black);
@@ -103,6 +110,7 @@ public class LoginPanel extends JPanel {
         secondPanelLabel.setFont(new Font("Arial Rounded", Font.BOLD, 25));
         middlePanel.add(secondPanelLabel);
     }
+
     public void middlePanelHeader2() {
         JLabel secondPanelLabelB = new JLabel("EASILY");
         secondPanelLabelB.setForeground(new Color(33, 51, 99));
@@ -110,6 +118,7 @@ public class LoginPanel extends JPanel {
         secondPanelLabelB.setFont(new Font("Arial Rounded", Font.BOLD, 70));
         middlePanel.add(secondPanelLabelB);
     }
+
     public void errorLabel() {
         errorLabel = new JLabel("");
         errorLabel.setForeground(Color.red);
@@ -117,6 +126,7 @@ public class LoginPanel extends JPanel {
         errorLabel.setFont(new Font("Arial Rounded", Font.BOLD, 15));
         middlePanel.add(errorLabel);
     }
+
     public void loginButtonAndListener() {
         JButton loginButton = new JButton("Log In");
         loginButton.setBounds(190, 454, 120, 43);
@@ -176,6 +186,7 @@ public class LoginPanel extends JPanel {
 
         messageTimer.setRepeats(false);
     }
+
     public static LoginPanel getInstance() {
         if (instance == null)
             instance = new LoginPanel();

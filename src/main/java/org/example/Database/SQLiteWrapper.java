@@ -1,9 +1,6 @@
 package org.example.Database;
 
 import org.example.Log.Logger;
-import org.example.Main;
-
-import java.io.File;
 import java.sql.*;
 
 public class SQLiteWrapper {

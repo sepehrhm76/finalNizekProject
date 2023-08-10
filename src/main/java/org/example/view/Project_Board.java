@@ -1,12 +1,11 @@
 package org.example.view;
 
 import org.example.Conroller.BoardController;
+import org.example.Conroller.PermissionController;
 import org.example.Model.Board;
 import org.example.Model.Project;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
 import java.awt.*;
@@ -49,6 +48,7 @@ public class Project_Board extends JPanel implements TableModel, AddBoard.AddBoa
         addBoard.setForeground(Color.white);
         addBoard.setBackground(new Color(33, 51, 99));
         addBoard.setOpaque(true);
+        addBoard.setVisible(PermissionController.addDeleteAndEditBoard());
         add(addBoard);
         addBoard.addActionListener(e -> {
             AddBoard addBoard1 = new AddBoard(this,addBoard, null,this.project);
@@ -68,7 +68,11 @@ public class Project_Board extends JPanel implements TableModel, AddBoard.AddBoa
 
         setColumnWidths();
         boardTable.setRowSelectionAllowed(false);
-        for (int i = 0; i <= 3; i++) {
+        int count = 1;
+        if(PermissionController.deleteAndEditProject()) {
+            count = 3;
+        }
+        for (int i = 0; i <= count; i++) {
             boardTable.getColumnModel().getColumn(i).setCellRenderer(new NonSelectableCellRenderer());
         }
         boardTable.getColumn("Edit").setCellRenderer(new Project_Board.ButtonRenderer("Edit"));
@@ -140,7 +144,11 @@ public class Project_Board extends JPanel implements TableModel, AddBoard.AddBoa
 
     @Override
     public int getColumnCount() {
-        return 4;
+        if (PermissionController.addDeleteAndEditBoard()) {
+            return 4;
+        } else {
+            return 2;
+        }
     }
 
     @Override
@@ -190,8 +198,10 @@ public class Project_Board extends JPanel implements TableModel, AddBoard.AddBoa
 
         columnModel.getColumn(0).setPreferredWidth(10);
         columnModel.getColumn(1).setPreferredWidth(100);
-        columnModel.getColumn(2).setPreferredWidth(20);
-        columnModel.getColumn(3).setPreferredWidth(20);
+        if(PermissionController.addDeleteAndEditBoard()) {
+            columnModel.getColumn(2).setPreferredWidth(20);
+            columnModel.getColumn(3).setPreferredWidth(20);
+        }
     }
 
     @Override
@@ -212,7 +222,6 @@ public class Project_Board extends JPanel implements TableModel, AddBoard.AddBoa
             return this;
         }
     }
-
 
     private static class ButtonEditor extends DefaultCellEditor {
         private final JButton button;
@@ -266,11 +275,9 @@ public class Project_Board extends JPanel implements TableModel, AddBoard.AddBoa
         }
     }
 
-
     interface ButtonCallback {
         void onClick(int rowIndex);
     }
-
 
     private static class NonSelectableCellRenderer extends DefaultTableCellRenderer {
         @Override

@@ -1,6 +1,7 @@
 package org.example.view;
 
 import org.example.Conroller.PermissionController;
+import org.example.Conroller.UserController;
 
 import javax.swing.*;
 
@@ -34,6 +35,7 @@ public class UiFrame extends JFrame {
     }
 
     public void switchToMainPanel() {
+
         mainPanel = MainPanel.getInstance();
         members = Members.getInstance();
         projects = Projects.getInstance();
@@ -53,6 +55,9 @@ public class UiFrame extends JFrame {
     }
 
     public void logout() {
+        mainPanel.reset();
+        members.reset();
+        projects.reset();
         UiFrame.instance = new UiFrame();
         loginPanel.setVisible(true);
         mainPanel.setVisible(false);

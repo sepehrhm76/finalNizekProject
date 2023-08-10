@@ -10,6 +10,7 @@ import org.example.Model.IssueType;
 import java.util.List;
 
 public class IssueController {
+
     private final IssueRepository issueRepository = new IssueRepository();
 
     public IssueController() {

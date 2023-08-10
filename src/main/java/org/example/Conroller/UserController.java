@@ -13,11 +13,11 @@ import java.util.regex.Pattern;
 public class UserController {
     private static UserController instance = null;
     private final UserRepository userRepository = new UserRepository();
-
-
+    private User currentUser;
 
     private UserController(){
     }
+
     public User getCurrentUser() {
         return currentUser;
     }
@@ -25,9 +25,6 @@ public class UserController {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
-
-    private User currentUser;
-
 
     public boolean hasAnyUser() {
         return userRepository.hasAnyUser();
@@ -71,15 +68,13 @@ public class UserController {
     }
 
     public boolean isValidEmail(String email) {
-        String emailRegex = "^.*$";
-//        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
     public boolean isValidPassword(String password) {
-        // Regular expression to validate password format
         /**
          * The password must contain at least one uppercase letter.
          * The password must contain at least one lowercase letter.
@@ -87,15 +82,14 @@ public class UserController {
          * The password must be at least 8 characters long
          **/
 
-//        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$";
-        String passwordRegex = "^.*$";
+        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$";
         Pattern pattern = Pattern.compile(passwordRegex);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
 
     public boolean validateUserLogin(String email, String password) {
-        for (User user : userRepository.getAll()) {
+        for (User user : userRepository.getAllUsers()) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 return true;
             }
@@ -114,6 +108,7 @@ public class UserController {
     public void logout() {
         currentUser = null;
     }
+
     public static UserController getInstance() {
         if (instance == null)
             instance = new UserController();

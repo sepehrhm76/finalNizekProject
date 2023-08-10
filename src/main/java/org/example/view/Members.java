@@ -2,17 +2,12 @@ package org.example.view;
 
 import org.example.Conroller.UserController;
 import org.example.Model.User;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
 import java.awt.*;
 import java.util.List;
-import javax.swing.table.TableRowSorter;
-import javax.swing.RowFilter;
+
 
 public class Members extends JPanel implements TableModel{
 
@@ -59,24 +54,6 @@ public class Members extends JPanel implements TableModel{
         scrollPane.setBounds(400, 300, 940, 450);
         add(scrollPane, BorderLayout.CENTER);
 
-        userTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Check for double-click (left mouse button)
-                if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
-                    int row = userTable.rowAtPoint(e.getPoint());
-                    int column = userTable.columnAtPoint(e.getPoint());
-                    // Only execute if the double click happened on a valid row and column
-                    if (row >= 0 && column >= 0) {
-                        // Get the value of the cell and print it
-                        Object cellValue = userTable.getValueAt(row, column);
-                        System.out.println("Double-clicked: " + cellValue);
-                        // Add your desired functionality here when a row is double-clicked
-                    }
-                }
-            }
-        });
-
         JTableHeader tableHeader = userTable.getTableHeader();
         tableHeader.setFont(new Font("Arial Rounded", Font.BOLD, 12));
         tableHeader.setBackground(new Color(33, 51, 99));
@@ -108,25 +85,8 @@ public class Members extends JPanel implements TableModel{
                 userTable.setVisible(true);
             }
         }));
-
-        userTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Check for double-click (left mouse button)
-                if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
-                    int row = userTable.rowAtPoint(e.getPoint());
-                    int column = userTable.columnAtPoint(e.getPoint());
-                    // Only execute if the double click happened on a valid row and column
-                    if (row >= 0 && column >= 0) {
-                        // Get the value of the cell and print it
-                        Object cellValue = userTable.getValueAt(row, column);
-                        System.out.println("Double-clicked: " + cellValue);
-                        // Add your desired functionality here when a row is double-clicked
-                    }
-                }
-            }
-        });
     }
+
     private void setColumnWidths() {
         TableColumnModel columnModel = userTable.getColumnModel();
 
@@ -138,6 +98,7 @@ public class Members extends JPanel implements TableModel{
         columnModel.getColumn(5).setPreferredWidth(10);
         columnModel.getColumn(6).setPreferredWidth(10);
     }
+
     public void refreshTableData() {
     }
     @Override
@@ -212,6 +173,7 @@ public class Members extends JPanel implements TableModel{
             return this;
         }
     }
+
     static class ButtonEditor extends DefaultCellEditor {
         private final JButton button;
         private boolean isPushed;
@@ -262,15 +224,21 @@ public class Members extends JPanel implements TableModel{
             super.fireEditingStopped();
         }
     }
+
     interface ButtonCallback {
         void onClick(int rowIndex);
     }
+
     static class NonSelectableCellRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component component = super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
             return component;
         }
+    }
+
+    public static void reset() {
+        instance = new Members();
     }
 }
 

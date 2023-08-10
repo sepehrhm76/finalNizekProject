@@ -105,7 +105,7 @@ public class Issue {
         this.project_id = project_id;
     }
 
-    public void setcDate(String cDate) {
+    public void setCDate(String cDate) {
         this.cDate = cDate;
     }
 

@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardRepository {
-    private static final String TABLE_NAME = "board";
 
+    private static final String TABLE_NAME = "board";
 
     private final SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
 
@@ -85,6 +85,7 @@ public class BoardRepository {
         }
         return list;
     }
+
     public boolean hasAnyBoard() {
         int count = sqlite.executeUpdate(String.format("SELECT COUNT(*) FROM %s",TABLE_NAME));
         return count > 0;

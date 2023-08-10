@@ -1,6 +1,7 @@
 package org.example.view;
 
 import org.example.Conroller.IssueController;
+import org.example.Conroller.PermissionController;
 import org.example.Conroller.UserController;
 import org.example.Model.Issue;
 import org.example.Model.Project;
@@ -14,7 +15,6 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 public class Project_allIssue extends JPanel implements TableModel, AddIssue.AddIssueListener {
     Project project;
@@ -39,6 +39,7 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         addIssueBtn.setForeground(Color.white);
         addIssueBtn.setBackground(new Color(33, 51, 99));
         addIssueBtn.setOpaque(true);
+        addIssueBtn.setVisible(PermissionController.addDeleteAndEditIssue());
         add(addIssueBtn);
 
         addIssueBtn.addActionListener(e -> {
@@ -61,32 +62,38 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
 
         setColumnWidths();
         issuesTable.setRowSelectionAllowed(false);
-        for (int i = 0; i <= 9; i++) {
+        int count = 7;
+        if(PermissionController.deleteAndEditProject()) {
+            count = 9;
+        }
+        for (int i = 0; i <= count; i++) {
             issuesTable.getColumnModel().getColumn(i).setCellRenderer(new NonSelectableCellRenderer());
         }
-        issuesTable.getColumn("Edit").setCellRenderer(new Project_allIssue.ButtonRenderer("Edit"));
-        issuesTable.getColumn("Edit").setCellEditor(new Project_allIssue.ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
-            Issue issue = issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex);
-            int userId = issue.getUser_id();
-            UserController userController = UserController.getInstance();
-            User user = userController.getUserById(userId);
-            AddIssue editeIssueData = new AddIssue(this, addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex), this.project, user);
-        }));
+        if(PermissionController.deleteAndEditProject()) {
+            issuesTable.getColumn("Edit").setCellRenderer(new Project_allIssue.ButtonRenderer("Edit"));
+            issuesTable.getColumn("Edit").setCellEditor(new Project_allIssue.ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
+                Issue issue = issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex);
+                int userId = issue.getUser_id();
+                UserController userController = UserController.getInstance();
+                User user = userController.getUserById(userId);
+                AddIssue editeIssueData = new AddIssue(this, addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex), this.project, user);
+            }));
 
-        issuesTable.getColumn("Delete").setCellRenderer(new Members.ButtonRenderer("Delete"));
-        issuesTable.getColumn("Delete").setCellEditor(new Members.ButtonEditor("Delete", new JCheckBox(), rowIndex -> {
-            int option = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to delete this issue?",
-                    "Confirmation",
-                    JOptionPane.YES_NO_OPTION
-            );
-            if (option == JOptionPane.YES_OPTION) {
-                Issue issueToDelete = issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex);
-                issueController.removeIssue(issueToDelete);
-                issuesTable.setVisible(false);
-                issuesTable.setVisible(true);
-            }
-        }));
+            issuesTable.getColumn("Delete").setCellRenderer(new Members.ButtonRenderer("Delete"));
+            issuesTable.getColumn("Delete").setCellEditor(new Members.ButtonEditor("Delete", new JCheckBox(), rowIndex -> {
+                int option = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to delete this issue?",
+                        "Confirmation",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (option == JOptionPane.YES_OPTION) {
+                    Issue issueToDelete = issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex);
+                    issueController.removeIssue(issueToDelete);
+                    issuesTable.setVisible(false);
+                    issuesTable.setVisible(true);
+                }
+            }));
+        }
 
         issuesTable.addMouseListener(new MouseAdapter() {
             @Override
@@ -136,7 +143,11 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
 
     @Override
     public int getColumnCount() {
-        return 11;
+        if (PermissionController.addDeleteAndEditIssue()) {
+            return 11;
+        } else {
+            return 9;
+        }
     }
 
     @Override
@@ -227,7 +238,6 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         }
     }
 
-
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     }
@@ -252,8 +262,10 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         columnModel.getColumn(6).setPreferredWidth(180);
         columnModel.getColumn(7).setPreferredWidth(100);
         columnModel.getColumn(8).setPreferredWidth(120);
-        columnModel.getColumn(9).setPreferredWidth(70);
-        columnModel.getColumn(10).setPreferredWidth(70);
+        if (PermissionController.addDeleteAndEditIssue()) {
+            columnModel.getColumn(9).setPreferredWidth(70);
+            columnModel.getColumn(10).setPreferredWidth(70);
+        }
     }
 
     @Override
@@ -261,8 +273,6 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         issuesTable.setVisible(false);
         issuesTable.setVisible(true);
     }
-
-
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer(String title) {
@@ -276,7 +286,6 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
             return this;
         }
     }
-
 
     private static class ButtonEditor extends DefaultCellEditor {
         private final JButton button;
@@ -330,11 +339,9 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         }
     }
 
-
     interface ButtonCallback {
         void onClick(int rowIndex);
     }
-
 
     private static class NonSelectableCellRenderer extends DefaultTableCellRenderer {
         @Override
@@ -342,6 +349,5 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
             return super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
         }
     }
-
 
 }

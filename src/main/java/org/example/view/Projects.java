@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.Conroller.PermissionController;
 import org.example.Conroller.ProjectController;
+import org.example.Conroller.Project_UserController;
 import org.example.Conroller.UserController;
 import org.example.Model.Project;
 
@@ -38,7 +39,6 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
         add(memberHeadTitle);
     }
 
-
     public void addProjectBtn() {
         addProject = new JButton("Add Project");
         addProject.setVisible(PermissionController.showAddProject());
@@ -54,7 +54,6 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
 
     }
 
-
     public void createTable() {
         projectTable.setModel(this);
         JScrollPane scrollPane = new JScrollPane(projectTable);
@@ -69,14 +68,17 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
         setColumnWidths();
 
         projectTable.setRowSelectionAllowed(false);
-        for (int i = 0; i <= 4; i++) {
+        int count = 2;
+        if(PermissionController.deleteAndEditProject()) { count = 4; }
+        for (int i = 0; i <= count; i++) {
             projectTable.getColumnModel().getColumn(i).setCellRenderer(new NonSelectableCellRenderer());
         }
-        projectTable.getColumn("Edit").setCellRenderer(new ButtonRenderer("Edit"));
-        projectTable.getColumn("Edit").setCellEditor(new Projects.ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
+        if(PermissionController.deleteAndEditProject()) {
+            projectTable.getColumn("Edit").setCellRenderer(new ButtonRenderer("Edit"));
+            projectTable.getColumn("Edit").setCellEditor(new Projects.ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
 
-            AddProject addProjectObject = new AddProject(addProject, projectController.getAllProject().get(rowIndex));
-        }));
+                AddProject addProjectObject = new AddProject(addProject, projectController.getAllProject().get(rowIndex));
+            }));
 
             projectTable.getColumn("Delete").setCellRenderer(new ButtonRenderer("Delete"));
             projectTable.getColumn("Delete").setCellEditor(new Projects.ButtonEditor("Delete", new JCheckBox(), rowIndex -> {
@@ -92,6 +94,7 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
                     projectTable.setVisible(true);
                 }
             }));
+        }
 
             projectTable.addMouseListener(new MouseAdapter() {
                 @Override
@@ -120,15 +123,21 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
 
     @Override
     public int getRowCount() {
-        return projectController.getAllProject().size();
+        if (PermissionController.showAllProjects()) {
+            return projectController.getAllProject().size();
+        } else {
+            return Project_UserController.getInstance().getsProjectsByUser().size();
+        }
     }
-
 
     @Override
     public int getColumnCount() {
-        return 5;
+        if (PermissionController.deleteAndEditProject()) {
+            return 5;
+        } else {
+            return 3;
+        }
     }
-
 
     @Override
     public String getColumnName(int columnIndex) {
@@ -142,21 +151,24 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
         }
     }
 
-
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return String.class;
     }
-
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex >= 3;
     }
 
-
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        Project project;
+        if (PermissionController.showAllProjects()) {
+            project = projectController.getAllProject().get(rowIndex);
+        } else {
+            project = Project_UserController.getInstance().getsProjectsByUser().get(rowIndex);
+        }
         switch (columnIndex) {
             case 0: return projectController.getAllProject().get(rowIndex).getId();
             case 1: return projectController.getAllProject().get(rowIndex).getName();
@@ -165,21 +177,17 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
         }
     }
 
-
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     }
-
 
     @Override
     public void addTableModelListener(TableModelListener l) {
     }
 
-
     @Override
     public void removeTableModelListener(TableModelListener l) {
     }
-
 
     private void setColumnWidths() {
         TableColumnModel columnModel = projectTable.getColumnModel();
@@ -187,10 +195,11 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
         columnModel.getColumn(0).setPreferredWidth(10);
         columnModel.getColumn(1).setPreferredWidth(100);
         columnModel.getColumn(2).setPreferredWidth(390);
-        columnModel.getColumn(3).setPreferredWidth(20);
-        columnModel.getColumn(4).setPreferredWidth(20);
+        if (PermissionController.deleteAndEditProject()) {
+            columnModel.getColumn(3).setPreferredWidth(20);
+            columnModel.getColumn(4).setPreferredWidth(20);
+        }
     }
-
 
     public static Projects getInstance() {
         if (instance == null)
@@ -202,7 +211,6 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
     public void whenLoginPanelInOpen() {
         setVisible(false);
     }
-
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer(String title) {
@@ -216,7 +224,6 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
             return this;
         }
     }
-
 
     private static class ButtonEditor extends DefaultCellEditor {
         private final JButton button;
@@ -270,11 +277,9 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
         }
     }
 
-
     interface ButtonCallback {
         void onClick(int rowIndex);
     }
-
 
     private static class NonSelectableCellRenderer extends DefaultTableCellRenderer {
         @Override
@@ -283,4 +288,7 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
         }
     }
 
+    public static void reset() {
+        instance = new Projects();
+    }
 }

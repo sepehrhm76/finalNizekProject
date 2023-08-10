@@ -5,6 +5,7 @@ import org.example.Model.Project;
 import java.util.List;
 
 public class ProjectController {
+
     private static ProjectController instance = null;
     private final ProjectRepository projectRepository = new ProjectRepository();
 

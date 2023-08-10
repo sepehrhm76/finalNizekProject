@@ -106,7 +106,7 @@ public class UserRepository {
         return list;
     }
 
-    private List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         ArrayList<User> list = new ArrayList<>();
 
         String query =String.format("SELECT * FROM %s", TABLE_NAME) ;

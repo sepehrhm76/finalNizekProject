@@ -9,7 +9,6 @@ public class Board {
         this(-1, name, project_id);
     }
 
-
     public Board(int id, String name, int project_id) {
         this.id = id;
         this.name = name;

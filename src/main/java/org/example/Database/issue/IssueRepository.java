@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 public class IssueRepository {
+
     private static final String TABLE_NAME = "issue";
 
     private final SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
