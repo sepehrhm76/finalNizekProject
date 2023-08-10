@@ -100,13 +100,7 @@ public class UserRepository {
     public List<User> getAllUsersNotInProject(int projectId) {
         ArrayList<User> list = new ArrayList<>();
 
-        String query = String.format("""
-                SELECT * FROM %s WHERE NOT EXISTS (
-                    SELECT *
-                    FROM project_user
-                    WHERE project_user.user_id = user.id AND project_user.project_id = ?
-                );
-                """, TABLE_NAME) ;
+        String query = String.format("SELECT * FROM %s WHERE NOT EXISTS ( SELECT * FROM project_user WHERE project_user.user_id = user.id AND project_user.project_id = ?);", TABLE_NAME) ;
         ResultSet result = sqlite.executeQuery(query, projectId);
         try {
             while (result.next()) {

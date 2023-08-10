@@ -150,16 +150,16 @@ public class Members extends JPanel implements TableModel{
     }
     @Override
     public String getColumnName(int columnIndex) {
-        return switch (columnIndex) {
-            case 0 -> "ID";
-            case 1 -> "First Name";
-            case 2 -> "Last Name";
-            case 3 -> "Email";
-            case 4 -> "Role";
-            case 5 -> "Edit";
-            case 6 -> "Delete";
-            default -> null;
-        };
+        switch (columnIndex) {
+            case 0: return "ID";
+            case 1: return "First Name";
+            case 2: return "Last Name";
+            case 3: return "Email";
+            case 4: return "Role";
+            case 5: return "Edit";
+            case 6: return "Delete";
+            default : return null;
+        }
     }
     @Override
     public Class<?> getColumnClass(int columnIndex) {
@@ -174,16 +174,16 @@ public class Members extends JPanel implements TableModel{
     public Object getValueAt(int rowIndex, int columnIndex) {
 
         List<User> users = userController.getAllUser();
-        return switch (columnIndex) {
-            case 0 -> users.get(rowIndex).getId();
-            case 1 -> users.get(rowIndex).getFirstName();
-            case 2 -> users.get(rowIndex).getLastName();
-            case 3 -> users.get(rowIndex).getEmail();
-            case 4 -> users.get(rowIndex).getRole();
-            case 5 -> null;
-            case 6 -> null;
-            default -> null;
-        };
+        switch (columnIndex) {
+            case 0: return users.get(rowIndex).getId();
+            case 1: return users.get(rowIndex).getFirstName();
+            case 2: return users.get(rowIndex).getLastName();
+            case 3: return users.get(rowIndex).getEmail();
+            case 4: return users.get(rowIndex).getRole();
+            case 5: return null;
+            case 6: return null;
+            default: return null;
+        }
     }
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {

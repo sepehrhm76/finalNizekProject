@@ -1,7 +1,9 @@
 package org.example.Database;
 
 import org.example.Log.Logger;
+import org.example.Main;
 
+import java.io.File;
 import java.sql.*;
 
 public class SQLiteWrapper {
@@ -16,6 +18,7 @@ public class SQLiteWrapper {
             // Load the SQLite JDBC driver
             Class.forName("org.sqlite.JDBC");
             // Connect to the SQLite database
+
             connection = DriverManager.getConnection("jdbc:sqlite:" + DatabaseConstant.DATABASE_FILE_NAME);
             Logger.getInstance().logDebug("Connected to the SQLite database.");
 

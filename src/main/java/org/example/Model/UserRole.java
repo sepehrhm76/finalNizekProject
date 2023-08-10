@@ -8,13 +8,13 @@ public enum UserRole {
     DEVELOPER;
 
     public static UserRole fromString(String input) {
-        return switch (input) {
-            case "sa" -> SUPER_ADMIN;
-            case "po" -> PO;
-            case "qa" -> QA;
-            case "dev" -> DEVELOPER;
-            default -> throw new IllegalArgumentException(String.format("%s is not valid UserRole", input));
-        };
+        switch (input) {
+            case "sa": return SUPER_ADMIN;
+            case "po": return PO;
+            case "qa": return QA;
+            case "dev": return DEVELOPER;
+            default: throw new IllegalArgumentException(String.format("%s is not valid UserRole", input));
+        }
     }
 
     public static UserRole[] rolesWithoutSuperAdmin() {
@@ -27,11 +27,12 @@ public enum UserRole {
 
     @Override
     public String toString() {
-        return switch (this) {
-            case SUPER_ADMIN -> "sa";
-            case PO -> "po";
-            case QA -> "qa";
-            case DEVELOPER -> "dev";
-        };
+        switch (this) {
+            case SUPER_ADMIN: return "sa";
+            case PO: return "po";
+            case QA: return "qa";
+            case DEVELOPER: return "dev";
+        }
+        return null;
     }
 }

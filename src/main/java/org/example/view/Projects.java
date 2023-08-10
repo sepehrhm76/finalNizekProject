@@ -129,14 +129,14 @@ public class Projects extends JPanel implements TableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        return switch (columnIndex) {
-            case 0 -> "ID";
-            case 1 -> "Title";
-            case 2 -> "Description";
-            case 3 -> "Edit";
-            case 4 -> "Delete";
-            default -> null;
-        };
+        switch (columnIndex) {
+            case 0: return "ID";
+            case 1: return "Title";
+            case 2: return "Description";
+            case 3: return "Edit";
+            case 4: return "Delete";
+            default: return null;
+        }
     }
 
 
@@ -154,12 +154,12 @@ public class Projects extends JPanel implements TableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return switch (columnIndex) {
-            case 0 -> projectController.getAllProject().get(rowIndex).getId();
-            case 1 -> projectController.getAllProject().get(rowIndex).getName();
-            case 2 -> projectController.getAllProject().get(rowIndex).getDescription();
-            default -> null;
-        };
+        switch (columnIndex) {
+            case 0: return projectController.getAllProject().get(rowIndex).getId();
+            case 1: return projectController.getAllProject().get(rowIndex).getName();
+            case 2: return projectController.getAllProject().get(rowIndex).getDescription();
+            default: return null;
+        }
     }
 
 

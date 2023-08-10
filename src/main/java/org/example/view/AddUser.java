@@ -248,8 +248,8 @@ public class AddUser {
 
         }
         if (!Arrays.equals(password1, password2)) throw new IllegalArgumentException("Passwords do not match.");
-        if (firstname.getText().isBlank()) throw new IllegalArgumentException("Please enter first name.");
-        if (lastName.getText().isBlank()) throw new IllegalArgumentException("Please enter last name.");
+        if (firstname.getText().length() == 0) throw new IllegalArgumentException("Please enter first name.");
+        if (lastName.getText().length() == 0) throw new IllegalArgumentException("Please enter last name.");
         if (!userController.isValidEmail(email.getText())) throw new IllegalArgumentException("Invalid email format.");
         if (role.getSelectedItem().equals("")) throw new IllegalArgumentException("Please select a role.");
     }

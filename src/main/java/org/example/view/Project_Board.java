@@ -145,13 +145,13 @@ public class Project_Board extends JPanel implements TableModel, AddBoard.AddBoa
 
     @Override
     public String getColumnName(int columnIndex) {
-        return switch (columnIndex) {
-            case 0 -> "ID";
-            case 1 -> "Name";
-            case 2 -> "Edit";
-            case 3 -> "Delete";
-            default -> null;
-        };
+        switch (columnIndex) {
+            case 0: return "ID";
+            case 1: return "Name";
+            case 2: return "Edit";
+            case 3: return "Delete";
+            default: return null;
+        }
     }
 
     @Override
@@ -166,11 +166,11 @@ public class Project_Board extends JPanel implements TableModel, AddBoard.AddBoa
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return switch (columnIndex) {
-            case 0 -> boardController.getBoardsByProjectId(this.project.getId()).get(rowIndex).getId();
-            case 1 -> boardController.getBoardsByProjectId(this.project.getId()).get(rowIndex).getName();
-            default -> null;
-        };
+        switch (columnIndex) {
+            case 0: return boardController.getBoardsByProjectId(this.project.getId()).get(rowIndex).getId();
+            case 1: return boardController.getBoardsByProjectId(this.project.getId()).get(rowIndex).getName();
+            default: return null;
+        }
     }
 
     @Override
