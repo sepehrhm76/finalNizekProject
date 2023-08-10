@@ -1,6 +1,8 @@
 package org.example.view;
 
+import org.example.Conroller.PermissionController;
 import org.example.Conroller.ProjectController;
+import org.example.Conroller.UserController;
 import org.example.Model.Project;
 
 import javax.swing.*;
@@ -39,6 +41,7 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
 
     public void addProjectBtn() {
         addProject = new JButton("Add Project");
+        addProject.setVisible(PermissionController.showAddProject());
         addProject.setBounds(1020, 200, 120, 40);
         addProject.setBorder(null);
         addProject.setForeground(Color.white);

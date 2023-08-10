@@ -3,17 +3,31 @@ package org.example.Conroller;
 import org.example.Database.user.UserRepository;
 import org.example.Model.User;
 import org.example.Model.UserRole;
+import org.example.view.Projects;
+
 import java.util.List;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserController {
-
+    private static UserController instance = null;
     private final UserRepository userRepository = new UserRepository();
 
-    public UserController(){
+
+
+    private UserController(){
     }
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    private User currentUser;
+
 
     public boolean hasAnyUser() {
         return userRepository.hasAnyUser();
@@ -89,4 +103,20 @@ public class UserController {
         return false;
     }
 
+    public void login(String email, String password) {
+        for (User user : userRepository.getAll()) {
+            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                currentUser = user;
+            }
+        }
+    }
+
+    public void logout() {
+        currentUser = null;
+    }
+    public static UserController getInstance() {
+        if (instance == null)
+            instance = new UserController();
+        return instance;
+    }
 }

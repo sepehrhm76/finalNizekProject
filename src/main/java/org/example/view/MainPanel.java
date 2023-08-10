@@ -1,5 +1,7 @@
 package org.example.view;
 
+import org.example.Conroller.PermissionController;
+import org.example.Conroller.UserController;
 import org.example.Model.Project;
 
 import javax.swing.*;
@@ -14,6 +16,7 @@ public class MainPanel extends JPanel {
     Projects projects = Projects.getInstance();
     JButton projectsButton;
     JButton membersButton;
+    JButton profile;
 
 
     private MainPanel(){
@@ -23,6 +26,8 @@ public class MainPanel extends JPanel {
         setBounds(0,0,300,1040);
         projectsBtn();
         membersButtonInMain();
+        currentUserLabel();
+        profileBtn();
     }
 
     public void removeAllPanels() {
@@ -32,9 +37,24 @@ public class MainPanel extends JPanel {
         }
         if (members != null) members.setVisible(false);
     }
+
+    private void profileBtn() {
+        profile = new JButton("Profile");
+        profile.setBounds(25, 100, 250, 45);
+        profile.setBorder(null);
+        profile.setForeground(Color.white);
+        profile.setBackground(new Color(33, 51, 99));
+        profile.setOpaque(true);
+        profile.setVisible(true);
+        add(profile);
+
+        profile.addActionListener(e -> {
+            ProfileDialog dialog = new ProfileDialog(profile);
+        });
+    }
     private void projectsBtn() {
         projectsButton = new JButton("projects");
-        projectsButton.setBounds(25, 100, 250, 45);
+        projectsButton.setBounds(25, 170, 250, 45);
         projectsButton.setBorder(null);
         projectsButton.setForeground(Color.white);
         projectsButton.setBackground(new Color(33, 51, 99));
@@ -49,7 +69,7 @@ public class MainPanel extends JPanel {
     }
     public void membersButtonInMain() {
         membersButton = new JButton("Members");
-        membersButton.setBounds(25, 170, 250, 45);
+        membersButton.setBounds(25, 240, 250, 45);
         membersButton.setBorder(null);
         membersButton.setForeground(Color.white);
         membersButton.setBackground(new Color(33, 51, 99));
@@ -59,6 +79,23 @@ public class MainPanel extends JPanel {
             removeAllPanels();
             members.setVisible(true);
         });
+        membersButton.setVisible(PermissionController.showMembers());
+    }
+
+    public void currentUserLabel() {
+        JLabel memberNameHeadTitle = new JLabel(UserController.getInstance().getCurrentUser().getFirstName() + " " +
+                UserController.getInstance().getCurrentUser().getLastName());
+        memberNameHeadTitle.setBounds(25, -220, 1000, 500);
+        memberNameHeadTitle.setForeground(Color.ORANGE);
+        memberNameHeadTitle.setFont(new Font("Arial Rounded", Font.BOLD, 20));
+        add(memberNameHeadTitle);
+
+        JLabel memberRoleHeadTitle = new JLabel(UserController.getInstance().getCurrentUser().getRole().toString());
+        memberRoleHeadTitle.setBounds(50, -200, 1000, 500);
+        memberRoleHeadTitle.setForeground(Color.ORANGE);
+        memberRoleHeadTitle.setFont(new Font("Arial Rounded", Font.BOLD, 15));
+        add(memberRoleHeadTitle);
+
     }
     public static MainPanel getInstance() {
         if (instance == null)

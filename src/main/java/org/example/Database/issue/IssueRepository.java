@@ -13,8 +13,8 @@ public class IssueRepository {
 
     public boolean create(Issue issue) {
         String query = String.format("INSERT INTO %s " +
-                        "(%s, %s, %s, %s, %s, %s, %s) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                        "(%s, %s, %s, %s, %s, %s, %s, %s) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 TABLE_NAME,
                 IssueColumns.title,
                 IssueColumns.description,
@@ -22,7 +22,8 @@ public class IssueRepository {
                 IssueColumns.type,
                 IssueColumns.priority,
                 IssueColumns.user_id,
-                IssueColumns.project_id
+                IssueColumns.project_id,
+                IssueColumns.status
         );
 
         int rowsAffected = sqlite.executeUpdate(query,
@@ -32,7 +33,8 @@ public class IssueRepository {
                 issue.getType(),
                 issue.getPriority(),
                 issue.getUser_id(),
-                issue.getProject_id()
+                issue.getProject_id(),
+                issue.getState()
         );
         return rowsAffected > 0;
     }

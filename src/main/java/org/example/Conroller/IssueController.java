@@ -20,7 +20,7 @@ public class IssueController {
     }
 
     public void addIssue(String title, String description, String tag, IssueType type, IssuePriority priority, Integer user_id, int project_id, String cDate, IssueState issueState){
-        Issue issue = new Issue(title, description, tag, type, priority, user_id, project_id, cDate, null);
+        Issue issue = new Issue(title, description, tag, type, priority, user_id, project_id, cDate, issueState);
         issueRepository.create(issue);
     }
 

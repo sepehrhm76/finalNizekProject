@@ -10,7 +10,7 @@ public class LoginPanel extends JPanel {
     private static LoginPanel instance = null;
     private static final int MESSAGE_DURATION = 2000;
     Members members = Members.getInstance();
-    UserController userController = new UserController();
+    UserController userController = UserController.getInstance();
 
     private JLabel errorLabel;
     private JTextField emailField;
@@ -140,8 +140,8 @@ public class LoginPanel extends JPanel {
                 String password = new String(passwordField.getPassword());
 
                 if (userController.validateUserLogin(email, password)) {
+                    userController.login(email, password);
                     UiFrame.getInstance().switchToMainPanel();
-
                 } else {
                     errorLabel.setText("Invalid email or password!");
                     messageTimer.start();
@@ -169,6 +169,7 @@ public class LoginPanel extends JPanel {
                     errorLabel.setText("Invalid email format!");
                     messageTimer.start();
                 }
+
             }
         });
 

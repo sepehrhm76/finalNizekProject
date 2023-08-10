@@ -254,6 +254,11 @@ public class AddIssue {
         if (user != null){
             selectedUserId = user.getId();
         }
+        IssueState selectedState = null;
+
+        if (stateComboBox.getSelectedItem() != null) {
+            selectedState = IssueState.fromString(stateComboBox.getSelectedItem().toString());
+        }
 
         try {
             issueController.addIssue(
@@ -265,7 +270,7 @@ public class AddIssue {
                     selectedUserId,
                     this.project.getId(),
                     null,
-                    IssueState.fromString(stateComboBox.getSelectedItem().toString())
+                    selectedState
             );
             JOptionPane.showMessageDialog(dialog, "Issue added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             addIssueListener.onIssueCreatedOrEdited();

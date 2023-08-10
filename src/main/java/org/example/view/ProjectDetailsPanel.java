@@ -13,7 +13,7 @@ import java.util.List;
 public class ProjectDetailsPanel extends JPanel {
     private static ProjectDetailsPanel instance = null;
     private final Project_UserController projectUserController = Project_UserController.getInstance();
-    UserController userController = new UserController();
+    UserController userController = UserController.getInstance();
     JLabel titleLabel;
     JDialog manageMembersDialog;
     JDialog addMember;

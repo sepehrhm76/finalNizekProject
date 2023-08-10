@@ -1,5 +1,6 @@
 package org.example.Database.user;
 
+import org.example.Conroller.UserController;
 import org.example.Database.SQLiteWrapper;
 import org.example.Log.Logger;
 import org.example.Model.User;
@@ -83,6 +84,29 @@ public class UserRepository {
     }
 
     public List<User> getAll() {
+        if (UserController.getInstance().getCurrentUser() != null) {
+            return getAllExceptMe();
+        } else {
+            return getAllUsers();
+        }
+    }
+
+    private List<User> getAllExceptMe() {
+        ArrayList<User> list = new ArrayList<>();
+
+        String query =String.format("SELECT * FROM %s WHERE %s != ?", TABLE_NAME, UserColumns.id) ;
+        ResultSet result = sqlite.executeQuery(query, UserController.getInstance().getCurrentUser().getId());
+        try {
+            while (result.next()) {
+                list.add(UserRepository.createUserFromResultSet(result));
+            }
+        } catch (Exception e) {
+            Logger.getInstance().logError("Error reading ResultSet: " + e.getMessage());
+        }
+        return list;
+    }
+
+    private List<User> getAllUsers() {
         ArrayList<User> list = new ArrayList<>();
 
         String query =String.format("SELECT * FROM %s", TABLE_NAME) ;

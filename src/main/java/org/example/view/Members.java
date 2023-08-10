@@ -17,7 +17,7 @@ import javax.swing.RowFilter;
 public class Members extends JPanel implements TableModel{
 
     private static Members instance = null;
-    UserController userController = new UserController();
+    UserController userController = UserController.getInstance();
     public JTable userTable = new JTable();
     private JButton addUserBtn;
 

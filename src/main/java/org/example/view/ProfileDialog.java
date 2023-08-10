@@ -1,33 +1,33 @@
 package org.example.view;
 
-import org.example.Log.Logger;
-import org.example.Conroller.UserController;
-import org.example.Model.User;
-import org.example.Model.UserRole;
-import javax.swing.*;
-import java.awt.*;
-import java.util.Arrays;
+        import org.example.Log.Logger;
+        import org.example.Conroller.UserController;
+        import org.example.Model.User;
+        import org.example.Model.UserRole;
+        import javax.swing.*;
+        import java.awt.*;
+        import java.util.Arrays;
 
 
-public class AddUser {
+public class ProfileDialog {
     private static final int MESSAGE_DURATION = 2000;
     Members members = Members.getInstance();
     UserController userController = UserController.getInstance();
     Timer messageTimer;
     JButton saveBtn;
+    JButton logout;
     JDialog dialog;
     JTextField firstname;
     JTextField lastName;
     JTextField email;
     JPasswordField password;
     JPasswordField checkPass;
-    JComboBox<String> role;
     JLabel errorLabel;
     User user;
 
-    public AddUser(JButton addUser, User user) {
+    public ProfileDialog(JButton addUser) {
 
-        this.user = user;
+        this.user = UserController.getInstance().getCurrentUser();
 
         if (user == null) {
             dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(addUser), "Add User", true);
@@ -44,21 +44,30 @@ public class AddUser {
 
         // Create a button to save the popup
         saveBtn = new JButton("Save");
-        saveBtn.setBounds(190, 420, 120, 43);
+        saveBtn.setBounds(125, 420, 120, 43);
         saveBtn.setBorder(null);
         saveBtn.setForeground(Color.white);
         saveBtn.setBackground(new Color(33, 51, 99));
         saveBtn.setOpaque(true);
         dialog.add(saveBtn);
 
+        logout = new JButton("Logout");
+        logout.setBounds(255, 420, 120, 43);
+        logout.setBorder(null);
+        logout.setForeground(Color.white);
+        logout.setBackground(new Color(33, 51, 99));
+        logout.setOpaque(true);
+        dialog.add(logout);
+
 
         saveBtn.addActionListener(e -> {
+            updateUserData();
+        });
 
-            if (user != null) {
-                updateUserData();
-            } else {
-                saveNewUserData();
-            }
+        logout.addActionListener(e -> {
+            dialog.dispose();
+            UiFrame.getInstance().logout();
+            userController.logout();
         });
         //firstName Field
         firstname = new JTextField();
@@ -115,12 +124,6 @@ public class AddUser {
         chkPassLbl.setBounds(30, 45, 300, 500);
         chkPassLbl.setFont(new Font("Arial Rounded", Font.BOLD, 17));
 
-        JLabel roleLbl = new JLabel("User Role:");
-        roleLbl.setForeground(Color.black);
-        roleLbl.setBounds(30, 125, 300, 500);
-        roleLbl.setFont(new Font("Arial Rounded", Font.BOLD, 17));
-
-
         String[] options;
         if (user != null && user.getRole() == UserRole.SUPER_ADMIN) {
             options = new String[]{ UserRole.SUPER_ADMIN.toString() };
@@ -132,8 +135,6 @@ public class AddUser {
                 options[i + 1] = userRoles[i].toString();
             }
         }
-        role = new JComboBox<>(options);
-        role.setBounds(210, 360, 240, 40);
 
         errorLabel = new JLabel("");
         errorLabel.setForeground(Color.red);
@@ -168,9 +169,7 @@ public class AddUser {
         dialog.add(emailLbl);
         dialog.add(passLbl);
         dialog.add(chkPassLbl);
-        dialog.add(roleLbl);
         dialog.add(saveBtn);
-        dialog.add(role);
         dialog.add(errorLabel);
         dialog.setVisible(true);
     }
@@ -182,34 +181,8 @@ public class AddUser {
             email.setText(user.getEmail());
             password.setText(user.getPassword());
             checkPass.setText(user.getPassword());
-            role.setSelectedItem(user.getRole().toString());
         }
     }
-
-    public void saveNewUserData() {
-        try {
-            validateForm();
-            userController.addUser(
-                    firstname.getText(),
-                    lastName.getText(),
-                    email.getText().toLowerCase(),
-                    new String(password.getPassword()),
-                    UserRole.fromString(role.getSelectedItem().toString())
-            );
-            JOptionPane.showMessageDialog(dialog, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-
-            members.userTable.setVisible(false);
-            members.userTable.setVisible(true);
-
-            dialog.dispose();
-
-        } catch (Exception err) {
-            showErrorPopup(err.getMessage());
-            Logger.getInstance().logError("Error: " + err.getMessage());
-        }
-    }
-
     public void updateUserData() {
         try {
             validateForm();
@@ -220,7 +193,7 @@ public class AddUser {
                     lastName.getText(),
                     email.getText().toLowerCase(),
                     new String(password.getPassword()),
-                    UserRole.fromString(role.getSelectedItem().toString())
+                    user.getRole()
             );
             JOptionPane.showMessageDialog(dialog, "User edited successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 
@@ -251,7 +224,6 @@ public class AddUser {
         if (firstname.getText().length() == 0) throw new IllegalArgumentException("Please enter first name.");
         if (lastName.getText().length() == 0) throw new IllegalArgumentException("Please enter last name.");
         if (!userController.isValidEmail(email.getText())) throw new IllegalArgumentException("Invalid email format.");
-        if (role.getSelectedItem().equals("")) throw new IllegalArgumentException("Please select a role.");
     }
 
     private void showErrorPopup(String errorMessage) {

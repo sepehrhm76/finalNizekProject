@@ -68,7 +68,7 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         issuesTable.getColumn("Edit").setCellEditor(new Project_allIssue.ButtonEditor("Edit", new JCheckBox(), rowIndex -> {
             Issue issue = issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex);
             int userId = issue.getUser_id();
-            UserController userController = new UserController();
+            UserController userController = UserController.getInstance();
             User user = userController.getUserById(userId);
             AddIssue editeIssueData = new AddIssue(this, addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex), this.project, user);
         }));
@@ -198,7 +198,7 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
                 return issue.getPriority();
             case 6:
                 int userId = issue.getUser_id();
-                UserController userController = new UserController();
+                UserController userController = UserController.getInstance();
                 User user = userController.getUserById(userId);
 
                 if (user != null) {
