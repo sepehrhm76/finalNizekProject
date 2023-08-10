@@ -38,7 +38,7 @@ public class IssueRepository {
     }
 
     public boolean update(int id, Issue issue) {
-        String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?",
+        String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?",
                 TABLE_NAME,
                 IssueColumns.title,
                 IssueColumns.description,
@@ -47,6 +47,7 @@ public class IssueRepository {
                 IssueColumns.priority,
                 IssueColumns.user_id,
                 IssueColumns.project_id,
+                IssueColumns.status,
                 IssueColumns.id
         );
 
@@ -58,7 +59,9 @@ public class IssueRepository {
                 issue.getPriority(),
                 issue.getUser_id(),
                 issue.getProject_id(),
-                id);
+                issue.getState(),
+                id
+                );
         return rowsAffected > 0;
     }
 
@@ -145,7 +148,8 @@ public class IssueRepository {
         int user_id = result.getInt(IssueColumns.user_id.toString());
         int project_id = result.getInt(IssueColumns.project_id.toString());
         String cDate = result.getString(IssueColumns.cDate.toString());
-        return new Issue(id, title, description, tag, type, priority, user_id,project_id,cDate);
+        IssueState state = IssueState.fromString(result.getString(IssueColumns.status.toString()));
+        return new Issue(id, title, description, tag, type, priority, user_id,project_id,cDate, state);
     }
 }
 

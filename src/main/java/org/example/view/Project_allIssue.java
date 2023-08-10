@@ -14,6 +14,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class Project_allIssue extends JPanel implements TableModel, AddIssue.AddIssueListener {
     Project project;
@@ -135,7 +136,7 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
 
     @Override
     public int getColumnCount() {
-        return 10;
+        return 11;
     }
 
     @Override
@@ -156,10 +157,12 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
             case 6:
                 return "User Assign";
             case 7:
-                return "Created Time";
+                return "State";
             case 8:
-                return "Edit";
+                return "Created Time";
             case 9:
+                return "Edit";
+            case 10:
                 return "Delete";
             default:
                 return null;
@@ -205,6 +208,8 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
                 }
 
             case 7:
+                return issue.getState();
+            case 8:
                 String utcDateString = issue.getCDate();
                 DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 ZonedDateTime utcDateTime = ZonedDateTime.parse(utcDateString, inputFormatter.withZone(ZoneId.of("UTC")));
@@ -245,9 +250,10 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         columnModel.getColumn(4).setPreferredWidth(100);
         columnModel.getColumn(5).setPreferredWidth(80);
         columnModel.getColumn(6).setPreferredWidth(180);
-        columnModel.getColumn(7).setPreferredWidth(120);
-        columnModel.getColumn(8).setPreferredWidth(70);
+        columnModel.getColumn(7).setPreferredWidth(100);
+        columnModel.getColumn(8).setPreferredWidth(120);
         columnModel.getColumn(9).setPreferredWidth(70);
+        columnModel.getColumn(10).setPreferredWidth(70);
     }
 
     @Override

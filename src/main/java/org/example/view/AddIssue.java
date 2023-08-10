@@ -20,6 +20,7 @@ public class AddIssue {
     JTextField assignUserField;
     JComboBox<String> typeComboBox;
     JComboBox<String> priorityComboBox;
+    JComboBox<String> stateComboBox;
     IssueController issueController = new IssueController();
     Project_UserController projectUserController = Project_UserController.getInstance();
     Project project;
@@ -72,6 +73,12 @@ public class AddIssue {
         priorityComboBox.addItem(null);
         for (IssuePriority priority : IssuePriority.values()) {
             priorityComboBox.addItem(priority.toString());
+        }
+
+        stateComboBox = new JComboBox<>();
+        stateComboBox.addItem(null);
+        for (IssueState state : IssueState.values()) {
+            stateComboBox.addItem(state.toString());
         }
 
         selectUserButton = new JButton("Select User");
@@ -128,9 +135,13 @@ public class AddIssue {
         dialog.add(priorityComboBox);
         priorityComboBox.setBounds(500, 350, 200, 25);
 
-        dialog.add(createLabel("Assign to user:", 90, 430, 100, 25));
+        dialog.add(createLabel("State:", 90, 400, 100, 25));
+        dialog.add(stateComboBox);
+        stateComboBox.setBounds(140, 400, 200, 25);
+
+        dialog.add(createLabel("Assign to user:", 90, 450, 100, 25));
         dialog.add(assignUserField);
-        assignUserField.setBounds(200,430,200,25);
+        assignUserField.setBounds(200,450,200,25);
         assignUserField.setEditable(false);
 
 
@@ -149,7 +160,7 @@ public class AddIssue {
         selectUserButton.setForeground(Color.white);
         selectUserButton.setBackground(new Color(33, 51, 99));
         selectUserButton.setOpaque(true);
-        selectUserButton.setBounds(420, 432, 100, 20);
+        selectUserButton.setBounds(420, 450, 100, 20);
 
 
     }
@@ -164,7 +175,7 @@ public class AddIssue {
         JDialog userSelectionDialog = new JDialog(dialog, "Select User", true);
         userSelectionDialog.setResizable(false);
         userSelectionDialog.setLayout(null);
-        userSelectionDialog.setSize(500, 500);
+        userSelectionDialog.setSize(500, 800);
         userSelectionDialog.setLocationRelativeTo(dialog);
 
         showProjectUsersToAddToIssue(userSelectionDialog);
@@ -223,6 +234,9 @@ public class AddIssue {
             tagField.setText(issue.getTag());
             typeComboBox.setSelectedItem(issue.getType().toString());
             priorityComboBox.setSelectedItem(issue.getPriority().toString());
+            if (issue.getState() != null) {
+                stateComboBox.setSelectedItem(issue.getState().toString());
+            }
             if (user != null) {
                 assignUserField.setText(user.getId() + " " + user.getFirstName() + " " + user.getLastName());
             } else if (issue.getUser_id() != -1) {
@@ -240,6 +254,7 @@ public class AddIssue {
         if (user != null){
             selectedUserId = user.getId();
         }
+
         try {
             issueController.addIssue(
                     titleField.getText(),
@@ -249,7 +264,8 @@ public class AddIssue {
                     IssuePriority.fromString(priorityComboBox.getSelectedItem().toString()),
                     selectedUserId,
                     this.project.getId(),
-                    null
+                    null,
+                    IssueState.fromString(stateComboBox.getSelectedItem().toString())
             );
             JOptionPane.showMessageDialog(dialog, "Issue added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             addIssueListener.onIssueCreatedOrEdited();
@@ -276,7 +292,8 @@ public class AddIssue {
                     IssuePriority.fromString(priorityComboBox.getSelectedItem().toString()),
                     selectedUserId,
                     this.project.getId(),
-                    null
+                    null,
+                    IssueState.fromString(stateComboBox.getSelectedItem().toString())
             );
             JOptionPane.showMessageDialog(dialog, "Issue edited successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             addIssueListener.onIssueCreatedOrEdited();

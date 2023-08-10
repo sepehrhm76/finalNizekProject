@@ -10,9 +10,17 @@ public class Issue {
     Integer user_id;
     int project_id;
     String cDate;
+    IssueState state;
 
+    public IssueState getState() {
+        return state;
+    }
 
-    public Issue(int id,String title, String description, String tag, IssueType type, IssuePriority priority, Integer user_id, int project_id, String cDate) {
+    public void setState(IssueState state) {
+        this.state = state;
+    }
+
+    public Issue(int id, String title, String description, String tag, IssueType type, IssuePriority priority, Integer user_id, int project_id, String cDate, IssueState state) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -22,10 +30,11 @@ public class Issue {
         this.user_id = user_id;
         this.project_id = project_id;
         this.cDate = cDate;
+        this.state = state;
     }
 
-    public Issue(String title, String description, String tag, IssueType type, IssuePriority priority, Integer user_id, int project_id, String cDate) {
-        this(-1,title,description,tag,type,priority,user_id,project_id,cDate);
+    public Issue(String title, String description, String tag, IssueType type, IssuePriority priority, Integer user_id, int project_id, String cDate, IssueState issieState) {
+        this(-1,title,description,tag,type,priority,user_id,project_id,cDate, issieState);
     }
 
     public int getId() {
@@ -112,6 +121,7 @@ public class Issue {
                 ", user_id=" + user_id +
                 ", project_id=" + project_id +
                 ", cDate='" + cDate + '\'' +
+                ", state='" + state + '\'' +
                 '}';
     }
 }

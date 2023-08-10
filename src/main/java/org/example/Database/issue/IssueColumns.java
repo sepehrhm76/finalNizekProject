@@ -9,7 +9,8 @@ public enum IssueColumns {
     priority("priority"),
     user_id("user_id"),
     project_id("project_id"),
-    cDate("cDate");
+    cDate("cDate"),
+    status("status");
 
     private final String text;
 
