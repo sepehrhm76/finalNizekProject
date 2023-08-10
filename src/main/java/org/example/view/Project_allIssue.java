@@ -41,7 +41,7 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         add(addIssueBtn);
 
         addIssueBtn.addActionListener(e -> {
-            AddIssue addIssue = new AddIssue(this,addIssueBtn,null,this.project, null);
+            AddIssue addIssue = new AddIssue(this, addIssueBtn, null, this.project, null);
 
             searchField.requestFocus();
         });
@@ -69,7 +69,7 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
             int userId = issue.getUser_id();
             UserController userController = new UserController();
             User user = userController.getUserById(userId);
-            AddIssue editeIssueData = new AddIssue(this, addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex),this.project, user);
+            AddIssue editeIssueData = new AddIssue(this, addIssueBtn, issueController.getIssuesByProjectId(this.project.getId()).get(rowIndex), this.project, user);
         }));
 
         issuesTable.getColumn("Delete").setCellRenderer(new Members.ButtonRenderer("Delete"));
@@ -141,17 +141,28 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
     @Override
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
-            case 0: return "ID";
-            case 1: return "Title";
-            case 2: return "Description";
-            case 3: return "Tags";
-            case 4: return "Type";
-            case 5: return "Priority";
-            case 6: return "User Assign";
-            case 7: return "Created Time";
-            case 8: return "Edit";
-            case 9: return "Delete";
-            default: return null;
+            case 0:
+                return "ID";
+            case 1:
+                return "Title";
+            case 2:
+                return "Description";
+            case 3:
+                return "Tags";
+            case 4:
+                return "Type";
+            case 5:
+                return "Priority";
+            case 6:
+                return "User Assign";
+            case 7:
+                return "Created Time";
+            case 8:
+                return "Edit";
+            case 9:
+                return "Delete";
+            default:
+                return null;
         }
     }
 
@@ -188,7 +199,7 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
                 User user = userController.getUserById(userId);
 
                 if (user != null) {
-                    return " (ID: " + user.getId() + ")" +user.getFirstName() + " " + user.getLastName();
+                    return " (ID: " + user.getId() + ")" + user.getFirstName() + " " + user.getLastName();
                 } else {
                     return "        -";
                 }
@@ -244,6 +255,7 @@ public class Project_allIssue extends JPanel implements TableModel, AddIssue.Add
         issuesTable.setVisible(false);
         issuesTable.setVisible(true);
     }
+
 
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {

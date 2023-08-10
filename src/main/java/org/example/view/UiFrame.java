@@ -17,12 +17,13 @@ public class UiFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1440,1040);
         setVisible(true);
-        setResizable(false);
+        setResizable(true);
         setLocationRelativeTo(null);
 
         add(loginPanel);
         add(mainPanel);
         add(projects);
+        projects.setVisible(false);
         add(members);
 //        switchToMainPanel();
 
@@ -31,6 +32,7 @@ public class UiFrame extends JFrame {
     public void switchToMainPanel() {
             loginPanel.setVisible(false);
             mainPanel.setVisible(true);
+            projects.setVisible(true);
             MainPanel.getInstance().membersButton.doClick();
             repaint();
     }

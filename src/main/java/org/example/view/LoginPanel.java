@@ -180,4 +180,8 @@ public class LoginPanel extends JPanel {
             instance = new LoginPanel();
         return instance;
     }
+
+    interface LogInListener {
+        void whenLoginPanelInOpen();
+    }
 }

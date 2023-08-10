@@ -11,7 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-public class Projects extends JPanel implements TableModel {
+public class Projects extends JPanel implements TableModel, LoginPanel.LogInListener {
     private static Projects instance = null;
     JTable projectTable = new JTable();
     JButton addProject;
@@ -193,6 +193,11 @@ public class Projects extends JPanel implements TableModel {
         if (instance == null)
             instance = new Projects();
         return instance;
+    }
+
+    @Override
+    public void whenLoginPanelInOpen() {
+        setVisible(false);
     }
 
 

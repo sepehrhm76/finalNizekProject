@@ -4,7 +4,7 @@ import org.example.Model.Project;
 
 import javax.swing.*;
 
-public class InsideProjectButtons extends JPanel {
+public class InsideProjectButtons extends JPanel implements LoginPanel.LogInListener {
     Project project;
     Project_Board projectBoard;
     Project_allIssue projectAllIssue;
@@ -65,11 +65,17 @@ public class InsideProjectButtons extends JPanel {
         });
         add(reportButton);
     }
+
     public void removeAllPanels() {
 
         ProjectDetailsPanel.getInstance().setVisible(false);
         if (projectBoard != null) projectBoard.setVisible(false);
         if (projectReport != null) projectReport.setVisible(false);
         if (projectAllIssue != null) projectAllIssue.setVisible(false);
+    }
+
+    @Override
+    public void whenLoginPanelInOpen() {
+        setVisible(false);
     }
 }
