@@ -4,12 +4,12 @@ import org.example.Database.issue.IssueRepository;
 import org.example.Model.Issue;
 import org.example.Model.IssuePriority;
 import org.example.Model.IssueType;
-import org.example.Model.User;
+
 
 import java.util.List;
 
 public class IssueController {
-    private IssueRepository issueRepository = new IssueRepository();
+    private final IssueRepository issueRepository = new IssueRepository();
 
     public IssueController() {
     }

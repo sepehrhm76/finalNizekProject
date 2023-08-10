@@ -9,20 +9,20 @@ import java.util.List;
 public class IssueRepository {
     private static final String TABLE_NAME = "issue";
 
-    private SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
+    private final SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
 
     public boolean create(Issue issue) {
         String query = String.format("INSERT INTO %s " +
                         "(%s, %s, %s, %s, %s, %s, %s) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?)",
                 TABLE_NAME,
-                IssueColumns.title.toString(),
-                IssueColumns.description.toString(),
-                IssueColumns.tag.toString(),
-                IssueColumns.type.toString(),
-                IssueColumns.priority.toString(),
-                IssueColumns.user_id.toString(),
-                IssueColumns.project_id.toString()
+                IssueColumns.title,
+                IssueColumns.description,
+                IssueColumns.tag,
+                IssueColumns.type,
+                IssueColumns.priority,
+                IssueColumns.user_id,
+                IssueColumns.project_id
         );
 
         int rowsAffected = sqlite.executeUpdate(query,
@@ -40,14 +40,14 @@ public class IssueRepository {
     public boolean update(int id, Issue issue) {
         String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?",
                 TABLE_NAME,
-                IssueColumns.title.toString(),
-                IssueColumns.description.toString(),
-                IssueColumns.tag.toString(),
-                IssueColumns.type.toString(),
-                IssueColumns.priority.toString(),
-                IssueColumns.user_id.toString(),
-                IssueColumns.project_id.toString(),
-                IssueColumns.id.toString()
+                IssueColumns.title,
+                IssueColumns.description,
+                IssueColumns.tag,
+                IssueColumns.type,
+                IssueColumns.priority,
+                IssueColumns.user_id,
+                IssueColumns.project_id,
+                IssueColumns.id
         );
 
         int rowsAffected = sqlite.executeUpdate(query,
@@ -68,13 +68,13 @@ public class IssueRepository {
 
     public void delete(int issueId) {
         sqlite.executeUpdate(
-                String.format("DELETE FROM %s WHERE %s = ?;", TABLE_NAME, IssueColumns.id.toString()), issueId
+                String.format("DELETE FROM %s WHERE %s = ?;", TABLE_NAME, IssueColumns.id), issueId
         );
     }
 
     public Issue get(int issueId) {
 
-        ResultSet result = sqlite.executeQuery(String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, IssueColumns.id.toString()), issueId);
+        ResultSet result = sqlite.executeQuery(String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, IssueColumns.id), issueId);
         try {
             if (result.next()) {
                 return this.createIssueFromResultSet(result);

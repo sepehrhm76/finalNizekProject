@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ProjectController {
     private static ProjectController instance = null;
-    private ProjectRepository projectRepository = new ProjectRepository();
+    private final ProjectRepository projectRepository = new ProjectRepository();
 
     public ProjectController() {
     }

@@ -11,15 +11,15 @@ public class ProjectRepository {
     private static final String TABLE_NAME = "project";
 
 
-    private SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
+    private final SQLiteWrapper sqlite = SQLiteWrapper.getInstance();
 
     public boolean create(Project project) {
         String query = String.format("INSERT INTO %s " +
                         "(%s, %s) " +
                         "VALUES (?, ?)",
                 TABLE_NAME,
-                ProjectColumns.name.toString(),
-                ProjectColumns.description.toString()
+                ProjectColumns.name,
+                ProjectColumns.description
         );
 
         int rowsAffected = sqlite.executeUpdate(query,
@@ -31,9 +31,9 @@ public class ProjectRepository {
     public boolean update(int id, Project project) {
         String query = String.format("UPDATE %s SET %s = ?, %s = ? WHERE %s = ?",
                 TABLE_NAME,
-                ProjectColumns.name.toString(),
-                ProjectColumns.description.toString(),
-                ProjectColumns.id.toString()
+                ProjectColumns.name,
+                ProjectColumns.description,
+                ProjectColumns.id
         );
 
         int rowsAffected = sqlite.executeUpdate(query,
@@ -49,13 +49,13 @@ public class ProjectRepository {
 
     public void delete(int projectId) {
         sqlite.executeUpdate(
-                String.format("DELETE FROM %s WHERE %s = ?;", TABLE_NAME, ProjectColumns.id.toString()), projectId
+                String.format("DELETE FROM %s WHERE %s = ?;", TABLE_NAME, ProjectColumns.id), projectId
         );
     }
 
     public Project get(int projectId) {
 
-        ResultSet result = sqlite.executeQuery(String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, ProjectColumns.id.toString()), projectId);
+        ResultSet result = sqlite.executeQuery(String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, ProjectColumns.id), projectId);
         try {
             if (result.next()) {
                 return this.createProjectFromResultSet(result);

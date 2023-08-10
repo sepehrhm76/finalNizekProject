@@ -3,8 +3,7 @@ package org.example.Database.board;
 public enum BoardColumns {
     id("id"),
     name("name"),
-    description("description");
-
+    project_id("project_id");
     private final String text;
 
     BoardColumns(final String text) {

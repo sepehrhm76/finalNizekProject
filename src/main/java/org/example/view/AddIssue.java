@@ -278,7 +278,7 @@ public class AddIssue {
                     this.project.getId(),
                     null
             );
-            JOptionPane.showMessageDialog(dialog, "User edited successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(dialog, "Issue edited successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             addIssueListener.onIssueCreatedOrEdited();
             dialog.dispose();
 

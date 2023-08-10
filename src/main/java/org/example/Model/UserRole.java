@@ -1,6 +1,5 @@
 package org.example.Model;
 
-import java.util.Arrays;
 
 public enum UserRole {
     SUPER_ADMIN,

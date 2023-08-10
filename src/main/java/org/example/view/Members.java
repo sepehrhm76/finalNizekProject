@@ -10,11 +10,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
 
 public class Members extends JPanel implements TableModel{
 
@@ -22,7 +20,6 @@ public class Members extends JPanel implements TableModel{
     UserController userController = new UserController();
     public JTable userTable = new JTable();
     private JButton addUserBtn;
-    private JTextField searchField;
 
     private Members() {
         setLayout(null);
@@ -31,7 +28,9 @@ public class Members extends JPanel implements TableModel{
         addUserBtn();
         createTable();
         headTitle();
+
     }
+
     public void addUserBtn() {
         addUserBtn = new JButton("Add User");
         addUserBtn.setBounds(1320, 200, 120, 40);
@@ -60,31 +59,6 @@ public class Members extends JPanel implements TableModel{
         scrollPane.setBounds(400, 300, 940, 450);
         add(scrollPane, BorderLayout.CENTER);
 
-        JLabel searchLabel = new JLabel("Search:");
-        searchLabel.setBounds(350, 260, 60, 30);
-        add(searchLabel);
-
-        JTextField searchField = new JTextField();
-        searchField.setBounds(400, 260, 200, 30);
-        add(searchField);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<>(this);
-        userTable.setRowSorter(sorter);
-        searchField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                performSearch(sorter, searchField.getText());
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                performSearch(sorter, searchField.getText());
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                performSearch(sorter, searchField.getText());
-            }
-        });
         userTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -152,10 +126,6 @@ public class Members extends JPanel implements TableModel{
                 }
             }
         });
-    }
-
-    private void performSearch(TableRowSorter<TableModel> sorter, String searchText) {
-        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
     }
     private void setColumnWidths() {
         TableColumnModel columnModel = userTable.getColumnModel();

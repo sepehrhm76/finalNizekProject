@@ -40,10 +40,6 @@ public class Issue {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -56,47 +52,51 @@ public class Issue {
         return tag;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
     public IssueType getType() {
         return type;
-    }
-
-    public void setType(IssueType type) {
-        this.type = type;
     }
 
     public IssuePriority getPriority() {
         return priority;
     }
 
-    public void setPriority(IssuePriority priority) {
-        this.priority = priority;
-    }
-
     public Integer getUser_id() {
         return user_id;
-    }
-
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
     }
 
     public int getProject_id() {
         return project_id;
     }
 
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
-    }
-
     public String getCDate() {
         return cDate;
     }
 
-    public void setCDate(String cDate) {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public void setType(IssueType type) {
+        this.type = type;
+    }
+
+    public void setPriority(IssuePriority priority) {
+        this.priority = priority;
+    }
+
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
+    }
+
+    public void setProject_id(int project_id) {
+        this.project_id = project_id;
+    }
+
+    public void setcDate(String cDate) {
         this.cDate = cDate;
     }
 

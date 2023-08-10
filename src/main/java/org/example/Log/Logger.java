@@ -1,7 +1,5 @@
 package org.example.Log;
 
-import java.util.logging.Level;
-
 public class Logger {
 
     private static Logger instance;

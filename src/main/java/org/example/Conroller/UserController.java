@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class UserController {
 
-    private UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository = new UserRepository();
 
     public UserController(){
     }

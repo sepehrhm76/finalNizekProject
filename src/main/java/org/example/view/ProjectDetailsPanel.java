@@ -22,12 +22,13 @@ public class ProjectDetailsPanel extends JPanel {
 
     private ProjectDetailsPanel() {
         setLayout(null);
-        setBounds(300, 100, 1140, 840);
+        setBounds(300, 0, 1140, 1040);
+        setBackground(Color.WHITE);
         setVisible(true);
         titleLabel = new JLabel();
         descriptionTextArea = new JTextArea();
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
-        descriptionScrollPane.setBounds(200, 200, 650, 500);
+        descriptionScrollPane.setBounds(200, 300, 650, 500);
         add(descriptionScrollPane);
         add(titleLabel);
         manageMemberBtn();
@@ -154,7 +155,11 @@ public class ProjectDetailsPanel extends JPanel {
 
     public void manageMemberBtn() {
         JButton manageMembersButton = new JButton("Manage Project Members");
-        manageMembersButton.setBounds(880, 0, 240, 40);
+        manageMembersButton.setBounds(940, 200, 200, 40);
+        manageMembersButton.setBorder(null);
+        manageMembersButton.setForeground(Color.white);
+        manageMembersButton.setBackground(new Color(33, 51, 99));
+        manageMembersButton.setOpaque(true);
         manageMembersButton.addActionListener(e -> openManageMembersPopup());
         add(manageMembersButton);
     }
@@ -163,7 +168,7 @@ public class ProjectDetailsPanel extends JPanel {
         this.project = project;
         titleLabel.setText(this.project.getName() + " Project");
         titleLabel.setFont(new Font("Arial Rounded", Font.BOLD, 40));
-        titleLabel.setBounds(400, 50, 500, 100);
+        titleLabel.setBounds(300, 100, 500, 100);
         titleLabel.setForeground(new Color(33, 51, 99));
         descriptionTextArea.setEditable(false);
         descriptionTextArea.setLineWrap(true);

@@ -8,7 +8,7 @@ import java.util.List;
 public class Project_UserController {
 
     private static Project_UserController instance = null;
-    private Project_UserRepository projectUserRepository = new Project_UserRepository();
+    private final Project_UserRepository projectUserRepository = new Project_UserRepository();
 
     private Project_UserController(){
     }

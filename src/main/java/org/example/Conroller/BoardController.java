@@ -2,11 +2,13 @@ package org.example.Conroller;
 
 import org.example.Database.board.BoardRepository;
 import org.example.Model.Board;
+import org.example.Model.Issue;
+
 import java.util.List;
 
 public class BoardController {
     private static BoardController instance = null;
-    private BoardRepository boardRepository = new BoardRepository();
+    private final BoardRepository boardRepository = new BoardRepository();
 
     public BoardController() {
     }
@@ -21,13 +23,13 @@ public class BoardController {
         return boardRepository.hasAnyBoard();
     }
 
-    public void addBoard(String name) {
-        Board board = new Board(name);
+    public void addBoard(String name, int project_id) {
+        Board board = new Board(name, project_id);
         boardRepository.create(board);
     }
 
-    public void updateBoard(int id, String name) {
-        Board board = new Board(name);
+    public void updateBoard(int id, String name, int project_id) {
+        Board board = new Board(name, project_id);
         boardRepository.update(id, board);
     }
 
@@ -37,8 +39,8 @@ public class BoardController {
         }
     }
 
-    public List<Board> getAllBoards() {
-        return boardRepository.getAll();
+    public List<Board> getBoardsByProjectId(int projectId) {
+        return boardRepository.getBoardByProjectId(projectId);
     }
 
 }
