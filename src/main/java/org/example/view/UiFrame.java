@@ -54,14 +54,20 @@ public class UiFrame extends JFrame {
         repaint();
     }
 
-    public void logout() {
-        mainPanel.reset();
-        members.reset();
-        projects.reset();
-        UiFrame.instance = new UiFrame();
-        loginPanel.setVisible(true);
-        mainPanel.setVisible(false);
-        projects.setVisible(false);
-        members.setVisible(false);
+    public void switchToLoginPage() {
+        UserController.getInstance().setCurrentUser(null);
+        if (mainPanel != null) {
+            mainPanel.setVisible(false);
+        }
+        if (projects != null) {
+            projects.setVisible(false);
+        }
+        if (members != null) {
+            members.setVisible(false);
+        }
+        if (loginPanel != null) {
+            loginPanel.setVisible(true);
+        }
+        repaint();
     }
 }

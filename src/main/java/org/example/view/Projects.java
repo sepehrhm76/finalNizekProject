@@ -28,7 +28,16 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
         addProjectBtn();
         headTitle();
         createTable();
+    }
 
+    public void updateProjectsPage() {
+        removeAll();
+        createTable();
+        getColumnCount();
+        addProjectBtn();
+        headTitle();
+        revalidate();
+        repaint();
     }
 
     public void headTitle() {
@@ -288,7 +297,4 @@ public class Projects extends JPanel implements TableModel, LoginPanel.LogInList
         }
     }
 
-    public static void reset() {
-        instance = new Projects();
-    }
 }

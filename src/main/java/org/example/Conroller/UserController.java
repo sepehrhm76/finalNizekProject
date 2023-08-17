@@ -3,6 +3,7 @@ package org.example.Conroller;
 import org.example.Database.user.UserRepository;
 import org.example.Model.User;
 import org.example.Model.UserRole;
+import org.example.view.MainPanel;
 import org.example.view.Projects;
 
 import java.util.List;
@@ -91,6 +92,7 @@ public class UserController {
     public boolean validateUserLogin(String email, String password) {
         for (User user : userRepository.getAllUsers()) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                currentUser = user;  // Set the currently logged-in user
                 return true;
             }
         }
@@ -103,10 +105,13 @@ public class UserController {
                 currentUser = user;
             }
         }
+        MainPanel.getInstance().updateCurrentUserLabel();
+        Projects.getInstance().updateProjectsPage();
     }
 
     public void logout() {
         currentUser = null;
+        MainPanel.reset();
     }
 
     public static UserController getInstance() {

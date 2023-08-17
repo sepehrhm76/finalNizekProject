@@ -103,6 +103,16 @@ public class MainPanel extends JPanel {
 
     }
 
+    public void updateCurrentUserLabel() {
+        removeAll();
+        currentUserLabel();
+        profileBtn();
+        projectsBtn();
+        membersButtonInMain();
+        revalidate();
+        repaint();
+    }
+
     public static MainPanel getInstance() {
         if (instance == null)
             instance = new MainPanel();

@@ -1,5 +1,6 @@
 package org.example.view;
 
+import org.example.Conroller.PermissionController;
 import org.example.Conroller.Project_UserController;
 import org.example.Conroller.UserController;
 import org.example.Model.Project;
@@ -160,6 +161,7 @@ public class ProjectDetailsPanel extends JPanel {
         manageMembersButton.setForeground(Color.white);
         manageMembersButton.setBackground(new Color(33, 51, 99));
         manageMembersButton.setOpaque(true);
+        manageMembersButton.setVisible(PermissionController.showManageUserProjectButton());
         manageMembersButton.addActionListener(e -> openManageMembersPopup());
         add(manageMembersButton);
     }

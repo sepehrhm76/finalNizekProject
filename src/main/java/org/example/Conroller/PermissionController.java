@@ -9,7 +9,7 @@ public class PermissionController {
     }
 
     public static boolean showAddProject() {
-        return PermissionController.getRole() != null && PermissionController.getRole() == UserRole.SUPER_ADMIN;
+        return PermissionController.getRole() != null && (PermissionController.getRole() == UserRole.SUPER_ADMIN);
     }
 
     public static boolean showMembers()  {
@@ -25,6 +25,10 @@ public class PermissionController {
     }
 
     public static boolean addDeleteAndEditIssue()  {
+        return PermissionController.getRole() != null && (PermissionController.getRole() == UserRole.SUPER_ADMIN || PermissionController.getRole() == UserRole.PO);
+    }
+
+    public static boolean showManageUserProjectButton()  {
         return PermissionController.getRole() != null && (PermissionController.getRole() == UserRole.SUPER_ADMIN || PermissionController.getRole() == UserRole.PO);
     }
 

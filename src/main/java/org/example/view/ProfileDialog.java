@@ -65,6 +65,10 @@ public class ProfileDialog {
 
         logout.addActionListener(e -> {
 
+            UserController.getInstance().logout();
+            UiFrame.getInstance().switchToLoginPage();
+            dialog.dispose();
+
         });
         //firstName Field
         firstname = new JTextField();

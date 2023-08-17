@@ -151,6 +151,8 @@ public class LoginPanel extends JPanel {
 
                 if (userController.validateUserLogin(email, password)) {
                     userController.login(email, password);
+                    passwordField.setText("");
+                    errorLabel.setText("");
                     UiFrame.getInstance().switchToMainPanel();
                 } else {
                     errorLabel.setText("Invalid email or password!");
